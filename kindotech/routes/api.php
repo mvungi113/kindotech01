@@ -1,0 +1,101 @@
+<?php
+
+/**
+ * API routes for Tanzania Blog backend
+ * Defines all endpoints for frontend communication
+ * Organized by public and protected routes with Sanctum authentication
+ */
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\PostController;
+use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\CommentController;
+use App\Http\Controllers\API\DashboardController;
+use App\Http\Controllers\API\UserController;
+use Illuminate\Support\Facades\Route;
+
+// Public routes - accessible without authentication
+Route::prefix('v1')->group(function () {
+    
+    // Authentication routes
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+    
+    // Public post routes
+    Route::get('/posts', [PostController::class, 'index']);
+    Route::get('/posts/featured', [PostController::class, 'featured']);
+    Route::get('/posts/recent', [PostController::class, 'recent']);
+    Route::get('/posts/search', [PostController::class, 'search']);
+    Route::get('/posts/{slug}', [PostController::class, 'show'])->where('slug', '[a-zA-Z0-9\-_]+');
+    
+    // Public category routes
+    Route::get('/categories', [CategoryController::class, 'index']);
+    Route::get('/categories/{slug}/posts', [CategoryController::class, 'posts']);
+    
+    // Public comment routes
+    Route::get('/posts/{postId}/comments', [CommentController::class, 'getPostComments']);
+    Route::post('/posts/{postId}/comments', [CommentController::class, 'store']);
+    Route::post('/comments/{comment}/like', [CommentController::class, 'like']);
+});
+
+// Protected routes - require Sanctum authentication
+Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
+    
+    // Authentication management
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/user', [AuthController::class, 'user']);
+    Route::put('/user/profile', [AuthController::class, 'updateProfile']);
+    Route::post('/user/change-password', [AuthController::class, 'changePassword']);
+    
+    // Debug route to test authentication
+    Route::get('/auth-test', function () {
+        return response()->json([
+            'success' => true,
+            'user' => auth()->user(),
+            'message' => 'Authentication working'
+        ]);
+    });
+    
+    // Post management (Admin/Author)
+    Route::apiResource('/posts', PostController::class)->except(['index', 'show']);
+    Route::get('/posts/{post}/edit', [PostController::class, 'edit']); // For editing access by ID
+    Route::post('/posts/{post}/publish', [PostController::class, 'publish']);
+    Route::post('/posts/{post}/unpublish', [PostController::class, 'unpublish']);
+    Route::post('/posts/upload-image', [PostController::class, 'uploadImage']);
+    
+    // Category management (Admin only)
+    Route::middleware('admin')->group(function () {
+        Route::apiResource('/categories', CategoryController::class)->except(['index']);
+        
+        // Comment moderation (Admin only)
+        Route::get('/comments/moderation', [CommentController::class, 'moderationQueue']);
+        Route::post('/comments/{comment}/approve', [CommentController::class, 'approve']);
+        Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
+        
+        // User management (Admin only)
+        Route::get('/users', [UserController::class, 'index']);
+        Route::get('/users/{user}', [UserController::class, 'show']);
+        Route::put('/users/{user}', [UserController::class, 'update']);
+        Route::delete('/users/{user}', [UserController::class, 'destroy']);
+        Route::get('/users/stats', [UserController::class, 'stats']);
+        
+        // User activation management (Admin only)
+        Route::post('/users/{user}/activate', [UserController::class, 'activateUser']);
+        Route::post('/users/{user}/deactivate', [UserController::class, 'deactivateUser']);
+        Route::put('/users/{user}/status', [UserController::class, 'changeStatus']);
+    });
+    
+    // Dashboard routes (temporarily without admin middleware for testing)
+    Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
+    Route::get('/dashboard/recent-activity', [DashboardController::class, 'recentActivity']);
+    Route::get('/dashboard/monthly-stats', [DashboardController::class, 'monthlyStats']);
+});
+
+// Fallback route for undefined API endpoints
+Route::fallback(function () {
+    return response()->json([
+        'success' => false,
+        'message' => 'API endpoint not found.'
+    ], 404);
+});
