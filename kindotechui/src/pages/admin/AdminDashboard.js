@@ -127,13 +127,13 @@ const AdminDashboard = () => {
             <div className="col">
               <div className="d-flex align-items-center">
                 <div className="admin-icon-container me-3">
-                  <div className="admin-icon">
+                  <div className="admin-badge">
                     <i className="fas fa-tachometer-alt"></i>
                   </div>
                 </div>
                 <div className="admin-header-content">
-                  <h1 className="h2 mb-1 text-white fw-bold">Admin Dashboard</h1>
-                  <p className="mb-0 text-white-50">System management and analytics overview</p>
+                  <h1 className="h2 mb-1 text-dark fw-bold">Admin Dashboard</h1>
+                  <p className="mb-0 text-dark fw-medium" style={{ color: '#2c3e50' }}>System management and analytics overview</p>
                 </div>
               </div>
             </div>
@@ -148,69 +148,6 @@ const AdminDashboard = () => {
       </div>
 
       <div className="container py-4">
-        {/* Quick Actions */}
-        <div className="admin-actions-section mb-4">
-          <div className="row">
-            <div className="col">
-              <h5 className="mb-3 text-dark fw-bold">
-                <i className="fas fa-bolt me-2 text-primary"></i>
-                Quick Actions
-              </h5>
-              <div className="admin-actions-grid">
-                <Link to="/admin/posts/new" className="admin-action-card">
-                  <div className="action-icon bg-primary">
-                    <i className="fas fa-plus"></i>
-                  </div>
-                  <div className="action-content">
-                    <h6 className="action-title">Create Post</h6>
-                    <p className="action-desc">Write a new article</p>
-                  </div>
-                </Link>
-                <Link to="/admin/users" className="admin-action-card">
-                  <div className="action-icon bg-success">
-                    <i className="fas fa-users"></i>
-                  </div>
-                  <div className="action-content">
-                    <h6 className="action-title">Manage Users</h6>
-                    <p className="action-desc">User administration</p>
-                  </div>
-                </Link>
-                <Link to="/admin/posts" className="admin-action-card">
-                  <div className="action-icon bg-info">
-                    <i className="fas fa-file-alt"></i>
-                  </div>
-                  <div className="action-content">
-                    <h6 className="action-title">All Posts</h6>
-                    <p className="action-desc">Content management</p>
-                  </div>
-                </Link>
-                <Link to="/admin/categories" className="admin-action-card">
-                  <div className="action-icon bg-warning">
-                    <i className="fas fa-tags"></i>
-                  </div>
-                  <div className="action-content">
-                    <h6 className="action-title">Categories</h6>
-                    <p className="action-desc">Organize content</p>
-                  </div>
-                </Link>
-                <button 
-                  onClick={loadDashboardData} 
-                  className="admin-action-card refresh-btn"
-                  disabled={loading}
-                >
-                  <div className="action-icon bg-secondary">
-                    <i className={`fas fa-sync-alt ${loading ? 'fa-spin' : ''}`}></i>
-                  </div>
-                  <div className="action-content">
-                    <h6 className="action-title">Refresh</h6>
-                    <p className="action-desc">Update data</p>
-                  </div>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* System Statistics */}
         <div className="admin-stats-section mb-4">
           <div className="row">
@@ -293,6 +230,69 @@ const AdminDashboard = () => {
               </div>
             </div>
           </div>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="admin-actions-section mb-4">
+          <div className="row">
+            <div className="col">
+              <h5 className="mb-3 text-dark fw-bold">
+                <i className="fas fa-bolt me-2 text-primary"></i>
+                Quick Actions
+              </h5>
+              <div className="admin-actions-grid">
+                <Link to="/admin/posts/new" className="admin-action-card">
+                  <div className="action-icon bg-primary">
+                    <i className="fas fa-plus"></i>
+                  </div>
+                  <div className="action-content">
+                    <h6 className="action-title">Create Post</h6>
+                    <p className="action-desc">Write a new article</p>
+                  </div>
+                </Link>
+                <Link to="/admin/users" className="admin-action-card">
+                  <div className="action-icon bg-success">
+                    <i className="fas fa-users"></i>
+                  </div>
+                  <div className="action-content">
+                    <h6 className="action-title">Manage Users</h6>
+                    <p className="action-desc">User administration</p>
+                  </div>
+                </Link>
+                <Link to="/admin/posts" className="admin-action-card">
+                  <div className="action-icon bg-info">
+                    <i className="fas fa-file-alt"></i>
+                  </div>
+                  <div className="action-content">
+                    <h6 className="action-title">All Posts</h6>
+                    <p className="action-desc">Content management</p>
+                  </div>
+                </Link>
+                <Link to="/admin/categories" className="admin-action-card">
+                  <div className="action-icon bg-warning">
+                    <i className="fas fa-tags"></i>
+                  </div>
+                  <div className="action-content">
+                    <h6 className="action-title">Categories</h6>
+                    <p className="action-desc">Organize content</p>
+                  </div>
+                </Link>
+                <button 
+                  onClick={loadDashboardData} 
+                  className="admin-action-card refresh-btn"
+                  disabled={loading}
+                >
+                  <div className="action-icon bg-secondary">
+                    <i className={`fas fa-sync-alt ${loading ? 'fa-spin' : ''}`}></i>
+                  </div>
+                  <div className="action-content">
+                    <h6 className="action-title">Refresh</h6>
+                    <p className="action-desc">Update data</p>
+                  </div>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 

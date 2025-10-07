@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { apiService } from '../services/api';
 import PostCard from '../components/posts/PostCard';
+import PostCardSkeleton from '../components/posts/PostCardSkeleton';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const Home = () => {
@@ -145,7 +146,7 @@ const Home = () => {
                     Explore Stories
                     <i className="fas fa-arrow-right ms-2"></i>
                   </Link>
-                  <Link to="/categories" className="btn btn-cta-secondary">
+                  <Link to="/categories" className="btn btn-cta-primary">
                     <i className="fas fa-compass me-2"></i>
                     Browse Topics
                   </Link>
@@ -259,7 +260,12 @@ const Home = () => {
           </div>
 
           <div className="row g-4">
-            {recentPosts.length > 0 ? (
+            {loading ? (
+              // Show loading skeletons while loading
+              Array.from({ length: 6 }, (_, index) => (
+                <PostCardSkeleton key={index} />
+              ))
+            ) : recentPosts.length > 0 ? (
               recentPosts.slice(0, 6).map((post, index) => (
                 <div key={post.id} className="col-lg-4 col-md-6">
                   <PostCard post={post} animationDelay={index * 50} />
@@ -274,18 +280,47 @@ const Home = () => {
                 </div>
               </div>
             )}
+            
+            {/* Show additional loading skeletons when loading more */}
+            {loadingMore && (
+              Array.from({ length: 3 }, (_, index) => (
+                <PostCardSkeleton key={`loading-${index}`} />
+              ))
+            )}
           </div>
 
-          <div className="text-center mt-5">
-            <Link to="/posts" className="btn btn-outline-tanzania btn-lg px-4">
-              <i className="fas fa-th-large me-2"></i>
-              View All Stories
-            </Link>
-            
-            <div className="mt-3 text-muted small">
-              <span>Showing latest {recentPosts.length} stories</span>
+          {!loading && (
+            <div className="text-center mt-5">
+              {hasMorePosts && (
+                <button 
+                  onClick={loadMorePosts} 
+                  className="btn btn-outline-tanzania btn-lg px-4 me-3"
+                  disabled={loadingMore}
+                >
+                  {loadingMore ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                      Loading more...
+                    </>
+                  ) : (
+                    <>
+                      <i className="fas fa-plus me-2"></i>
+                      Load More Stories
+                    </>
+                  )}
+                </button>
+              )}
+              
+              <Link to="/posts" className="btn btn-outline-tanzania btn-lg px-4">
+                <i className="fas fa-th-large me-2"></i>
+                View All Stories
+              </Link>
+              
+              <div className="mt-3 text-muted small">
+                <span>Showing {recentPosts.length} of {stats.totalPosts || recentPosts.length} stories</span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 

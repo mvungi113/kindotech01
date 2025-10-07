@@ -13,7 +13,12 @@ const PostDetail = () => {
   const [post, setPost] = useState(null);
   const [relatedPosts, setRelatedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingRelated, setLoadingRelated] = useState(true);
   const [error, setError] = useState(null);
+  const [email, setEmail] = useState('');
+  const [subscribing, setSubscribing] = useState(false);
+  const [subscribeMessage, setSubscribeMessage] = useState('');
+  const [showSwahili, setShowSwahili] = useState(false);
 
   useEffect(() => {
     loadPost();
@@ -28,7 +33,10 @@ const PostDetail = () => {
       
       if (response.success) {
         setPost(response.data);
-        loadRelatedPosts(response.data.category_id, response.data.id);
+        // Load related posts after we have the post data
+        setTimeout(() => {
+          loadRelatedPosts(response.data.category_id, response.data.id);
+        }, 100);
       } else {
         setError('Post not found');
       }
@@ -41,17 +49,62 @@ const PostDetail = () => {
 
   const loadRelatedPosts = async (categoryId, excludePostId) => {
     try {
-      const response = await apiService.getPosts({
-        category: categoryId,
-        per_page: 3
-      });
+      setLoadingRelated(true);
+      console.log('Loading related posts for category:', categoryId, 'excluding post:', excludePostId);
+      let relatedPostsData = [];
       
-      if (response.success) {
-        const filteredPosts = response.data.data.filter(p => p.id !== excludePostId);
-        setRelatedPosts(filteredPosts.slice(0, 3));
+      // First, try to get posts from the same category using category slug
+      if (post?.category?.slug) {
+        try {
+          console.log('Trying to load posts from category:', post.category.slug);
+          const categoryResponse = await apiService.getPosts({
+            category: post.category.slug,
+            per_page: 6
+          });
+          
+          console.log('Category posts response:', categoryResponse);
+          
+          if (categoryResponse.success && categoryResponse.data?.data) {
+            const categoryPosts = categoryResponse.data.data.filter(p => p.id !== excludePostId);
+            relatedPostsData = categoryPosts.slice(0, 3);
+            console.log('Found category posts:', relatedPostsData.length);
+          }
+        } catch (err) {
+          console.warn('Could not load category posts:', err);
+        }
       }
+      
+      // If we don't have enough related posts, get recent posts
+      if (relatedPostsData.length < 3) {
+        try {
+          console.log('Loading recent posts to fill related posts...');
+          const recentResponse = await apiService.getPosts({
+            per_page: 8,
+            orderBy: 'published_at',
+            orderDir: 'desc'
+          });
+          
+          console.log('Recent posts response:', recentResponse);
+          
+          if (recentResponse.success && recentResponse.data?.data) {
+            const recentPosts = recentResponse.data.data.filter(p => 
+              p.id !== excludePostId && 
+              !relatedPostsData.some(existing => existing.id === p.id)
+            );
+            relatedPostsData = [...relatedPostsData, ...recentPosts].slice(0, 3);
+            console.log('Total related posts after adding recent:', relatedPostsData.length);
+          }
+        } catch (err) {
+          console.warn('Could not load recent posts:', err);
+        }
+      }
+      
+      console.log('Final related posts:', relatedPostsData);
+      setRelatedPosts(relatedPostsData);
     } catch (error) {
       console.error('Error loading related posts:', error);
+    } finally {
+      setLoadingRelated(false);
     }
   };
 
@@ -61,6 +114,34 @@ const PostDetail = () => {
       month: 'long',
       day: 'numeric'
     });
+  };
+
+  const handleNewsletterSubscribe = async (e) => {
+    e.preventDefault();
+    
+    if (!email.trim()) {
+      setSubscribeMessage('Please enter a valid email address.');
+      return;
+    }
+    
+    try {
+      setSubscribing(true);
+      setSubscribeMessage('');
+      
+      // For now, simulate subscription (you can add actual API call later)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setSubscribeMessage('Thank you for subscribing! You will receive updates from Tanzania Blog.');
+      setEmail('');
+      
+      // Optional: Add actual API call here
+      // const response = await apiService.subscribeToNewsletter({ email });
+      
+    } catch (error) {
+      setSubscribeMessage('Sorry, there was an error subscribing. Please try again.');
+    } finally {
+      setSubscribing(false);
+    }
   };
 
   if (loading) {
@@ -112,12 +193,15 @@ const PostDetail = () => {
                 {post.category.display_name}
               </span>
               
-              <h1 className="display-5 fw-bold mb-3">{post.title}</h1>
+              <h1 className="display-5 fw-bold mb-3">
+                {!showSwahili ? post.title : (post.title_sw || post.title)}
+              </h1>
               
-              {post.title_sw && (
-                <h2 className="h4 text-muted mb-4 swahili-text">
-                  {post.title_sw}
-                </h2>
+              {post.title_sw && !showSwahili && (
+                <div className="d-flex align-items-center mb-3">
+                  <small className="text-muted me-2">Also available in Swahili:</small>
+                  <span className="text-muted small fst-italic">"{post.title_sw}"</span>
+                </div>
               )}
 
               {/* Author and Meta Info */}
@@ -160,34 +244,70 @@ const PostDetail = () => {
               )}
             </header>
 
+            {/* Language Toggle (if Swahili version available) */}
+            {post.content_sw && post.content_sw.trim().length > 0 && (
+              <div className="language-toggle mb-4">
+                <div className="d-flex align-items-center">
+                  <span className="me-3 text-muted">Available in:</span>
+                  <div className="btn-group" role="group" aria-label="Language selection">
+                    <button
+                      type="button"
+                      className={`btn ${!showSwahili ? 'btn-tanzania' : 'btn-outline-tanzania'}`}
+                      onClick={() => setShowSwahili(false)}
+                    >
+                      <i className="fas fa-globe me-1"></i>
+                      English
+                    </button>
+                    <button
+                      type="button"
+                      className={`btn ${showSwahili ? 'btn-tanzania' : 'btn-outline-tanzania'}`}
+                      onClick={() => setShowSwahili(true)}
+                    >
+                      <i className="fas fa-language me-1"></i>
+                      Kiswahili
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Post Content */}
             <div className="post-content mb-5">
-              <div 
-                className="content-text"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-                style={{ 
-                  fontSize: '1.1rem', 
-                  lineHeight: '1.8',
-                  fontFamily: 'Georgia, serif'
-                }}
-              />
-              
-              {/* Swahili Content (if available) */}
-              {post.content_sw && (
-                <div className="mt-5 pt-4 border-top">
-                  <h4 className="mb-3 text-tanzania">
-                    <i className="fas fa-language me-2"></i>
-                    Kwa Kiswahili
-                  </h4>
-                  <div 
-                    className="content-text swahili-text"
-                    dangerouslySetInnerHTML={{ __html: post.content_sw }}
-                    style={{ 
-                      fontSize: '1.1rem', 
-                      lineHeight: '1.8',
-                      fontFamily: 'Georgia, serif'
-                    }}
-                  />
+              {!showSwahili ? (
+                <div 
+                  className="content-text"
+                  dangerouslySetInnerHTML={{ __html: post.content }}
+                  style={{ 
+                    fontSize: '1.1rem', 
+                    lineHeight: '1.8',
+                    fontFamily: 'Georgia, serif'
+                  }}
+                />
+              ) : (
+                <div>
+                  {post.content_sw && post.content_sw.trim().length > 0 ? (
+                    <div 
+                      className="content-text swahili-text"
+                      dangerouslySetInnerHTML={{ __html: post.content_sw }}
+                      style={{ 
+                        fontSize: '1.1rem', 
+                        lineHeight: '1.8',
+                        fontFamily: 'Georgia, serif',
+                        color: '#212529'
+                      }}
+                    />
+                  ) : (
+                    <div className="alert alert-info">
+                      <i className="fas fa-info-circle me-2"></i>
+                      Swahili version is not available for this post.
+                      <button 
+                        className="btn btn-outline-primary btn-sm ms-3"
+                        onClick={() => setShowSwahili(false)}
+                      >
+                        View English
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -250,24 +370,64 @@ const PostDetail = () => {
               </h5>
             </div>
             <div className="card-body">
-              {relatedPosts.length > 0 ? (
-                relatedPosts.map(relatedPost => (
-                  <div key={relatedPost.id} className="mb-3 pb-3 border-bottom">
-                    <h6 className="mb-1">
-                      <Link 
-                        to={`/posts/${relatedPost.slug}`}
-                        className="text-decoration-none"
-                      >
-                        {relatedPost.title}
-                      </Link>
-                    </h6>
-                    <small className="text-muted">
-                      {formatDate(relatedPost.published_at)}
-                    </small>
+              {loadingRelated ? (
+                <div className="text-center py-3">
+                  <div className="spinner-border spinner-border-sm text-tanzania me-2" role="status"></div>
+                  <span className="text-muted">Loading related posts...</span>
+                </div>
+              ) : relatedPosts.length > 0 ? (
+                relatedPosts.map((relatedPost, index) => (
+                  <div key={relatedPost.id} className={`mb-3 ${index < relatedPosts.length - 1 ? 'pb-3 border-bottom' : ''}`}>
+                    <div className="d-flex">
+                      {relatedPost.featured_image && (
+                        <div className="me-3 flex-shrink-0">
+                          <img 
+                            src={`http://localhost:8000/storage/${relatedPost.featured_image}`}
+                            alt={relatedPost.title}
+                            className="rounded"
+                            style={{ width: '60px', height: '60px', objectFit: 'cover' }}
+                          />
+                        </div>
+                      )}
+                      <div className="flex-grow-1">
+                        <h6 className="mb-1">
+                          <Link 
+                            to={`/posts/${relatedPost.slug}`}
+                            className="text-decoration-none text-dark"
+                            onClick={() => window.scrollTo(0, 0)}
+                          >
+                            {relatedPost.title}
+                          </Link>
+                        </h6>
+                        <div className="text-muted small d-flex align-items-center">
+                          <span className="me-3">
+                            <i className="fas fa-calendar me-1"></i>
+                            {formatDate(relatedPost.published_at)}
+                          </span>
+                          {relatedPost.category && (
+                            <span className="me-3">
+                              <i className="fas fa-tag me-1"></i>
+                              {relatedPost.category.name}
+                            </span>
+                          )}
+                          <span>
+                            <i className="fas fa-eye me-1"></i>
+                            {relatedPost.views || 0} views
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 ))
               ) : (
-                <p className="text-muted mb-0">No related posts found.</p>
+                <div className="text-center py-4">
+                  <i className="fas fa-newspaper fa-2x text-muted mb-2"></i>
+                  <p className="text-muted mb-2">No related posts found.</p>
+                  <Link to="/posts" className="btn btn-outline-tanzania btn-sm">
+                    <i className="fas fa-arrow-left me-1"></i>
+                    Browse All Posts
+                  </Link>
+                </div>
               )}
             </div>
           </div>
@@ -275,21 +435,53 @@ const PostDetail = () => {
           {/* Newsletter Signup */}
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title">Stay Updated</h5>
+              <h5 className="card-title">
+                <i className="fas fa-envelope me-2 text-tanzania"></i>
+                Stay Updated
+              </h5>
               <p className="card-text">
                 Get the latest posts from Tanzania Blog delivered to your inbox.
               </p>
-              <form className="newsletter-form">
+              
+              {subscribeMessage && (
+                <div className={`alert ${subscribeMessage.includes('Thank you') ? 'alert-success' : 'alert-danger'} alert-dismissible fade show`}>
+                  <small>{subscribeMessage}</small>
+                  <button 
+                    type="button" 
+                    className="btn-close" 
+                    onClick={() => setSubscribeMessage('')}
+                  ></button>
+                </div>
+              )}
+              
+              <form className="newsletter-form" onSubmit={handleNewsletterSubscribe}>
                 <div className="mb-3">
                   <input 
                     type="email" 
                     className="form-control" 
                     placeholder="Your email address" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required 
+                    disabled={subscribing}
                   />
                 </div>
-                <button type="submit" className="btn btn-tanzania w-100">
-                  Subscribe to Newsletter
+                <button 
+                  type="submit" 
+                  className="btn btn-tanzania w-100"
+                  disabled={subscribing}
+                >
+                  {subscribing ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                      Subscribing...
+                    </>
+                  ) : (
+                    <>
+                      <i className="fas fa-paper-plane me-2"></i>
+                      Subscribe to Newsletter
+                    </>
+                  )}
                 </button>
               </form>
             </div>
