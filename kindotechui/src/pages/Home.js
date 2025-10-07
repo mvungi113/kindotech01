@@ -266,7 +266,8 @@ const Home = () => {
                 <PostCardSkeleton key={index} />
               ))
             ) : recentPosts.length > 0 ? (
-              recentPosts.slice(0, 6).map((post, index) => (
+              // Show ALL loaded posts, not just first 6
+              recentPosts.map((post, index) => (
                 <div key={post.id} className="col-lg-4 col-md-6">
                   <PostCard post={post} animationDelay={index * 50} />
                 </div>
@@ -283,8 +284,10 @@ const Home = () => {
             
             {/* Show additional loading skeletons when loading more */}
             {loadingMore && (
-              Array.from({ length: 3 }, (_, index) => (
-                <PostCardSkeleton key={`loading-${index}`} />
+              Array.from({ length: 6 }, (_, index) => (
+                <div key={`loading-${index}`} className="col-lg-4 col-md-6">
+                  <PostCardSkeleton />
+                </div>
               ))
             )}
           </div>
