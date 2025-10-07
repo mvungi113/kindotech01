@@ -1,6 +1,6 @@
 {
-  "short_name": "kindoTech",
-  "name": "kindoTech - Technology Insights",
+  "short_name": "KindoTech",
+  "name": "KindoTech - Technology Insights & Innovation",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#1EB53A",
+  "theme_color": "#E53E3E",
   "background_color": "#ffffff"
 }

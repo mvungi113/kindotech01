@@ -214,11 +214,6 @@ const Home = () => {
               </h2>
               <p className="text-muted">Hand-picked articles just for you</p>
             </div>
-            <div className="col-auto">
-              <Link to="/posts?featured=true" className="btn btn-outline-tanzania">
-                View All Featured <i className="fas fa-star ms-2"></i>
-              </Link>
-            </div>
           </div>
 
           <div className="row g-4">

@@ -4,10 +4,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { apiService } from '../../services/api';
+import Logo from './Logo';
 
 const Footer = () => {
   const [categories, setCategories] = useState([]);
-  const [stats, setStats] = useState({ totalPosts: 0, totalCategories: 0 });
+  const [stats, setStats] = useState({ 
+    totalPosts: 0, 
+    totalCategories: 0, 
+    publishedPosts: 0 
+  });
   const [email, setEmail] = useState('');
   const [subscribing, setSubscribing] = useState(false);
   const [subscribeMessage, setSubscribeMessage] = useState('');
@@ -18,10 +23,27 @@ const Footer = () => {
 
   const loadFooterData = async () => {
     try {
-      const categoriesResponse = await apiService.getCategories();
+      // Load categories and recent posts to get accurate stats
+      const [categoriesResponse, postsResponse] = await Promise.all([
+        apiService.getCategories(),
+        apiService.getPosts({ per_page: 1 }) // Just get first page to get total count
+      ]);
+      
       if (categoriesResponse.success) {
         setCategories(categoriesResponse.data.slice(0, 6)); // Show first 6 categories
-        setStats(prev => ({ ...prev, totalCategories: categoriesResponse.data.length }));
+        setStats(prev => ({ 
+          ...prev, 
+          totalCategories: categoriesResponse.data.length 
+        }));
+      }
+      
+      if (postsResponse.success) {
+        const totalPosts = postsResponse.data.total || 0;
+        setStats(prev => ({ 
+          ...prev, 
+          publishedPosts: totalPosts,
+          totalPosts: totalPosts
+        }));
       }
     } catch (error) {
       console.error('Error loading footer data:', error);
@@ -76,8 +98,7 @@ const Footer = () => {
             <div className="col-lg-4 col-md-6">
               <div className="footer-brand">
                 <div className="brand-logo">
-                  <i className="fas fa-globe-africa"></i>
-                  <span className="brand-name">kindoTech</span>
+                  <Logo size="large" />
                 </div>
                 <p className="brand-description">
                   Discover the latest in technology, innovation, and digital transformation. 
@@ -85,16 +106,16 @@ const Footer = () => {
                 </p>
                 <div className="footer-stats">
                   <div className="stat-item">
-                    <div className="stat-number">{stats.totalCategories}+</div>
+                    <div className="stat-number">{stats.totalCategories}</div>
                     <div className="stat-label">Categories</div>
                   </div>
                   <div className="stat-item">
-                    <div className="stat-number">50+</div>
+                    <div className="stat-number">{stats.publishedPosts}</div>
                     <div className="stat-label">Stories</div>
                   </div>
                   <div className="stat-item">
-                    <div className="stat-number">2</div>
-                    <div className="stat-label">Languages</div>
+                    <div className="stat-number">1K+</div>
+                    <div className="stat-label">Readers</div>
                   </div>
                 </div>
               </div>
