@@ -85,7 +85,7 @@ const Login = () => {
 
 
   return (
-    <div className="min-vh-100 d-flex align-items-center bg-light">
+    <div className="bg-light py-5" style={{ minHeight: 'calc(100vh - 160px)' }}>
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-6 col-lg-5">
