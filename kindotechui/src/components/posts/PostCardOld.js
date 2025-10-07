@@ -21,60 +21,6 @@ const PostCard = ({ post, featured = false, animationDelay = 0 }) => {
     return views || 0;
   };
 
-  // Enhanced excerpt generation
-  const getPostExcerpt = (post) => {
-    // Check if excerpt exists and is meaningful (not just random text)
-    if (post.excerpt && post.excerpt.length > 10 && !post.excerpt.match(/^[a-z]*$/i)) {
-      return post.excerpt;
-    }
-    
-    if (post.content) {
-      // Remove HTML tags and clean up content
-      let cleanContent = post.content
-        .replace(/<[^>]*>/g, '')  // Remove HTML tags
-        .replace(/\s+/g, ' ')     // Replace multiple spaces with single space
-        .trim();
-      
-      // Skip Lorem ipsum text and random content
-      if (cleanContent.toLowerCase().includes('lorem ipsum') || cleanContent.match(/^[a-z]*$/i)) {
-        // Try Swahili content if English is Lorem ipsum
-        if (post.content_sw) {
-          cleanContent = post.content_sw
-            .replace(/<[^>]*>/g, '')
-            .replace(/\s+/g, ' ')
-            .trim();
-          
-          if (cleanContent.length > 150) {
-            return cleanContent.substring(0, 150).trim() + '...';
-          }
-          return cleanContent;
-        }
-      }
-      
-      if (cleanContent.length > 150) {
-        return cleanContent.substring(0, 150).trim() + '...';
-      }
-      return cleanContent;
-    }
-    
-    // Use Swahili content as fallback if available
-    if (post.content_sw) {
-      const cleanSwahili = post.content_sw
-        .replace(/<[^>]*>/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
-      
-      if (cleanSwahili.length > 150) {
-        return cleanSwahili.substring(0, 150).trim() + '...';
-      }
-      return cleanSwahili;
-    }
-    
-    // Default fallback description based on category
-    const categoryName = post.category?.name || post.category?.display_name || 'Technology';
-    return `Explore the latest insights and updates in ${categoryName}. Discover comprehensive coverage and expert analysis.`;
-  };
-
   return (
     <Link 
       to={`/posts/${post.slug}`} 
@@ -127,35 +73,22 @@ const PostCard = ({ post, featured = false, animationDelay = 0 }) => {
           </div>
 
           <h3 className={`post-title ${featured ? 'featured-title' : ''}`}>
-            {post.title && post.title.length > 3 && !post.title.match(/^[a-z]*$/i) ? 
-              post.title : 
-              (post.title_sw || `${post.category?.display_name || 'Technology'} Article`)
-            }
+            {post.title}
           </h3>
 
           <p className="post-excerpt">
-            {getPostExcerpt(post)}
-          </p>
+            {post.excerpt || (post.content ? `${post.content.substring(0, 120)}...` : 'No preview available.')}\n          </p>
 
           <div className="post-stats">
             <div className="stat-item">
-              <i className="fas fa-clock text-tanzania-blue"></i>
-              <span>{post.reading_time || 5} min read</span>
+              <i className="fas fa-clock text-tanzania-blue"></i>\n              <span>{post.reading_time || 5} min read</span>
             </div>
             <div className="stat-item">
-              <i className="fas fa-eye text-muted"></i>
-              <span>{formatViews(post.views)} views</span>
+              <i className="fas fa-eye text-muted"></i>\n              <span>{formatViews(post.views)} views</span>
             </div>
             {post.comments_count > 0 && (
               <div className="stat-item">
-                <i className="fas fa-comments text-muted"></i>
-                <span>{post.comments_count}</span>
-              </div>
-            )}
-            {post.content_sw && (
-              <div className="stat-item">
-                <i className="fas fa-language text-success"></i>
-                <span className="small">Bilingual</span>
+                <i className="fas fa-comments text-muted"></i>\n                <span>{post.comments_count}</span>
               </div>
             )}
           </div>
