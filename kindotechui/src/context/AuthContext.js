@@ -69,20 +69,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (userData) => {
-    try {
-      const result = await apiService.register(userData);
-      if (result.success) {
-        setUser(result.data.user);
-        setIsAuthenticated(true);
-        return { success: true, user: result.data.user };
-      }
-      return { success: false, message: result.message };
-    } catch (error) {
-      return { 
-        success: false, 
-        message: error.response?.data?.message || 'Registration failed' 
-      };
-    }
+    // Registration disabled - handled by administrators only
+    return { 
+      success: false, 
+      message: 'User registration is disabled. Please contact an administrator for account access.' 
+    };
   };
 
   const value = {

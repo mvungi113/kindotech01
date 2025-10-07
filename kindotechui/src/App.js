@@ -1,5 +1,5 @@
 /**
- * Main Tanzania Blog React application with complete routing
+ * Main Kindo Tech React application with complete routing
  */
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
@@ -27,8 +27,8 @@ import SearchResults from './pages/SearchResults';
 
 // Auth Pages
 import Login from './pages/auth/Login';
-import Register from './pages/Register';
 import ApiTest from './pages/ApiTest';
+import NewsletterTest from './pages/NewsletterTest';
 
 // Dashboard Router
 import DashboardRouter from './pages/DashboardRouter';
@@ -39,6 +39,7 @@ import PostEditor from './pages/admin/PostEditor';
 import CategoryManager from './pages/admin/CategoryManager';
 import CommentManager from './pages/admin/CommentManager';
 import UserManager from './pages/admin/UserManager';
+import NewsletterManager from './pages/admin/NewsletterManager';
 
 // Author Pages
 import AuthorPostManager from './pages/author/PostManager';
@@ -132,8 +133,8 @@ function App() {
                 {/* Authentication Routes */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/admin/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
                 <Route path="/api-test" element={<ApiTest />} />
+                <Route path="/newsletter-test" element={<NewsletterTest />} />
                 
                 {/* Dashboard Routes - Unified routing */}
                 <Route path="/dashboard" element={
@@ -220,6 +221,12 @@ function App() {
                 <Route path="/admin/users" element={
                   <ProtectedRoute requireAdmin={true}>
                     <UserManager />
+                  </ProtectedRoute>
+                } />
+                
+                <Route path="/admin/newsletter" element={
+                  <ProtectedRoute requireAdmin={true}>
+                    <NewsletterManager />
                   </ProtectedRoute>
                 } />
                 

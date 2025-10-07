@@ -144,10 +144,7 @@ const AdminLogin = () => {
 
                 <div className="text-center mt-4">
                   <p className="text-muted mb-2">
-                    Don't have an account? 
-                    <Link to="/admin/register" className="text-decoration-none ms-1">
-                      Contact Administrator
-                    </Link>
+                    Need access? Contact the system administrator.
                   </p>
                   <Link to="/" className="text-decoration-none">
                     <i className="fas fa-arrow-left me-1"></i>

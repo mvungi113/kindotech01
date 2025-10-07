@@ -123,19 +123,27 @@ const PostDetail = () => {
       setSubscribeMessage('Please enter a valid email address.');
       return;
     }
+
+    // Simple email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setSubscribeMessage('Please enter a valid email address.');
+      return;
+    }
     
     try {
       setSubscribing(true);
       setSubscribeMessage('');
       
-      // For now, simulate subscription (you can add actual API call later)
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Call the actual API
+      const response = await apiService.subscribeToNewsletter(email.trim(), 'post_detail');
       
-      setSubscribeMessage('Thank you for subscribing! You will receive updates from Tanzania Blog.');
-      setEmail('');
-      
-      // Optional: Add actual API call here
-      // const response = await apiService.subscribeToNewsletter({ email });
+      if (response.success) {
+        setSubscribeMessage(response.message);
+        setEmail('');
+      } else {
+        setSubscribeMessage(response.message || 'Sorry, there was an error subscribing. Please try again.');
+      }
       
     } catch (error) {
       setSubscribeMessage('Sorry, there was an error subscribing. Please try again.');
@@ -440,7 +448,7 @@ const PostDetail = () => {
                 Stay Updated
               </h5>
               <p className="card-text">
-                Get the latest posts from Tanzania Blog delivered to your inbox.
+                Get the latest posts from Kindo Tech delivered to your inbox.
               </p>
               
               {subscribeMessage && (

@@ -62,8 +62,11 @@ class ApiService {
   }
 
   async register(userData) {
-    const response = await this.client.post('/register', userData);
-    return response.data;
+    // Registration disabled - handled by administrators only
+    return { 
+      success: false, 
+      message: 'User registration is disabled. Please contact an administrator for account access.' 
+    };
   }
 
   async logout() {
@@ -273,6 +276,28 @@ class ApiService {
   // Comment management endpoints
   async getComments(params = {}) {
     const response = await this.client.get('/comments/moderation', { params });
+    return response.data;
+  }
+
+  // Newsletter endpoints
+  async subscribeToNewsletter(email, source = 'website') {
+    const response = await this.client.post('/newsletter/subscribe', { email, source });
+    return response.data;
+  }
+
+  async unsubscribeFromNewsletter(email) {
+    const response = await this.client.post('/newsletter/unsubscribe', { email });
+    return response.data;
+  }
+
+  // Newsletter management endpoints (Admin only)
+  async getNewsletterSubscribers(params = {}) {
+    const response = await this.client.get('/newsletter/subscribers', { params });
+    return response.data;
+  }
+
+  async getNewsletterStats() {
+    const response = await this.client.get('/newsletter/stats');
     return response.data;
   }
 }

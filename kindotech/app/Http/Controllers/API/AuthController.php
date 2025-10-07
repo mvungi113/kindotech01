@@ -19,11 +19,15 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
     /**
-     * Register a new user (author/admin) for Tanzania blog
-     * Validates input, creates user, and returns API token
+     * Register a new user (author/admin) for Kindo Tech
+     * DISABLED: Registration is handled by administrators only
      */
     public function register(Request $request): JsonResponse
     {
+        return response()->json([
+            'success' => false,
+            'message' => 'User registration is disabled. Please contact an administrator for account access.'
+        ], 403);
         // Validate registration data
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -128,7 +132,7 @@ class AuthController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'User logged out successfully from Tanzania blog.'
+            'message' => 'User logged out successfully from Kindo Tech.'
         ]);
     }
 

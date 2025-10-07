@@ -244,10 +244,6 @@ const Header = () => {
                     <i className="fas fa-sign-in-alt"></i>
                     <span>Login</span>
                   </Link>
-                  <Link to="/register" className="btn auth-btn-primary">
-                    <i className="fas fa-user-plus"></i>
-                    <span>Join Us</span>
-                  </Link>
                 </div>
               ) : (
                 <div className="dropdown user-dropdown-modern">

@@ -16,7 +16,12 @@ const AdminDashboard = () => {
     totalUsers: 0,
     totalComments: 0,
     totalCategories: 0,
-    activeUsers: 0
+    activeUsers: 0,
+    newsletterSubscribers: 0
+  });
+  const [newsletterStats, setNewsletterStats] = useState({
+    total_subscribers: 0,
+    recent_subscribers: 0
   });
   const [recentPosts, setRecentPosts] = useState([]);
   const [recentUsers, setRecentUsers] = useState([]);
@@ -73,6 +78,20 @@ const AdminDashboard = () => {
         }
       } catch (error) {
         console.warn('Could not load users - admin access required');
+      }
+
+      // Load newsletter stats
+      try {
+        const newsletterResponse = await apiService.getNewsletterStats();
+        if (newsletterResponse?.success) {
+          setNewsletterStats(newsletterResponse.data);
+          setStats(prev => ({
+            ...prev,
+            newsletterSubscribers: newsletterResponse.data.total_subscribers || 0
+          }));
+        }
+      } catch (error) {
+        console.warn('Could not load newsletter stats - admin access required');
       }
 
       // Load recent comments (limit to 5 for dashboard)
@@ -230,6 +249,18 @@ const AdminDashboard = () => {
               </div>
             </div>
           </div>
+
+          <div className="col-xl-2 col-md-4 col-sm-6">
+            <div className="card border-0 shadow-sm h-100">
+              <div className="card-body text-center">
+                <div className="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style={{ width: '48px', height: '48px' }}>
+                  <i className="fas fa-envelope text-success"></i>
+                </div>
+                <div className="h4 mb-1">{formatNumber(stats.newsletterSubscribers)}</div>
+                <div className="text-muted small">Newsletter</div>
+              </div>
+            </div>
+          </div>
           </div>
         </div>
 
@@ -276,6 +307,15 @@ const AdminDashboard = () => {
                   <div className="action-content">
                     <h6 className="action-title">Categories</h6>
                     <p className="action-desc">Organize content</p>
+                  </div>
+                </Link>
+                <Link to="/admin/newsletter" className="admin-action-card">
+                  <div className="action-icon bg-info">
+                    <i className="fas fa-envelope"></i>
+                  </div>
+                  <div className="action-content">
+                    <h6 className="action-title">Newsletter</h6>
+                    <p className="action-desc">Manage subscribers</p>
                   </div>
                 </Link>
                 <button 

@@ -8,6 +8,9 @@ import { apiService } from '../../services/api';
 const Footer = () => {
   const [categories, setCategories] = useState([]);
   const [stats, setStats] = useState({ totalPosts: 0, totalCategories: 0 });
+  const [email, setEmail] = useState('');
+  const [subscribing, setSubscribing] = useState(false);
+  const [subscribeMessage, setSubscribeMessage] = useState('');
 
   useEffect(() => {
     loadFooterData();
@@ -22,6 +25,42 @@ const Footer = () => {
       }
     } catch (error) {
       console.error('Error loading footer data:', error);
+    }
+  };
+
+  const handleNewsletterSubscribe = async (e) => {
+    e.preventDefault();
+    
+    if (!email.trim()) {
+      setSubscribeMessage('Please enter a valid email address.');
+      return;
+    }
+
+    // Simple email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setSubscribeMessage('Please enter a valid email address.');
+      return;
+    }
+    
+    try {
+      setSubscribing(true);
+      setSubscribeMessage('');
+      
+      // Call the actual API
+      const response = await apiService.subscribeToNewsletter(email.trim(), 'footer');
+      
+      if (response.success) {
+        setSubscribeMessage(response.message);
+        setEmail('');
+      } else {
+        setSubscribeMessage(response.message || 'Sorry, there was an error subscribing. Please try again.');
+      }
+      
+    } catch (error) {
+      setSubscribeMessage('Sorry, there was an error subscribing. Please try again.');
+    } finally {
+      setSubscribing(false);
     }
   };
 
@@ -135,17 +174,36 @@ const Footer = () => {
                 
                 {/* Newsletter Form */}
                 <div className="newsletter-form">
-                  <div className="input-group">
-                    <input 
-                      type="email" 
-                      className="form-control newsletter-input" 
-                      placeholder="Enter your email"
-                      aria-label="Email address"
-                    />
-                    <button className="btn newsletter-btn" type="button">
-                      <i className="fas fa-paper-plane"></i>
-                    </button>
-                  </div>
+                  {subscribeMessage && (
+                    <div className={`alert ${subscribeMessage.includes('Thank you') ? 'alert-success' : 'alert-warning'} alert-sm mb-2`}>
+                      <small>{subscribeMessage}</small>
+                    </div>
+                  )}
+                  <form onSubmit={handleNewsletterSubscribe}>
+                    <div className="input-group">
+                      <input 
+                        type="email" 
+                        className="form-control newsletter-input" 
+                        placeholder="Enter your email"
+                        aria-label="Email address"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        disabled={subscribing}
+                        required
+                      />
+                      <button 
+                        className="btn newsletter-btn" 
+                        type="submit"
+                        disabled={subscribing}
+                      >
+                        {subscribing ? (
+                          <i className="fas fa-spinner fa-spin"></i>
+                        ) : (
+                          <i className="fas fa-paper-plane"></i>
+                        )}
+                      </button>
+                    </div>
+                  </form>
                 </div>
 
                 {/* Social Links */}

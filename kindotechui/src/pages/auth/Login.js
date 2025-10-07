@@ -82,24 +82,7 @@ const Login = () => {
     }
   };
 
-  // Quick login helpers (development only)
-  const quickLogin = async (email, password, role) => {
-    setFormData({ email, password, remember: false });
-    setLoading(true);
-    try {
-      const credentials = { email, password };
-      const response = await login(credentials);
-      if (response.success) {
-        notify.success(`Logged in as ${role}`);
-        const redirectPath = role === 'admin' ? '/admin/dashboard' : '/author/dashboard';
-        navigate(redirectPath, { replace: true });
-      }
-    } catch (error) {
-      notify.error('Quick login failed');
-    } finally {
-      setLoading(false);
-    }
-  };
+
 
   return (
     <div className="min-vh-100 d-flex align-items-center bg-light">
@@ -188,42 +171,11 @@ const Login = () => {
                   </button>
                 </form>
 
-                {/* Quick Login Buttons (Development) */}
-                <div className="mt-4 pt-3 border-top">
-                  <p className="text-muted small text-center mb-3">Quick Login (Development)</p>
-                  <div className="d-grid gap-2">
-                    <button
-                      type="button"
-                      className="btn btn-outline-danger btn-sm"
-                      onClick={() => quickLogin('admin@example.com', 'admin123', 'admin')}
-                      disabled={loading}
-                    >
-                      <i className="fas fa-shield-alt me-2"></i>
-                      Login as Admin
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-outline-info btn-sm"
-                      onClick={() => quickLogin('jane.author@example.com', 'author123', 'author')}
-                      disabled={loading}
-                    >
-                      <i className="fas fa-pen-fancy me-2"></i>
-                      Login as Author
-                    </button>
-                  </div>
-                </div>
-
                 {/* Footer Links */}
                 <div className="text-center mt-4">
                   <div className="small">
                     <Link to="/forgot-password" className="text-decoration-none">
                       Forgot your password?
-                    </Link>
-                  </div>
-                  <div className="small mt-2">
-                    Don't have an account? {' '}
-                    <Link to="/register" className="text-decoration-none">
-                      Sign up here
                     </Link>
                   </div>
                   <div className="small mt-2">

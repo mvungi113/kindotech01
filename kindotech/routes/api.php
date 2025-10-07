@@ -1,7 +1,7 @@
 <?php
 
 /**
- * API routes for Tanzania Blog backend
+ * API routes for Kindo Tech backend
  * Defines all endpoints for frontend communication
  * Organized by public and protected routes with Sanctum authentication
  */
@@ -11,13 +11,13 @@ use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\CommentController;
 use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\NewsletterController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes - accessible without authentication
 Route::prefix('v1')->group(function () {
     
     // Authentication routes
-    Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
@@ -37,6 +37,10 @@ Route::prefix('v1')->group(function () {
     Route::get('/posts/{postId}/comments', [CommentController::class, 'getPostComments']);
     Route::post('/posts/{postId}/comments', [CommentController::class, 'store']);
     Route::post('/comments/{comment}/like', [CommentController::class, 'like']);
+    
+    // Newsletter routes (public)
+    Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);
+    Route::post('/newsletter/unsubscribe', [NewsletterController::class, 'unsubscribe']);
 });
 
 // Protected routes - require Sanctum authentication
@@ -84,6 +88,10 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         Route::post('/users/{user}/activate', [UserController::class, 'activateUser']);
         Route::post('/users/{user}/deactivate', [UserController::class, 'deactivateUser']);
         Route::put('/users/{user}/status', [UserController::class, 'changeStatus']);
+        
+        // Newsletter management (Admin only)
+        Route::get('/newsletter/subscribers', [NewsletterController::class, 'index']);
+        Route::get('/newsletter/stats', [NewsletterController::class, 'stats']);
     });
     
     // Dashboard routes (temporarily without admin middleware for testing)
