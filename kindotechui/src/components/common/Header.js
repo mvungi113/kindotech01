@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { apiService } from '../../services/api';
+import Logo from './Logo';
 
 const Header = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -74,15 +75,10 @@ const Header = () => {
     <nav className="navbar-modern navbar-expand-lg navbar-dark">
       <div className="container">
         <Link className="brand-modern" to="/">
-          <div className="brand-icon-container">
-            <div className="brand-icon">
-              <i className="fas fa-globe-africa"></i>
-            </div>
-          </div>
-          <div className="brand-text">
-            <span className="brand-name">kindoTech</span>
-            <span className="brand-tagline">Tech Innovation Hub</span>
-          </div>
+          <Logo 
+            size="navbar" 
+            className="navbar-logo"
+          />
         </Link>
 
         <button 

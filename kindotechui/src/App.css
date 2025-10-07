@@ -72,3 +72,33 @@
   background: rgba(0, 123, 255, 0.1);
   border-radius: 1rem;
 }
+
+/* Logo Styles */
+.logo-container {
+  display: inline-flex;
+  align-items: center;
+}
+
+.logo-image {
+  transition: opacity 0.3s ease;
+}
+
+.logo-image:hover {
+  opacity: 0.9;
+}
+
+.navbar-logo {
+  max-height: 50px !important;
+}
+
+/* Brand modern styling updates */
+.brand-modern {
+  display: flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
+  padding: 0.5rem 0 !important;
+}
+
+.brand-modern:hover {
+  text-decoration: none !important;
+}

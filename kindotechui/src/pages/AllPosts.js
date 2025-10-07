@@ -1,41 +1,51 @@
 /**
  * All Posts page - Public view of all published blog posts
- * Features search, filtering, pagination, and modern card-based layout
+ * Features search, filtering, load more functionality, and modern card-based layout
  */
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { apiService } from '../services/api';
 import PostCard from '../components/posts/PostCard';
+import PostCardSkeleton from '../components/posts/PostCardSkeleton';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const AllPosts = () => {
   const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showFeaturedOnly, setShowFeaturedOnly] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [hasMorePosts, setHasMorePosts] = useState(true);
   const [totalPosts, setTotalPosts] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Get initial values from URL params
   useEffect(() => {
     const search = searchParams.get('search') || '';
     const category = searchParams.get('category') || '';
-    const page = parseInt(searchParams.get('page')) || 1;
     const featured = searchParams.get('featured') === 'true';
     
     setSearchTerm(search);
     setSelectedCategory(category);
-    setCurrentPage(page);
-    setShowFeaturedOnly(featured); // Set to the actual boolean value
+    setShowFeaturedOnly(featured);
+    
+    // Reset posts and page when filters change
+    setPosts([]);
+    setCurrentPage(1);
+    setHasMorePosts(true);
   }, [searchParams]);
 
   useEffect(() => {
-    loadPosts();
-  }, [currentPage, selectedCategory, searchTerm, showFeaturedOnly]);
+    // Reset and load posts when filters change
+    setPosts([]);
+    setCurrentPage(1);
+    setHasMorePosts(true);
+    loadPosts(true); // true = reset posts
+  }, [selectedCategory, searchTerm, showFeaturedOnly]);
 
   useEffect(() => {
     loadCategories();
@@ -52,12 +62,16 @@ const AllPosts = () => {
     }
   };
 
-  const loadPosts = async () => {
+  const loadPosts = async (resetPosts = false) => {
     try {
-      setLoading(true);
+      if (resetPosts) {
+        setLoading(true);
+      } else {
+        setLoadingMore(true);
+      }
       
       const params = {
-        page: currentPage,
+        page: resetPosts ? 1 : currentPage,
         per_page: 12, // Show 12 posts per page
       };
 
@@ -69,34 +83,54 @@ const AllPosts = () => {
       
       if (response.success) {
         // Handle Laravel pagination structure
-        let postsData, totalPages, totalPostsCount;
+        let postsData, totalPagesCount, totalPostsCount;
         
         if (response.data && typeof response.data === 'object' && response.data.data) {
           // Paginated response from Laravel
           postsData = response.data.data;
-          totalPages = response.data.last_page || 1;
+          totalPagesCount = response.data.last_page || 1;
           totalPostsCount = response.data.total || postsData.length;
         } else if (response.data && Array.isArray(response.data)) {
           // Direct array response
           postsData = response.data;
-          totalPages = 1;
+          totalPagesCount = 1;
           totalPostsCount = postsData.length;
         } else {
           // Fallback
           postsData = [];
-          totalPages = 1;
+          totalPagesCount = 1;
           totalPostsCount = 0;
         }
         
-        setPosts(postsData);
-        setTotalPages(totalPages);
+        if (resetPosts) {
+          setPosts(postsData);
+          setCurrentPage(1);
+        } else {
+          setPosts(prevPosts => [...prevPosts, ...postsData]);
+        }
+        
+        setHasMorePosts((resetPosts ? 1 : currentPage) < totalPagesCount);
         setTotalPosts(totalPostsCount);
+        setTotalPages(totalPagesCount);
       }
     } catch (error) {
       console.error('Error loading posts:', error);
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
+  };
+
+  const loadMorePosts = async () => {
+    if (loadingMore || !hasMorePosts) return;
+    
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    
+    // Load posts for the next page
+    setTimeout(() => {
+      loadPosts(false);
+    }, 0);
   };
 
   const handleSearch = (e) => {
@@ -108,14 +142,7 @@ const AllPosts = () => {
 
   const handleCategoryChange = (categorySlug) => {
     setSelectedCategory(categorySlug);
-    setCurrentPage(1);
     updateURL();
-  };
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    updateURL();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const updateURL = () => {
@@ -123,7 +150,6 @@ const AllPosts = () => {
     if (searchTerm) params.set('search', searchTerm);
     if (selectedCategory) params.set('category', selectedCategory);
     if (showFeaturedOnly) params.set('featured', 'true');
-    if (currentPage > 1) params.set('page', currentPage.toString());
     
     setSearchParams(params);
   };
@@ -132,68 +158,7 @@ const AllPosts = () => {
     setSearchTerm('');
     setSelectedCategory('');
     setShowFeaturedOnly(false);
-    setCurrentPage(1);
     setSearchParams({});
-  };
-
-  const renderPagination = () => {
-    if (totalPages <= 1) return null;
-
-    const pages = [];
-    const showPages = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(showPages / 2));
-    let endPage = Math.min(totalPages, startPage + showPages - 1);
-
-    if (endPage - startPage < showPages - 1) {
-      startPage = Math.max(1, endPage - showPages + 1);
-    }
-
-    // Previous button
-    if (currentPage > 1) {
-      pages.push(
-        <button
-          key="prev"
-          onClick={() => handlePageChange(currentPage - 1)}
-          className="btn btn-outline-tanzania me-2"
-        >
-          <i className="fas fa-chevron-left"></i>
-        </button>
-      );
-    }
-
-    // Page numbers
-    for (let page = startPage; page <= endPage; page++) {
-      pages.push(
-        <button
-          key={page}
-          onClick={() => handlePageChange(page)}
-          className={`btn me-2 ${page === currentPage ? 'btn-tanzania' : 'btn-outline-secondary'}`}
-        >
-          {page}
-        </button>
-      );
-    }
-
-    // Next button
-    if (currentPage < totalPages) {
-      pages.push(
-        <button
-          key="next"
-          onClick={() => handlePageChange(currentPage + 1)}
-          className="btn btn-outline-tanzania"
-        >
-          <i className="fas fa-chevron-right"></i>
-        </button>
-      );
-    }
-
-    return (
-      <div className="d-flex justify-content-center align-items-center mt-5">
-        <div className="pagination-wrapper">
-          {pages}
-        </div>
-      </div>
-    );
   };
 
   if (loading && posts.length === 0) {
@@ -223,10 +188,6 @@ const AllPosts = () => {
           <div className="row align-items-center min-vh-50">
             <div className="col-lg-7">
               <div className="hero-content text-white">
-                <div className="hero-badge mb-3">
-                  <i className={`fas ${showFeaturedOnly ? 'fa-star' : 'fa-compass'} me-2`}></i>
-                  {showFeaturedOnly ? 'Premium Content' : 'Explore & Discover'}
-                </div>
                 <h1 className="display-3 fw-bold mb-4 hero-title">
                   {showFeaturedOnly ? (
                     <>Featured <span className="text-tanzania-yellow">Stories</span></>
@@ -236,7 +197,7 @@ const AllPosts = () => {
                 </h1>
                 <p className="lead mb-4 hero-description">
                   {showFeaturedOnly 
-                    ? 'Discover our hand-picked premium articles showcasing the best technology insights and innovations.'
+                    ? 'Discover our hand-picked articles showcasing the best technology insights and innovations.'
                     : 'Explore our complete collection of technology stories, insights, and expert perspectives from the digital world.'
                   }
                 </p>
@@ -251,7 +212,7 @@ const AllPosts = () => {
                   </div>
                   <div className="feature-item">
                     <i className="fas fa-check-circle me-2"></i>
-                    <span>Multiple Categories</span>
+                    <span>{showFeaturedOnly ? 'Quality Insights' : 'Multiple Categories'}</span>
                   </div>
                 </div>
               </div>
@@ -380,46 +341,99 @@ const AllPosts = () => {
           </div>
 
           {/* Posts Grid */}
-          {loading ? (
-            <div className="row g-4">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="col-lg-4 col-md-6">
-                  <div className="skeleton-card">
-                    <div className="skeleton skeleton-img mb-3"></div>
-                    <div className="skeleton skeleton-text mb-2"></div>
-                    <div className="skeleton skeleton-text-short"></div>
-                  </div>
+          <div className="row g-4">
+            {loading && posts.length === 0 ? (
+              // Initial loading skeletons
+              Array.from({ length: 12 }, (_, index) => (
+                <div key={index} className="col-lg-4 col-md-6">
+                  <PostCardSkeleton />
                 </div>
-              ))}
-            </div>
-          ) : posts.length > 0 ? (
-            <div className="row g-4">
-              {posts.map((post, index) => (
+              ))
+            ) : posts.length > 0 ? (
+              // Display posts
+              posts.map((post, index) => (
                 <div key={post.id} className="col-lg-4 col-md-6">
                   <PostCard post={post} animationDelay={index * 50} />
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="empty-state text-center py-5">
-              <i className="fas fa-search fa-4x text-muted mb-4"></i>
-              <h3 className="text-muted mb-3">No stories found</h3>
-              <p className="text-muted mb-4">
-                {searchTerm || selectedCategory || showFeaturedOnly
-                  ? "Try adjusting your search or filters"
-                  : "No published stories available at the moment"}
-              </p>
-              {(searchTerm || selectedCategory || showFeaturedOnly) && (
-                <button onClick={clearFilters} className="btn btn-tanzania">
-                  <i className="fas fa-refresh me-2"></i>
-                  Clear Filters
+              ))
+            ) : (
+              // Empty state
+              <div className="col-12">
+                <div className="empty-state text-center py-5">
+                  <i className={`fas ${showFeaturedOnly ? 'fa-star' : 'fa-search'} fa-3x text-muted mb-3`}></i>
+                  <h4 className="text-muted">
+                    {showFeaturedOnly ? 'No featured posts found' : 'No posts found'}
+                  </h4>
+                  <p className="text-muted">
+                    {showFeaturedOnly 
+                      ? 'Check back soon for featured content!' 
+                      : searchTerm || selectedCategory 
+                        ? 'Try adjusting your search criteria or browse all posts'
+                        : 'Be the first to share your story!'
+                    }
+                  </p>
+                  {(searchTerm || selectedCategory || showFeaturedOnly) && (
+                    <button
+                      onClick={clearFilters}
+                      className="btn btn-outline-tanzania mt-3"
+                    >
+                      <i className="fas fa-refresh me-2"></i>
+                      {showFeaturedOnly ? 'View All Posts' : 'Clear Filters'}
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+            
+            {/* Loading more skeletons */}
+            {loadingMore && (
+              Array.from({ length: 6 }, (_, index) => (
+                <div key={`loading-${index}`} className="col-lg-4 col-md-6">
+                  <PostCardSkeleton />
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* Load More Button */}
+          {!loading && posts.length > 0 && (
+            <div className="text-center mt-5">
+              {hasMorePosts && (
+                <button 
+                  onClick={loadMorePosts} 
+                  className="btn btn-outline-tanzania btn-lg px-5"
+                  disabled={loadingMore}
+                >
+                  {loadingMore ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                      Loading more...
+                    </>
+                  ) : (
+                    <>
+                      <i className="fas fa-plus me-2"></i>
+                      Load More {showFeaturedOnly ? 'Featured ' : ''}Stories
+                    </>
+                  )}
                 </button>
+              )}
+              
+              {!hasMorePosts && posts.length > 12 && (
+                <div className="mt-3">
+                  <p className="text-muted">
+                    <i className="fas fa-check-circle me-2 text-success"></i>
+                    You've seen all {showFeaturedOnly ? 'featured ' : ''}posts!
+                  </p>
+                  {showFeaturedOnly && (
+                    <Link to="/posts" className="btn btn-outline-tanzania">
+                      <i className="fas fa-th-large me-2"></i>
+                      View All Posts
+                    </Link>
+                  )}
+                </div>
               )}
             </div>
           )}
-
-          {/* Pagination */}
-          {renderPagination()}
         </div>
       </section>
     </div>

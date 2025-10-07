@@ -7,7 +7,7 @@ import { apiService } from '../../services/api';
 import PostCard from './PostCard';
 import LoadingSpinner from '../common/LoadingSpinner';
 
-const PostList = ({ categorySlug = null, searchQuery = '', loadMoreStyle = false }) => {
+const PostList = ({ categorySlug = null, searchQuery = '', loadMoreStyle = false, featuredOnly = false }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -17,13 +17,13 @@ const PostList = ({ categorySlug = null, searchQuery = '', loadMoreStyle = false
   const [hasMorePosts, setHasMorePosts] = useState(true);
 
   useEffect(() => {
-    // Reset to page 1 when category or search changes
+    // Reset to page 1 when category, search, or featured filter changes
     if (currentPage === 1) {
       loadPosts();
     } else {
       setCurrentPage(1);
     }
-  }, [categorySlug, searchQuery]);
+  }, [categorySlug, searchQuery, featuredOnly]);
 
   useEffect(() => {
     // Load posts when page changes (but not for load more style)
@@ -52,6 +52,10 @@ const PostList = ({ categorySlug = null, searchQuery = '', loadMoreStyle = false
 
       if (searchQuery) {
         params.search = searchQuery;
+      }
+
+      if (featuredOnly) {
+        params.featured = true;
       }
 
       const response = await apiService.getPosts(params);

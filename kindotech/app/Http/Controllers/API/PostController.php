@@ -94,7 +94,7 @@ class PostController extends Controller
         }
         
         // Filter by featured posts
-        if ($request->has('featured') && $request->featured) {
+        if ($request->has('featured') && ($request->featured === 'true' || $request->featured === true)) {
             $query->where('is_featured', true);
         }
         
