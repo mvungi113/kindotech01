@@ -4,7 +4,9 @@
  */
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1';
+// Read API URL from environment variable
+// This keeps the URL configurable and separate from code
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api/v1';
 
 class ApiService {
   constructor() {

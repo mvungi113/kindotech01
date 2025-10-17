@@ -224,7 +224,7 @@ const Register = () => {
 
                 <div className="text-center mt-3">
                   <Link to="/" className="text-muted text-decoration-none">
-                    ← Back to Blog
+                    Back to Blog
                   </Link>
                 </div>
               </div>

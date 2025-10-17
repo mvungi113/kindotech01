@@ -11,7 +11,8 @@ const Footer = () => {
   const [stats, setStats] = useState({ 
     totalPosts: 0, 
     totalCategories: 0, 
-    publishedPosts: 0 
+    publishedPosts: 0, 
+    totalViews: 0
   });
   const [email, setEmail] = useState('');
   const [subscribing, setSubscribing] = useState(false);
@@ -106,15 +107,15 @@ const Footer = () => {
                 </p>
                 <div className="footer-stats">
                   <div className="stat-item">
-                    <div className="stat-number">{stats.totalCategories}</div>
+                    <div className="stat-number">{stats.totalCategories}+</div>
                     <div className="stat-label">Categories</div>
                   </div>
                   <div className="stat-item">
-                    <div className="stat-number">{stats.publishedPosts}</div>
+                    <div className="stat-number">{stats.publishedPosts}+</div>
                     <div className="stat-label">Stories</div>
                   </div>
                   <div className="stat-item">
-                    <div className="stat-number">1K+</div>
+                    <div className="stat-number">{stats.totalViews}K+</div>
                     <div className="stat-label">Readers</div>
                   </div>
                 </div>
