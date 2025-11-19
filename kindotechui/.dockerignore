@@ -22,6 +22,9 @@ coverage
 .nuxt
 # Don't ignore build since we're building in Docker now
 # build
-public
+# Keep public directory for index.html
+# public
 # Keep src for building
 # src
+*.md
+!nginx.conf
