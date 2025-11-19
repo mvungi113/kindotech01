@@ -78,47 +78,64 @@ class AuthController extends Controller
      */
     public function login(Request $request): JsonResponse
     {
-        // Validate login credentials
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        // Find user by email
-        $user = User::where('email', $request->email)->first();
-
-        // Check if user exists and password is correct
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+        try {
+            // Validate login credentials
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required',
             ]);
-        }
 
-        // Check if account is active
-        if ($user->status !== 'active') {
-            $message = match($user->status) {
-                'inactive' => 'Your account is pending admin activation. Please contact an administrator.',
-                'suspended' => 'Your account has been suspended. Please contact an administrator.',
-                default => 'Your account is not available for login.'
-            };
+            // Find user by email
+            $user = User::where('email', $request->email)->first();
+
+            // Check if user exists and password is correct
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                throw ValidationException::withMessages([
+                    'email' => ['The provided credentials are incorrect.'],
+                ]);
+            }
+
+            // Check if account is active
+            if ($user->status !== 'active') {
+                $message = match($user->status) {
+                    'inactive' => 'Your account is pending admin activation. Please contact an administrator.',
+                    'suspended' => 'Your account has been suspended. Please contact an administrator.',
+                    default => 'Your account is not available for login.'
+                };
+                
+                return response()->json([
+                    'success' => false,
+                    'message' => $message
+                ], 403);
+            }
+
+            // Generate new API token
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'user' => $user,
+                    'token' => $token
+                ],
+                'message' => 'User logged in successfully to kindoTech.'
+            ]);
+        } catch (ValidationException $e) {
+            // Re-throw validation exceptions
+            throw $e;
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            \Log::error('Login error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
             
             return response()->json([
                 'success' => false,
-                'message' => $message
-            ], 403);
+                'message' => 'An error occurred during login.',
+                'error' => config('app.debug') ? $e->getMessage() : 'Internal server error',
+                'trace' => config('app.debug') ? $e->getTraceAsString() : null
+            ], 500);
         }
-
-        // Generate new API token
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'user' => $user,
-                'token' => $token
-            ],
-            'message' => 'User logged in successfully to kindoTech.'
-        ]);
     }
 
     /**
