@@ -49,9 +49,17 @@ export const AuthProvider = ({ children }) => {
       }
       return { success: false, message: result.message };
     } catch (error) {
-      return { 
-        success: false, 
-        message: error.response?.data?.message || 'Login failed' 
+      // Log detailed error information for debugging
+      console.error('Login error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        fullError: error
+      });
+
+      return {
+        success: false,
+        message: error.response?.data?.error || error.response?.data?.message || 'Login failed'
       };
     }
   };
@@ -70,9 +78,9 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     // Registration disabled - handled by administrators only
-    return { 
-      success: false, 
-      message: 'User registration is disabled. Please contact an administrator for account access.' 
+    return {
+      success: false,
+      message: 'User registration is disabled. Please contact an administrator for account access.'
     };
   };
 
