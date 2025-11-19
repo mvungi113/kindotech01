@@ -11,17 +11,14 @@ COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy only composer files first to leverage Docker layer cache
-COPY composer.json composer.lock /var/www/html/
-
-# Install PHP dependencies (fail build if composer fails)
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
-
-# Copy the rest of the application files
+# Copy application files first (including artisan)
 COPY . /var/www/html
 
-# Re-generate optimized autoload files
-RUN composer dump-autoload -o
+# Install PHP dependencies (fail build if composer fails)
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress --no-scripts
+
+# Run post-install scripts
+RUN composer run-script post-autoload-dump
 
 # Ensure writable directories
 RUN mkdir -p storage framework bootstrap/cache || true
