@@ -20,10 +20,10 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progre
 # Run post-install scripts
 RUN composer run-script post-autoload-dump
 
-# Ensure writable directories
-RUN mkdir -p storage framework bootstrap/cache || true
-RUN chown -R www-data:www-data storage bootstrap/cache || true
-RUN chmod -R 775 storage bootstrap/cache || true
+# Ensure writable directories exist and have correct permissions
+RUN mkdir -p storage/app storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
 ENV APP_ENV=production
 ENV PORT=8080
