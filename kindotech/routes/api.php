@@ -41,6 +41,38 @@ Route::prefix('v1')->group(function () {
     // Newsletter routes (public)
     Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);
     Route::post('/newsletter/unsubscribe', [NewsletterController::class, 'unsubscribe']);
+    
+    // Health check endpoint
+    Route::get('/health', function () {
+        try {
+            // Check database connection
+            \DB::connection()->getPdo();
+            $dbStatus = 'connected';
+            
+            // Check if personal_access_tokens table exists
+            $sanctumTable = \Schema::hasTable('personal_access_tokens') ? 'exists' : 'missing';
+            
+            // Check users count
+            $usersCount = \App\Models\User::count();
+            
+            return response()->json([
+                'success' => true,
+                'status' => 'healthy',
+                'database' => $dbStatus,
+                'sanctum_table' => $sanctumTable,
+                'users_count' => $usersCount,
+                'app_debug' => config('app.debug'),
+                'app_env' => config('app.env')
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'status' => 'unhealthy',
+                'error' => $e->getMessage(),
+                'trace' => config('app.debug') ? $e->getTraceAsString() : null
+            ], 500);
+        }
+    });
 });
 
 // Protected routes - require Sanctum authentication
