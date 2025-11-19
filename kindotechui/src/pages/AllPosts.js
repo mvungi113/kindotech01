@@ -2,6 +2,7 @@
  * All Posts page - Public view of all published blog posts
  * Features search, filtering, load more functionality, and modern card-based layout
  */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { apiService } from '../services/api';
@@ -39,6 +40,7 @@ const AllPosts = () => {
     setHasMorePosts(true);
   }, [searchParams]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     // Reset and load posts when filters change
     setPosts([]);

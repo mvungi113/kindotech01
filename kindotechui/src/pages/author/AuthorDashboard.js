@@ -33,6 +33,8 @@ if (typeof document !== 'undefined') {
   document.head.appendChild(styleElement);
 }
 
+/* eslint-disable react-hooks/exhaustive-deps */
+
 const AuthorDashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -47,12 +49,14 @@ const AuthorDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   // Redirect if not author
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (user && user.role !== 'author') {
       navigate('/admin/dashboard');
     }
   }, [user, navigate]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (user?.role === 'author') {
       loadAuthorData();

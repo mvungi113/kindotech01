@@ -232,21 +232,21 @@ const Footer = () => {
                 <div className="social-section">
                   <h6 className="social-title">Follow Us</h6>
                   <div className="social-links">
-                    <a href="#" className="social-link facebook" aria-label="Facebook">
+                    <button type="button" className="social-link facebook btn btn-link p-0" aria-label="Facebook">
                       <i className="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" className="social-link twitter" aria-label="Twitter">
+                    </button>
+                    <button type="button" className="social-link twitter btn btn-link p-0" aria-label="Twitter">
                       <i className="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" className="social-link instagram" aria-label="Instagram">
+                    </button>
+                    <button type="button" className="social-link instagram btn btn-link p-0" aria-label="Instagram">
                       <i className="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" className="social-link youtube" aria-label="YouTube">
+                    </button>
+                    <button type="button" className="social-link youtube btn btn-link p-0" aria-label="YouTube">
                       <i className="fab fa-youtube"></i>
-                    </a>
-                    <a href="#" className="social-link linkedin" aria-label="LinkedIn">
+                    </button>
+                    <button type="button" className="social-link linkedin btn btn-link p-0" aria-label="LinkedIn">
                       <i className="fab fa-linkedin-in"></i>
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>

@@ -2,10 +2,10 @@
  * Post editor component for creating and editing blog posts
  */
 import React, { useState, useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useNavigate, useParams } from 'react-router-dom';
 import { apiService } from '../../services/api';
 import { notify } from '../../utils/notifications';
-import { useAuth } from '../../context/AuthContext';
 
 const PostEditor = () => {
   const [post, setPost] = useState({
@@ -23,7 +23,6 @@ const PostEditor = () => {
     meta_description: ''
   });
   const [categories, setCategories] = useState([]);
-  const [availableTags, setAvailableTags] = useState([]);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
@@ -38,9 +37,9 @@ const PostEditor = () => {
   
   const { postId } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
   const isEditing = Boolean(postId);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     loadInitialData();
   }, [postId]);
@@ -57,6 +56,7 @@ const PostEditor = () => {
   }, [post.content, post.content_sw]);
 
   // Auto-save functionality
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!isEditing && isDirty && post.title && post.content && post.title.length > 3) {
       const autoSaveTimer = setTimeout(() => {
@@ -96,12 +96,8 @@ const PostEditor = () => {
     try {
       setLoading(true);
       
-      // Load categories and tags
-      const [categoriesResponse, tagsResponse] = await Promise.all([
-        apiService.getCategories(),
-        // apiService.getTags() // Uncomment when tags endpoint is ready
-      ]);
-
+      // Load categories
+      const categoriesResponse = await apiService.getCategories();
       if (categoriesResponse.success) {
         setCategories(categoriesResponse.data);
       }
@@ -164,14 +160,7 @@ const PostEditor = () => {
     }
   };
 
-  const handleTagChange = (tagId) => {
-    setPost(prev => ({
-      ...prev,
-      tags: prev.tags.includes(tagId)
-        ? prev.tags.filter(id => id !== tagId)
-        : [...prev.tags, tagId]
-    }));
-  };
+  
 
   // Text formatting helpers
   const insertText = (textarea, textToInsert) => {

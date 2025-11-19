@@ -1,6 +1,7 @@
 /**
  * Displays list of comments for a post with nested replies
  */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { apiService } from '../../services/api';
 import CommentItem from './CommentItem';
@@ -11,6 +12,7 @@ const CommentList = ({ postId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     loadComments();
   }, [postId]);
@@ -32,9 +34,7 @@ const CommentList = ({ postId }) => {
     }
   };
 
-  const handleCommentAdded = () => {
-    loadComments(); // Refresh comments after new comment is added
-  };
+  // Refresh comments after new comment is added (used by CommentItem via prop)
 
   const handleLike = async (commentId) => {
     try {

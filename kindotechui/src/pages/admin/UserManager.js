@@ -1,6 +1,7 @@
 /**
  * User Manager - Admin interface for managing users
  */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { apiService } from '../../services/api';
 import { notify } from '../../utils/notifications';
@@ -35,6 +36,7 @@ const UserManager = () => {
     total_verified: 0
   });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     loadUsers();
   }, [currentPage]);

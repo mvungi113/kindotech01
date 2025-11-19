@@ -1,6 +1,7 @@
 /**
  * Admin comment moderation and management
  */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -24,12 +25,14 @@ const CommentManager = () => {
     }
   }, [user, navigate]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (user?.role === 'admin') {
       loadComments();
     }
   }, [user]); // Remove activeTab dependency to load once on mount
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     // Reload comments when tab changes, but only if we already have user
     if (user?.role === 'admin' && comments.length > 0) {

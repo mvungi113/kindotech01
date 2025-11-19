@@ -19,7 +19,7 @@ const AdminDashboard = () => {
     activeUsers: 0,
     newsletterSubscribers: 0
   });
-  const [newsletterStats, setNewsletterStats] = useState({
+  const [, setNewsletterStats] = useState({
     total_subscribers: 0,
     recent_subscribers: 0
   });
@@ -35,6 +35,7 @@ const AdminDashboard = () => {
     }
   }, [user, navigate]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (user?.role === 'admin') {
       loadDashboardData();

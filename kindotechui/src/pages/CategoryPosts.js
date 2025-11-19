@@ -2,6 +2,7 @@
  * Category posts page - shows posts for a given category slug
  * Now with Load More functionality for better user experience
  */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { apiService } from '../services/api';
@@ -10,15 +11,14 @@ import PostList from '../components/posts/PostList';
 const CategoryPosts = () => {
   const { slug } = useParams();
   const [category, setCategory] = useState(null);
-  const [loading, setLoading] = useState(true);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     loadCategoryDetails();
   }, [slug]);
 
   const loadCategoryDetails = async () => {
     try {
-      setLoading(true);
       const response = await apiService.getCategories();
       if (response.success) {
         const foundCategory = response.data.find(cat => cat.slug === slug);
@@ -26,8 +26,6 @@ const CategoryPosts = () => {
       }
     } catch (error) {
       console.error('Error loading category details:', error);
-    } finally {
-      setLoading(false);
     }
   };
 

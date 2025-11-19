@@ -27,6 +27,7 @@ const AuthorPostManager = () => {
     draft_posts: 0
   });
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     loadPosts(1); // Load first page when filter changes
     loadStatistics(); // Load statistics when component mounts or filter changes

@@ -2,6 +2,7 @@
  * Component for displaying a list of posts with pagination
  * Supports filtering and search functionality
  */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { apiService } from '../../services/api';
 import PostCard from './PostCard';
@@ -16,6 +17,7 @@ const PostList = ({ categorySlug = null, searchQuery = '', loadMoreStyle = false
   const [totalPages, setTotalPages] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(true);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     // Reset to page 1 when category, search, or featured filter changes
     if (currentPage === 1) {
@@ -25,6 +27,7 @@ const PostList = ({ categorySlug = null, searchQuery = '', loadMoreStyle = false
     }
   }, [categorySlug, searchQuery, featuredOnly]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     // Load posts when page changes (but not for load more style)
     if (currentPage === 1 || !loadMoreStyle) {

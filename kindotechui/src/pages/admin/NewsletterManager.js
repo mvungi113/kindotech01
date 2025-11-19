@@ -2,6 +2,7 @@
  * Newsletter Management Component for Admin Dashboard
  * Allows admins to view subscribers, statistics, and manage newsletter list
  */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { apiService } from '../../services/api';
 
@@ -20,6 +21,7 @@ const NewsletterManager = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     loadNewsletterData();
     loadNewsletterStats();

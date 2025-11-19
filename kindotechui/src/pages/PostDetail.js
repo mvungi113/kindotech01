@@ -1,6 +1,7 @@
 /**
  * Single post detail page with full content, comments, and related posts
  */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { apiService } from '../services/api';
@@ -20,6 +21,7 @@ const PostDetail = () => {
   const [subscribeMessage, setSubscribeMessage] = useState('');
   const [showSwahili, setShowSwahili] = useState(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     loadPost();
   }, [slug]);

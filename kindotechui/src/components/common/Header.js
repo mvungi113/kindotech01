@@ -110,17 +110,16 @@ const Header = () => {
               </Link>
             </li>
             <li className="nav-item-modern dropdown">
-              <a 
-                className="nav-link-modern dropdown-toggle" 
-                href="#" 
-                role="button" 
+              <button 
+                className="nav-link-modern dropdown-toggle btn btn-link p-0" 
+                type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
                 id="categoriesDropdownMenuButton"
               >
                 <i className="fas fa-th-large nav-icon"></i>
                 <span>Categories</span>
-              </a>
+              </button>
               <ul className="dropdown-menu categories-dropdown" aria-labelledby="categoriesDropdownMenuButton">
                 {categoriesLoading ? (
                   <li>
@@ -146,7 +145,7 @@ const Header = () => {
                       </Link>
                     </li>
                     <li><hr className="dropdown-divider" /></li>
-                    
+
                     {/* Categories Grid Container */}
                     <div className="categories-grid">
                       {/* Dynamic Categories */}
@@ -180,7 +179,7 @@ const Header = () => {
                         </li>
                       )}
                     </div>
-                    
+
                     {/* View More Link */}
                     {categories.length >= 8 && (
                       <div className="view-more-section">
