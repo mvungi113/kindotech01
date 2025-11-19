@@ -20,9 +20,8 @@ coverage
 .parcel-cache
 .next
 .nuxt
-dist
-build
+# Don't ignore build since we're building in Docker now
+# build
 public
-src
-*.md
-!build/
+# Keep src for building
+# src
