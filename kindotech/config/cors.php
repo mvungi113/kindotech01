@@ -30,7 +30,15 @@ return [
     | `CORS_ALLOWED_ORIGINS` (e.g. "http://localhost:3000,https://myapp.com").
     |
     */
-    'allowed_origins' => array_filter(array_map('trim', explode(',', env('CORS_ALLOWED_ORIGINS', 'http://localhost:3000')))),
+    'allowed_origins' => array_unique(array_merge(
+        // Default allowed origins
+        [
+            'http://localhost:3000',
+            'https://brave-wisdom-production.up.railway.app',
+        ],
+        // Additional origins from environment variable
+        array_filter(array_map('trim', explode(',', env('CORS_ALLOWED_ORIGINS', ''))))
+    )),
 
     'allowed_origins_patterns' => [],
 
