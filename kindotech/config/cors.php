@@ -19,7 +19,18 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:3000'],
+    /*
+    |-----------------------------------------------------------------
+    | Allowed Origins
+    |-----------------------------------------------------------------
+    |
+    | Read allowed origins from the environment so we can configure
+    | different frontends for local development and production.
+    | Provide a comma-separated list in the env variable
+    | `CORS_ALLOWED_ORIGINS` (e.g. "http://localhost:3000,https://myapp.com").
+    |
+    */
+    'allowed_origins' => array_filter(array_map('trim', explode(',', env('CORS_ALLOWED_ORIGINS', 'http://localhost:3000')))),
 
     'allowed_origins_patterns' => [],
 
