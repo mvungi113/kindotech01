@@ -129,7 +129,7 @@ const PostCard = ({ post, featured = false, animationDelay = 0 }) => {
           <h3 className={`post-title ${featured ? 'featured-title' : ''}`}>
             {post.title && post.title.length > 3 && !post.title.match(/^[a-z]*$/i) ? 
               post.title : 
-              (post.title_sw || `${post.category?.display_name || 'Technology'} Article`)
+              (post.title_sw || `${post.category?.display_name || 'General'} Article`)
             }
           </h3>
 

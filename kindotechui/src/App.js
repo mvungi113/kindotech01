@@ -24,6 +24,7 @@ import PostDetail from './pages/PostDetail';
 import Categories from './pages/Categories';
 import CategoryPosts from './pages/CategoryPosts';
 import SearchResults from './pages/SearchResults';
+import About from './pages/About';
 
 // Auth Pages
 import Login from './pages/auth/Login';
@@ -123,12 +124,7 @@ function App() {
                 <Route path="/categories" element={<Categories />} />
                 <Route path="/categories/:slug" element={<CategoryPosts />} />
                 <Route path="/search" element={<SearchResults />} />
-                <Route path="/about" element={
-                  <div className="container py-5">
-                    <h1>About kindoTech</h1>
-                    <p>Your gateway to cutting-edge technology insights and innovation.</p>
-                  </div>
-                } />
+                <Route path="/about" element={<About />} />
                 
                 {/* Authentication Routes */}
                 <Route path="/login" element={<Login />} />
