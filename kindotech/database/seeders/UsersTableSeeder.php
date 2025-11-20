@@ -25,6 +25,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'Site Admin',
                 'password' => bcrypt('admin123'), // Changed to more secure password
                 'role' => 'admin',
+                'status' => 'active', // Ensure account is active
                 'bio' => 'Administrator account for full system management',
                 'email_verified_at' => now(),
             ]
@@ -37,6 +38,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'Jane Author',
                 'password' => bcrypt('author123'), // Consistent password for testing
                 'role' => 'author',
+                'status' => 'active', // Ensure account is active
                 'bio' => 'Technology writer and contributor',
                 'email_verified_at' => now(),
             ]
@@ -48,6 +50,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'John Writer',
                 'password' => bcrypt('author123'), // Consistent password for testing
                 'role' => 'author',
+                'status' => 'active', // Ensure account is active
                 'bio' => 'Business and economy reporter',
                 'email_verified_at' => now(),
             ]
@@ -59,6 +62,7 @@ class UsersTableSeeder extends Seeder
         if ($current < $desiredTotal) {
             User::factory()->count($desiredTotal - $current)->create([
                 'role' => 'author', // Create additional authors for content creation
+                'status' => 'active',
                 'email_verified_at' => now(),
             ]);
         }

@@ -87,6 +87,8 @@ Route::prefix('v1')->group(function () {
             
             if ($user) {
                 $report['user_id'] = $user->id;
+                $report['user_email'] = $user->email;
+                $report['user_status'] = $user->status; // Check status
                 $report['user_class'] = get_class($user);
                 $report['traits'] = class_uses_recursive($user);
                 

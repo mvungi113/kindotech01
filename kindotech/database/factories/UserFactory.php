@@ -28,6 +28,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
+            'status' => 'active', // Default to active for factory users
             'remember_token' => Str::random(10),
         ];
     }
