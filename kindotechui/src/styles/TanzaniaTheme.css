@@ -3585,3 +3585,444 @@
 .post-stats .stat-item .text-success {
   color: #1EB53A !important;
 }
+
+/* ===========================================
+   ADMIN DASHBOARD LIGHT MODE ENHANCEMENTS
+   =========================================== */
+
+/* Admin Layout */
+.admin-layout {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: 100vh;
+}
+
+/* Admin Header - Light Mode */
+.admin-header {
+  background: linear-gradient(135deg, var(--tanzania-green) 0%, var(--tanzania-blue) 100%);
+  border-bottom: 4px solid var(--tanzania-yellow);
+  box-shadow: 0 4px 20px rgba(30, 181, 58, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  opacity: 0.3;
+}
+
+.admin-header .container-fluid {
+  position: relative;
+  z-index: 2;
+}
+
+.admin-header-icon {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.admin-header-icon:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
+.admin-header h1 {
+  color: white;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.25rem;
+}
+
+.admin-header p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  margin-bottom: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.admin-header .badge {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Admin Dashboard Content */
+.admin-dashboard {
+  background: transparent;
+  padding: 2rem 0;
+}
+
+/* Enhanced Stats Cards - Light Mode */
+.admin-dashboard .card {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 4px 25px rgba(30, 181, 58, 0.08);
+  background: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  position: relative;
+}
+
+.admin-dashboard .card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--tanzania-green), var(--tanzania-blue));
+}
+
+.admin-dashboard .card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(30, 181, 58, 0.12);
+}
+
+.admin-dashboard .card-body {
+  padding: 2rem;
+}
+
+/* Stats Card Icons */
+.admin-dashboard .bg-primary {
+  background: linear-gradient(135deg, var(--tanzania-green), var(--tanzania-blue)) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 15px rgba(30, 181, 58, 0.2);
+}
+
+.admin-dashboard .bg-success {
+  background: linear-gradient(135deg, #28a745, #20c997) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+}
+
+.admin-dashboard .bg-info {
+  background: linear-gradient(135deg, var(--tanzania-blue), #17a2b8) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 15px rgba(0, 163, 221, 0.2);
+}
+
+.admin-dashboard .bg-warning {
+  background: linear-gradient(135deg, #ffc107, #fd7e14) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
+}
+
+/* Card Headers */
+.admin-dashboard .card-header {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-bottom: 1px solid #dee2e6;
+  padding: 1.5rem 2rem;
+  font-weight: 600;
+  color: #495057;
+  border-radius: 16px 16px 0 0 !important;
+}
+
+/* Buttons */
+.admin-dashboard .btn {
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.admin-dashboard .btn-primary {
+  background: linear-gradient(135deg, var(--tanzania-green), var(--tanzania-blue));
+  box-shadow: 0 4px 15px rgba(30, 181, 58, 0.2);
+}
+
+.admin-dashboard .btn-primary:hover {
+  background: linear-gradient(135deg, var(--tanzania-blue), var(--tanzania-green));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(30, 181, 58, 0.3);
+}
+
+.admin-dashboard .btn-outline-primary {
+  border: 2px solid var(--tanzania-green);
+  color: var(--tanzania-green);
+  background: transparent;
+}
+
+.admin-dashboard .btn-outline-primary:hover {
+  background: var(--tanzania-green);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(30, 181, 58, 0.2);
+}
+
+.admin-dashboard .btn-outline-secondary {
+  border: 2px solid #6c757d;
+  color: #6c757d;
+}
+
+.admin-dashboard .btn-outline-secondary:hover {
+  background: #6c757d;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* List Groups */
+.admin-dashboard .list-group-item {
+  border: none;
+  border-bottom: 1px solid #f1f3f4;
+  padding: 1.25rem 0;
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.admin-dashboard .list-group-item:hover {
+  background: rgba(30, 181, 58, 0.02);
+  padding-left: 1rem;
+}
+
+.admin-dashboard .list-group-item:last-child {
+  border-bottom: none;
+}
+
+/* Badges */
+.admin-dashboard .badge {
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+
+/* Progress/Status Indicators */
+.admin-dashboard .d-flex.justify-content-between.align-items-center {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.admin-dashboard .d-flex.justify-content-between.align-items-center:last-child {
+  border-bottom: none;
+}
+
+/* Theme Toggle in Admin */
+.admin-dashboard .btn-outline-secondary {
+  border-color: #dee2e6;
+  color: #6c757d;
+}
+
+.admin-dashboard .btn-outline-secondary:hover {
+  background: #6c757d;
+  border-color: #6c757d;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 1.5rem 0;
+  }
+
+  .admin-header-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .admin-dashboard .card-body {
+    padding: 1.5rem;
+  }
+
+  .admin-dashboard .card {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Loading States */
+.admin-dashboard .spinner-border {
+  color: var(--tanzania-green);
+}
+
+/* Focus States */
+.admin-dashboard .btn:focus,
+.admin-dashboard .form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(30, 181, 58, 0.25);
+}
+
+/* Theme Toggle Button - Light Mode Enhancements */
+.theme-toggle-btn {
+  background: white;
+  border: 2px solid #e9ecef;
+  color: #6c757d;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.theme-toggle-btn:hover {
+  background: linear-gradient(135deg, var(--tanzania-green), var(--tanzania-blue));
+  border-color: var(--tanzania-green);
+  color: white;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(30, 181, 58, 0.2);
+}
+
+.theme-toggle-btn i {
+  font-size: 1.1rem;
+}
+
+/* Admin Dashboard Specific Button Styling */
+.admin-dashboard .btn-outline-secondary:not(.theme-toggle-btn) {
+  border: 2px solid #e9ecef;
+  color: #6c757d;
+  background: white;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.admin-dashboard .btn-outline-secondary:not(.theme-toggle-btn):hover {
+  background: #6c757d;
+  border-color: #6c757d;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(108, 117, 125, 0.2);
+}
+
+/* Light Mode Background Pattern */
+.admin-layout::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(30, 181, 58, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(0, 163, 221, 0.02) 0%, transparent 50%);
+  background-size: 400px 400px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Enhanced Typography for Light Mode */
+.admin-dashboard h1,
+.admin-dashboard h2,
+.admin-dashboard h3,
+.admin-dashboard h4,
+.admin-dashboard h5,
+.admin-dashboard h6 {
+  color: #2d3748;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.admin-dashboard .text-muted {
+  color: #718096 !important;
+}
+
+.admin-dashboard .card-title {
+  color: #2d3748;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Stats Numbers Enhancement */
+.admin-dashboard .h4 {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--tanzania-green), var(--tanzania-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+/* Subtle Animations */
+.admin-dashboard .card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.admin-dashboard .card:nth-child(1) { animation-delay: 0.1s; }
+.admin-dashboard .card:nth-child(2) { animation-delay: 0.2s; }
+.admin-dashboard .card:nth-child(3) { animation-delay: 0.3s; }
+.admin-dashboard .card:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Enhanced List Items */
+.admin-dashboard .list-group-item {
+  border-left: 4px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.admin-dashboard .list-group-item:hover {
+  border-left-color: var(--tanzania-green);
+  background: linear-gradient(90deg, rgba(30, 181, 58, 0.02), rgba(0, 163, 221, 0.02));
+}
+
+/* Status Badges Enhancement */
+.admin-dashboard .badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Quick Actions Grid Enhancement */
+.admin-dashboard .row.g-2 .col-6 .btn {
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.admin-dashboard .row.g-2 .col-6 .btn:hover {
+  transform: translateY(-4px);
+}
+
+.admin-dashboard .row.g-2 .col-6 .btn i {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* System Status Cards */
+.admin-dashboard .d-flex.justify-content-between.align-items-center {
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.admin-dashboard .d-flex.justify-content-between.align-items-center:hover {
+  background: rgba(30, 181, 58, 0.02);
+  padding-left: 1rem;
+  border-radius: 8px;
+  margin: 0 -1rem;
+  padding-right: 1rem;
+}
