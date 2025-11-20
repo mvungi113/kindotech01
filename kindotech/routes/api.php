@@ -73,6 +73,45 @@ Route::prefix('v1')->group(function () {
             ], 500);
         }
     });
+    // Debug Sanctum endpoint
+    Route::get('/debug-sanctum', function () {
+        try {
+            $report = [];
+            
+            // 1. Check Table
+            $report['table_exists'] = \Schema::hasTable('personal_access_tokens');
+            
+            // 2. Check User
+            $user = \App\Models\User::first();
+            $report['user_found'] = $user ? true : false;
+            
+            if ($user) {
+                $report['user_id'] = $user->id;
+                $report['user_class'] = get_class($user);
+                $report['traits'] = class_uses_recursive($user);
+                
+                // 3. Try Create Token
+                try {
+                    $token = $user->createToken('debug_token');
+                    $report['token_created'] = true;
+                    $report['token_id'] = $token->accessToken->id;
+                    // Cleanup
+                    $token->accessToken->delete();
+                } catch (\Exception $e) {
+                    $report['token_created'] = false;
+                    $report['token_error'] = $e->getMessage();
+                    $report['token_trace'] = $e->getTraceAsString();
+                }
+            }
+            
+            return response()->json($report);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ], 500);
+        }
+    });
 });
 
 // Protected routes - require Sanctum authentication

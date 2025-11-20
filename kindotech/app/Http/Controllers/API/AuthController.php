@@ -132,8 +132,8 @@ class AuthController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred during login.',
-                'error' => config('app.debug') ? $e->getMessage() : 'Internal server error',
-                'trace' => config('app.debug') ? $e->getTraceAsString() : null
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ], 500);
         }
     }
