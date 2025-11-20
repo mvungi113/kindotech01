@@ -123,21 +123,71 @@ const CategoryManager = () => {
   };
 
   const iconOptions = [
-    'fas fa-newspaper',
-    'fas fa-chart-line',
-    'fas fa-laptop-code',
-    'fas fa-music',
-    'fas fa-plane',
-    'fas fa-heartbeat',
-    'fas fa-futbol',
-    'fas fa-graduation-cap',
-    'fas fa-film',
-    'fas fa-utensils',
-    'fas fa-leaf',
-    'fas fa-building',
-    'fas fa-car',
-    'fas fa-shopping-cart',
-    'fas fa-university'
+    // Technology
+    { value: 'fas fa-microchip', label: 'Technology - Microchip' },
+    { value: 'fas fa-robot', label: 'Technology - Robot' },
+    { value: 'fas fa-satellite', label: 'Technology - Satellite' },
+    { value: 'fas fa-cogs', label: 'Technology - Cogs' },
+
+    // Programming & Development
+    { value: 'fas fa-code', label: 'Programming - Code' },
+    { value: 'fas fa-terminal', label: 'Programming - Terminal' },
+    { value: 'fas fa-laptop-code', label: 'Programming - Laptop Code' },
+    { value: 'fas fa-file-code', label: 'Programming - File Code' },
+
+    // Artificial Intelligence & Machine Learning
+    { value: 'fas fa-brain', label: 'AI/ML - Brain' },
+    { value: 'fas fa-robot', label: 'AI/ML - Robot' },
+    { value: 'fas fa-network-wired', label: 'AI/ML - Network' },
+    { value: 'fas fa-magic', label: 'AI/ML - Magic' },
+
+    // Cybersecurity
+    { value: 'fas fa-shield-alt', label: 'Cybersecurity - Shield' },
+    { value: 'fas fa-lock', label: 'Cybersecurity - Lock' },
+    { value: 'fas fa-user-secret', label: 'Cybersecurity - User Secret' },
+    { value: 'fas fa-key', label: 'Cybersecurity - Key' },
+
+    // Web Development
+    { value: 'fas fa-globe', label: 'Web Development - Globe' },
+    { value: 'fas fa-code-branch', label: 'Web Development - Code Branch' },
+    { value: 'fas fa-server', label: 'Web Development - Server' },
+    { value: 'fas fa-browser', label: 'Web Development - Browser' },
+
+    // Mobile App Development
+    { value: 'fas fa-mobile-alt', label: 'Mobile Development - Mobile' },
+    { value: 'fas fa-tablet-alt', label: 'Mobile Development - Tablet' },
+    { value: 'fas fa-app-store', label: 'Mobile Development - App Store' },
+    { value: 'fas fa-mobile', label: 'Mobile Development - Mobile Phone' },
+
+    // Cloud & DevOps
+    { value: 'fas fa-cloud', label: 'Cloud & DevOps - Cloud' },
+    { value: 'fas fa-cloud-upload-alt', label: 'Cloud & DevOps - Cloud Upload' },
+    { value: 'fas fa-database', label: 'Cloud & DevOps - Database' },
+    { value: 'fas fa-docker', label: 'Cloud & DevOps - Docker' },
+
+    // Startups & Innovation
+    { value: 'fas fa-lightbulb', label: 'Startups - Lightbulb' },
+    { value: 'fas fa-rocket', label: 'Startups - Rocket' },
+    { value: 'fas fa-chart-line', label: 'Startups - Chart Line' },
+    { value: 'fas fa-trending-up', label: 'Startups - Trending Up' },
+
+    // Reviews & Recommendations
+    { value: 'fas fa-star', label: 'Reviews - Star' },
+    { value: 'fas fa-thumbs-up', label: 'Reviews - Thumbs Up' },
+    { value: 'fas fa-award', label: 'Reviews - Award' },
+    { value: 'fas fa-certificate', label: 'Reviews - Certificate' },
+
+    // How-To Guides
+    { value: 'fas fa-book-open', label: 'How-To - Book Open' },
+    { value: 'fas fa-graduation-cap', label: 'How-To - Graduation Cap' },
+    { value: 'fas fa-question-circle', label: 'How-To - Question Circle' },
+    { value: 'fas fa-info-circle', label: 'How-To - Info Circle' },
+
+    // General/Other
+    { value: 'fas fa-folder', label: 'General - Folder' },
+    { value: 'fas fa-newspaper', label: 'General - Newspaper' },
+    { value: 'fas fa-tags', label: 'General - Tags' },
+    { value: 'fas fa-list', label: 'General - List' }
   ];
 
   if (loading) {
@@ -317,8 +367,8 @@ const CategoryManager = () => {
                         onChange={handleInputChange}
                       >
                         {iconOptions.map(icon => (
-                          <option key={icon} value={icon}>
-                            {icon}
+                          <option key={icon.value} value={icon.value}>
+                            {icon.label}
                           </option>
                         ))}
                       </select>

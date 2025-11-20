@@ -34,6 +34,64 @@ const Categories = () => {
     }
   };
 
+  // Function to get appropriate icon for category
+  const getCategoryIcon = (categoryName) => {
+    const name = categoryName.toLowerCase();
+
+    // Technology
+    if (name.includes('technology') || name.includes('tech')) {
+      return 'fas fa-microchip';
+    }
+
+    // Programming & Development
+    if (name.includes('programming') || name.includes('development') || name.includes('coding')) {
+      return 'fas fa-code';
+    }
+
+    // Artificial Intelligence & Machine Learning
+    if (name.includes('artificial intelligence') || name.includes('machine learning') || name.includes('ai') || name.includes('ml')) {
+      return 'fas fa-brain';
+    }
+
+    // Cybersecurity
+    if (name.includes('cybersecurity') || name.includes('security') || name.includes('cyber')) {
+      return 'fas fa-shield-alt';
+    }
+
+    // Web Development
+    if (name.includes('web development') || name.includes('web')) {
+      return 'fas fa-globe';
+    }
+
+    // Mobile App Development
+    if (name.includes('mobile') || name.includes('app') || name.includes('android') || name.includes('ios')) {
+      return 'fas fa-mobile-alt';
+    }
+
+    // Cloud & DevOps
+    if (name.includes('cloud') || name.includes('devops') || name.includes('docker')) {
+      return 'fas fa-cloud';
+    }
+
+    // Startups & Innovation
+    if (name.includes('startup') || name.includes('innovation') || name.includes('business')) {
+      return 'fas fa-rocket';
+    }
+
+    // Reviews & Recommendations
+    if (name.includes('review') || name.includes('recommendation')) {
+      return 'fas fa-star';
+    }
+
+    // How-To Guides
+    if (name.includes('how-to') || name.includes('guide') || name.includes('tutorial')) {
+      return 'fas fa-book-open';
+    }
+
+    // Default fallback
+    return 'fas fa-folder';
+  };
+
   if (loading) {
     return <LoadingSpinner text="Loading categories..." />;
   }
