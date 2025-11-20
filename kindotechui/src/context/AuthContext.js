@@ -1,5 +1,5 @@
 /**
- * Authentication context for Tanzania Blog
+ * Authentication context for KeyBlog
  * Manages user authentication state across the application
  */
 import React, { createContext, useState, useContext, useEffect } from 'react';

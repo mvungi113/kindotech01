@@ -72,7 +72,7 @@ const AdminLogin = () => {
                   Admin Login
                 </h3>
                 <p className="mb-0 mt-2 opacity-75">
-                  kindoTech Management
+                  KeyBlog Management
                 </p>
               </div>
               

@@ -18,7 +18,7 @@ const AdminDashboard = () => {
               <h1 className="h4 mb-0">
                 {user?.role === 'admin' ? 'Admin Dashboard' : 'Author Dashboard'}
               </h1>
-              <small className="opacity-75">kindoTech Management</small>
+              <small className="opacity-75">KeyBlog Management</small>
             </div>
             <div className="col-auto">
               <span className="badge bg-light text-primary">

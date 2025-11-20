@@ -8,7 +8,7 @@ import { apiService } from '../../services/api';
 const NewsletterForm = ({ 
   source = 'website', 
   title = 'Stay Updated',
-  description = 'Get the latest posts from Kindo Tech delivered to your inbox.',
+  description = 'Get the latest posts from KeyBlog delivered to your inbox.',
   showTitle = true,
   showDescription = true,
   className = '',

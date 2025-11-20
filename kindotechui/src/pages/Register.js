@@ -109,7 +109,7 @@ const Register = () => {
               <div className="card-body p-5">
                   <div className="text-center mb-4">
                   <h1 className="h3 mb-3 font-weight-normal text-primary">
-                    kindoTech
+                    KeyBlog
                   </h1>
                   <p className="text-muted">Join as an Author</p>
                   <div className="alert alert-info text-start mt-3">

@@ -1,5 +1,5 @@
 /**
- * Modern Homepage component for Tanzania Blog
+ * Modern Homepage component for KeyBlog
  * Features hero section, category navigation, featured posts, and recent posts
  * Fully responsive with modern card-based design
  */
@@ -89,7 +89,7 @@ const Home = () => {
   };
 
   if (loading) {
-    return <LoadingSpinner text="Loading kindoTech..." />;
+    return <LoadingSpinner text="Loading KeyBlog..." />;
   }
 
   return (
@@ -116,28 +116,28 @@ const Home = () => {
             <div className="col-lg-7">
               <div className="hero-content text-white">
                 <div className="hero-badge mb-3">
-                  <i className="fas fa-globe-africa me-2"></i>
-                  Technology Hub
+                  <i className="fas fa-blog me-2"></i>
+                  Blog Hub
                 </div>
                 <h1 className="display-3 fw-bold mb-4 hero-title">
-                  Welcome to <span className="text-tanzania-yellow">kindoTech</span>
+                  Welcome to <span className="text-tanzania-yellow">KeyBlog</span>
                 </h1>
                 <p className="lead mb-4 hero-description">
-                  Discover the latest in technology, innovation, and digital solutions.
-                  Your gateway to cutting-edge tech insights and expertise from around the world.
+                  Discover amazing stories, insights, and perspectives from writers around the world.
+                  Your gateway to engaging content and meaningful discussions.
                 </p>
                 <div className="hero-features mb-4">
                   <div className="feature-item">
                     <i className="fas fa-check-circle me-2"></i>
-                    <span>Latest Tech News</span>
+                    <span>Engaging Stories</span>
                   </div>
                   <div className="feature-item">
                     <i className="fas fa-check-circle me-2"></i>
-                    <span>Expert Insights</span>
+                    <span>Diverse Perspectives</span>
                   </div>
                   <div className="feature-item">
                     <i className="fas fa-check-circle me-2"></i>
-                    <span>Innovation Stories</span>
+                    <span>Community Insights</span>
                   </div>
                 </div>
                 <div className="d-flex gap-3 flex-wrap">
@@ -327,7 +327,7 @@ const Home = () => {
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-8">
-              <h3 className="fw-bold mb-2">Stay Connected with Tanzania</h3>
+              <h3 className="fw-bold mb-2">Stay Connected</h3>
               <p className="mb-0">Get the latest stories and updates delivered to your inbox</p>
             </div>
             <div className="col-lg-4 text-lg-end mt-3 mt-lg-0">

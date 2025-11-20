@@ -52,7 +52,7 @@ const NewsletterTest = () => {
               <NewsletterForm 
                 source="test_custom"
                 title="Join Our Community"
-                description="Be the first to know about new articles, updates, and exclusive content from our Kindo Tech blog."
+                description="Be the first to know about new articles, updates, and exclusive content from our KeyBlog."
                 placeholder="example@domain.com"
                 buttonText="Join Newsletter"
                 className="custom-newsletter"

@@ -102,8 +102,8 @@ const Footer = () => {
                   <Logo size="large" />
                 </div>
                 <p className="brand-description">
-                  Discover the latest in technology, innovation, and digital transformation. 
-                  Your gateway to cutting-edge tech insights and solutions.
+                  Discover amazing stories, insights, and perspectives from writers around the world.
+                  Your gateway to engaging content and meaningful discussions.
                 </p>
                 <div className="footer-stats">
                   <div className="stat-item">
@@ -262,10 +262,7 @@ const Footer = () => {
             <div className="col-md-6">
               <div className="copyright">
                 <p className="mb-0">
-                  &copy; {currentYear} kindoTech. All rights reserved.
-                </p>
-                <p className="swahili-text mb-0">
-                  Haki zote zimehifadhiwa
+                  &copy; {currentYear} KeyBlog. All rights reserved.
                 </p>
               </div>
             </div>

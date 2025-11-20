@@ -199,8 +199,8 @@ const AllPosts = () => {
                 </h1>
                 <p className="lead mb-4 hero-description">
                   {showFeaturedOnly 
-                    ? 'Discover our hand-picked articles showcasing the best technology insights and innovations.'
-                    : 'Explore our complete collection of technology stories, insights, and expert perspectives from the digital world.'
+                    ? 'Discover our hand-picked articles showcasing the best stories and insights.'
+                    : 'Explore our complete collection of stories, insights, and perspectives from writers around the world.'
                   }
                 </p>
                 <div className="hero-features">

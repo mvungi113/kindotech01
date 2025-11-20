@@ -450,7 +450,7 @@ const PostDetail = () => {
                 Stay Updated
               </h5>
               <p className="card-text">
-                Get the latest posts from Kindo Tech delivered to your inbox.
+                Get the latest posts from KeyBlog delivered to your inbox.
               </p>
               
               {subscribeMessage && (

@@ -1,5 +1,5 @@
 /**
- * Main navigation header for Tanzania Blog
+ * Main navigation header for KeyBlog
  * Responsive navbar with authentication-aware links and dynamic categories
  */
 import React, { useState, useEffect } from 'react';

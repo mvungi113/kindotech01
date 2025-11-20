@@ -359,7 +359,7 @@ const PostEditor = () => {
                 {isEditing ? 'Edit Post' : 'Create New Post'}
               </h1>
               <p className="text-muted mb-0">
-                {isEditing ? 'Update your blog post' : 'Create a new blog post for kindoTech'}
+                {isEditing ? 'Update your blog post' : 'Create a new blog post for KeyBlog'}
               </p>
               {autoSaving && (
                 <span className="badge bg-info d-flex align-items-center mt-2">

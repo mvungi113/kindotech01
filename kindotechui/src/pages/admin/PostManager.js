@@ -688,7 +688,7 @@ const PostManager = () => {
                           name="tags"
                           value={formData.tags}
                           onChange={handleInputChange}
-                          placeholder="technology, news, tanzania"
+                          placeholder="lifestyle, news, culture"
                         />
                       </div>
                     </div>

@@ -71,7 +71,7 @@ const PostCard = ({ post, featured = false, animationDelay = 0 }) => {
     }
     
     // Default fallback description based on category
-    const categoryName = post.category?.name || post.category?.display_name || 'Technology';
+    const categoryName = post.category?.name || post.category?.display_name || 'General';
     return `Explore the latest insights and updates in ${categoryName}. Discover comprehensive coverage and expert analysis.`;
   };
 

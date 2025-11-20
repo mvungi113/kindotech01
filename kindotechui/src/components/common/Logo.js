@@ -1,6 +1,6 @@
 /**
- * KindoTech Logo component
- * Uses the actual KindoTech logo image
+ * KeyBlog Logo component
+ * Uses the actual KeyBlog logo image
  */
 import React, { useState } from 'react';
 
@@ -42,16 +42,16 @@ const Logo = ({
         }}
         onClick={onClick}
       >
-        <span style={{ color: '#E53E3E' }}>Kindo</span>
-        <span style={{ color: '#3182CE' }}>Tech</span>
+        <span style={{ color: '#E53E3E' }}>Key</span>
+        <span style={{ color: '#3182CE' }}>Blog</span>
       </div>
     );
   }
 
   return (
     <img
-      src="/images/kindotech.png"
-      alt="KindoTech Logo"
+      src="/images/keyblog.png"
+      alt="KeyBlog Logo"
       className={`logo-image ${className}`}
       style={{
         ...logoStyle,

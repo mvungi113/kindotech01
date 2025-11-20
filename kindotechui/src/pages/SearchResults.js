@@ -141,7 +141,7 @@ const SearchResults = () => {
               <i className="fas fa-search fa-3x text-muted mb-3"></i>
               <h4 className="text-muted">Start Searching</h4>
               <p className="text-muted">
-                Enter keywords to find posts about Tanzania news, culture, technology, and more.
+                Enter keywords to find posts about news, culture, lifestyle, and more.
               </p>
             </div>
           )}
