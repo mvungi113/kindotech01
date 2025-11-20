@@ -112,6 +112,36 @@ Route::prefix('v1')->group(function () {
             ], 500);
         }
     });
+
+    // Temporary route to fix user password
+    Route::get('/fix-password', function (\Illuminate\Http\Request $request) {
+        $secret = $request->query('secret');
+        if ($secret !== 'kindotech_debug_fix') {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $email = $request->query('email');
+        $password = $request->query('password');
+        
+        if (!$email || !$password) {
+            return response()->json(['error' => 'Email and password required'], 400);
+        }
+        
+        $user = \App\Models\User::where('email', $email)->first();
+        
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        
+        $user->password = \Illuminate\Support\Facades\Hash::make($password);
+        $user->save();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Password updated successfully',
+            'user' => $user->email
+        ]);
+    });
 });
 
 // Protected routes - require Sanctum authentication

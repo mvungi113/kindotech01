@@ -90,8 +90,14 @@ class AuthController extends Controller
 
             // Check if user exists and password is correct
             if (!$user || !Hash::check($request->password, $user->password)) {
+                // Debug: Check what's stored in the DB
+                $debugMsg = '';
+                if ($user) {
+                    $debugMsg = ' (Stored hash prefix: ' . substr($user->password, 0, 7) . '...)';
+                }
+                
                 throw ValidationException::withMessages([
-                    'email' => ['The provided credentials are incorrect.'],
+                    'email' => ['The provided credentials are incorrect.' . $debugMsg],
                 ]);
             }
 
