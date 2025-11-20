@@ -12,6 +12,197 @@
   --secondary: var(--tanzania-yellow);
   --accent: var(--tanzania-blue);
   --dark: var(--tanzania-black);
+
+  /* Light mode colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-muted: #adb5bd;
+  --border-color: #dee2e6;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --card-bg: #ffffff;
+  --navbar-bg: linear-gradient(90deg, var(--tanzania-green), var(--tanzania-blue));
+}
+
+/* Dark mode colors */
+[data-bs-theme="dark"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #404040;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --text-muted: #888888;
+  --border-color: #555555;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --card-bg: #2d2d2d;
+  --navbar-bg: linear-gradient(90deg, #0d2818, #0a4a6b);
+}
+
+/* Dark mode specific overrides */
+.dark-theme {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.dark-theme .card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .btn-outline-primary {
+  border-color: var(--tanzania-green);
+  color: var(--tanzania-green);
+}
+
+.dark-theme .btn-outline-primary:hover {
+  background-color: var(--tanzania-green);
+  border-color: var(--tanzania-green);
+}
+
+.dark-theme .text-muted {
+  color: var(--text-muted) !important;
+}
+
+.dark-theme .bg-light {
+  background-color: var(--bg-secondary) !important;
+}
+
+.dark-theme .border {
+  border-color: var(--border-color) !important;
+}
+
+/* Admin Dashboard specific dark mode styles */
+.dark-theme .admin-dashboard .card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .admin-dashboard .card-header {
+  background-color: var(--bg-secondary);
+  border-bottom-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .admin-dashboard .list-group-item {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .admin-dashboard .btn-outline-primary {
+  border-color: var(--tanzania-green);
+  color: var(--tanzania-green);
+}
+
+.dark-theme .admin-dashboard .btn-outline-primary:hover {
+  background-color: var(--tanzania-green);
+  border-color: var(--tanzania-green);
+  color: white;
+}
+
+.dark-theme .admin-dashboard .btn-outline-secondary {
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.dark-theme .admin-dashboard .btn-outline-secondary:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Enhanced card shadows for dark mode */
+.dark-theme .card {
+  box-shadow: 0 0.125rem 0.25rem var(--shadow-color);
+}
+
+.dark-theme .card:hover {
+  box-shadow: 0 0.5rem 1rem var(--shadow-color);
+}
+
+/* Theme toggle button styling */
+.theme-toggle-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--tanzania-green);
+  color: var(--tanzania-green);
+  transform: scale(1.05);
+}
+
+.dark-theme .theme-toggle-btn {
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.dark-theme .theme-toggle-btn:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--tanzania-yellow);
+}
+
+/* Admin Dashboard Header Styling */
+.admin-header {
+  background: linear-gradient(135deg, var(--tanzania-green), var(--tanzania-blue));
+  border-bottom: 3px solid var(--tanzania-yellow);
+}
+
+.dark-theme .admin-header {
+  background: linear-gradient(135deg, #0d2818, #0a4a6b);
+  border-bottom-color: var(--tanzania-yellow);
+}
+
+.admin-header-icon {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.admin-layout {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+}
+
+/* Enhanced dashboard cards for better dark mode support */
+.admin-dashboard .card {
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+}
+
+.admin-dashboard .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px var(--shadow-color);
+}
+
+.dark-theme .admin-dashboard .card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+.dark-theme .admin-dashboard .card-header {
+  background-color: var(--bg-secondary);
+  border-bottom-color: var(--border-color);
+  color: var(--text-primary);
 }
 
 /* Tanzania-themed buttons */

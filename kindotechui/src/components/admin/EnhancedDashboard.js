@@ -5,8 +5,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { apiService } from '../../services/api';
 import { notify } from '../../utils/notifications';
+import { useTheme } from '../../context/ThemeContext';
 
 const EnhancedDashboard = () => {
+  const { isDarkMode, toggleTheme } = useTheme();
   const [stats, setStats] = useState({
     totals: {
       posts: 0,
@@ -91,7 +93,15 @@ const EnhancedDashboard = () => {
           <h1 className="h3 mb-0">Admin Dashboard</h1>
           <p className="text-muted mb-0">Manage your KeyBlog</p>
         </div>
-        <div className="d-flex gap-2">
+        <div className="d-flex gap-2 align-items-center">
+          <button
+            onClick={toggleTheme}
+            className="btn btn-outline-secondary btn-sm"
+            title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            <i className={`fas ${isDarkMode ? 'fa-sun' : 'fa-moon'} me-1`}></i>
+            {isDarkMode ? 'Light' : 'Dark'}
+          </button>
           <Link to="/admin/posts/new" className="btn btn-primary">
             <i className="fas fa-plus me-2"></i>New Post
           </Link>

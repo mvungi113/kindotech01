@@ -5,11 +5,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import { apiService } from '../../services/api';
 import Logo from './Logo';
 
 const Header = () => {
   const { user, isAuthenticated, logout } = useAuth();
+  const { isDarkMode, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [categories, setCategories] = useState([]);
@@ -209,6 +211,15 @@ const Header = () => {
           </ul>
 
           <div className="navbar-actions">
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              className="btn theme-toggle-btn me-2"
+              title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              <i className={`fas ${isDarkMode ? 'fa-sun' : 'fa-moon'}`}></i>
+            </button>
+
             {/* Modern Search Form */}
             <div className="search-container">
               <form className="search-form-modern" onSubmit={handleSearch}>

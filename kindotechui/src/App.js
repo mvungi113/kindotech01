@@ -4,6 +4,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { ToastContainer } from 'react-toastify';
 
 // Styles
@@ -110,13 +111,14 @@ class ErrorBoundary extends React.Component {
 function App() {
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <Router>
-          <div className="App d-flex flex-column min-vh-100">
-            <Header />
-            
-            <main className="flex-grow-1">
-              <Routes>
+      <ThemeProvider>
+        <AuthProvider>
+          <Router>
+            <div className="App d-flex flex-column min-vh-100">
+              <Header />
+              
+              <main className="flex-grow-1">
+                <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<Home />} />
                 <Route path="/posts" element={<AllPosts />} />
@@ -259,6 +261,7 @@ function App() {
           />
         </Router>
       </AuthProvider>
+    </ThemeProvider>
     </ErrorBoundary>
   );
 }
