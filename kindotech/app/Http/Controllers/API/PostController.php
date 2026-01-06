@@ -114,14 +114,22 @@ class PostController extends Controller
         $perPage = $request->get('per_page', 10);
         $posts = $query->paginate($perPage);
 
-        // Get statistics for admin users
+        // Get statistics
         $stats = null;
         if ($user && $user->isAdmin() && $request->has('admin')) {
+            // Detailed stats for admin
             $stats = [
                 'total_posts' => Post::count(),
                 'published_posts' => Post::where('is_published', true)->count(),
                 'draft_posts' => Post::where('is_published', false)->count(),
                 'total_comments' => \DB::table('comments')->count(),
+            ];
+        } else {
+            // Basic public stats for homepage
+            $stats = [
+                'total_posts' => Post::where('is_published', true)->count(),
+                'total_views' => Post::where('is_published', true)->sum('views'),
+                'total_categories' => Category::where('is_active', true)->count(),
             ];
         }
 

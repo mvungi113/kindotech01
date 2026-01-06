@@ -36,7 +36,7 @@ const CategoryPosts = () => {
   return (
     <div className="category-posts-page">
       {/* Category Header */}
-      <section className="category-hero py-5 bg-light">
+      <section className="category-hero py-5">
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-8">

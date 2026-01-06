@@ -248,7 +248,7 @@ const AllPosts = () => {
       </section>
 
       {/* Filters Section */}
-      <section className="filters-section py-4 bg-light border-bottom">
+      <section className="filters-section py-4 border-bottom">
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-6">

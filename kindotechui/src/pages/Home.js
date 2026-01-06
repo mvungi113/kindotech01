@@ -16,7 +16,7 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [stats, setStats] = useState({ totalPosts: 0, totalViews: 0 });
+  const [stats, setStats] = useState({ totalPosts: 0, totalViews: 0, totalCategories: 0 });
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(true);
 
@@ -43,10 +43,19 @@ const Home = () => {
         if (recentResponse.data.last_page) {
           setHasMorePosts(recentResponse.data.current_page < recentResponse.data.last_page);
         }
-        // Calculate basic stats from recent posts
-        const totalPosts = recentResponse.data.total || postsData.length;
-        const totalViews = postsData.reduce((sum, post) => sum + (post.views || 0), 0);
-        setStats({ totalPosts, totalViews });
+        // Use stats from API response (retrieved from database)
+        if (recentResponse.stats) {
+          setStats({
+            totalPosts: recentResponse.stats.total_posts || 0,
+            totalViews: recentResponse.stats.total_views || 0,
+            totalCategories: recentResponse.stats.total_categories || 0
+          });
+        } else {
+          // Fallback to calculating from response data if stats not available
+          const totalPosts = recentResponse.data.total || postsData.length;
+          const totalViews = postsData.reduce((sum, post) => sum + (post.views || 0), 0);
+          setStats({ totalPosts, totalViews, totalCategories: categories.length });
+        }
       }
       if (categoriesResponse.success) setCategories(categoriesResponse.data);
 
@@ -164,7 +173,7 @@ const Home = () => {
                   <div className="stat-label">Readers Reached</div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-number">{categories.length}+</div>
+                  <div className="stat-number">{stats.totalCategories || categories.length}+</div>
                   <div className="stat-label">Categories</div>
                 </div>
               </div>
@@ -174,7 +183,7 @@ const Home = () => {
       </section>
 
       {/* Enhanced Categories Navigation */}
-      <section className="categories-section py-5 bg-light">
+      <section className="categories-section py-5">
         <div className="container">
           <div className="text-center mb-5">
             <h2 className="fw-bold mb-3">Explore by Category</h2>
@@ -237,7 +246,7 @@ const Home = () => {
       </section>
 
       {/* Recent Posts Section */}
-      <section className="recent-posts-section py-5 bg-light">
+      <section className="recent-posts-section py-5">
         <div className="container">
           <div className="row align-items-center mb-5">
             <div className="col">
@@ -319,26 +328,6 @@ const Home = () => {
               </div>
             </div>
           )}
-        </div>
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="newsletter-section py-5 bg-tanzania text-white">
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg-8">
-              <h3 className="fw-bold mb-2">Stay Connected</h3>
-              <p className="mb-0">Get the latest stories and updates delivered to your inbox</p>
-            </div>
-            <div className="col-lg-4 text-lg-end mt-3 mt-lg-0">
-              <div className="d-flex gap-3 justify-content-lg-end">
-                <Link to="/posts" className="btn btn-light">
-                  <i className="fas fa-rss me-2"></i>
-                  Follow Updates
-                </Link>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
     </div>

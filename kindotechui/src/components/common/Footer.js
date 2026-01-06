@@ -24,27 +24,35 @@ const Footer = () => {
 
   const loadFooterData = async () => {
     try {
-      // Load categories and recent posts to get accurate stats
+      // Load categories and posts with stats
       const [categoriesResponse, postsResponse] = await Promise.all([
         apiService.getCategories(),
-        apiService.getPosts({ per_page: 1 }) // Just get first page to get total count
+        apiService.getPosts({ per_page: 1 }) // Just get first page to get stats from API
       ]);
       
       if (categoriesResponse.success) {
         setCategories(categoriesResponse.data.slice(0, 6)); // Show first 6 categories
-        setStats(prev => ({ 
-          ...prev, 
-          totalCategories: categoriesResponse.data.length 
-        }));
       }
       
       if (postsResponse.success) {
-        const totalPosts = postsResponse.data.total || 0;
-        setStats(prev => ({ 
-          ...prev, 
-          publishedPosts: totalPosts,
-          totalPosts: totalPosts
-        }));
+        // Use stats from API response (retrieved from database)
+        if (postsResponse.stats) {
+          setStats({
+            totalCategories: postsResponse.stats.total_categories || categoriesResponse.data.length,
+            publishedPosts: postsResponse.stats.total_posts || 0,
+            totalPosts: postsResponse.stats.total_posts || 0,
+            totalViews: postsResponse.stats.total_views || 0
+          });
+        } else {
+          // Fallback if stats not available
+          const totalPosts = postsResponse.data.total || 0;
+          setStats({
+            totalCategories: categoriesResponse.data.length,
+            publishedPosts: totalPosts,
+            totalPosts: totalPosts,
+            totalViews: 0
+          });
+        }
       }
     } catch (error) {
       console.error('Error loading footer data:', error);
@@ -112,10 +120,10 @@ const Footer = () => {
                   </div>
                   <div className="stat-item">
                     <div className="stat-number">{stats.publishedPosts}+</div>
-                    <div className="stat-label">Stories</div>
+                    <div className="stat-label">Posts</div>
                   </div>
                   <div className="stat-item">
-                    <div className="stat-number">{stats.totalViews}K+</div>
+                    <div className="stat-number">{Math.floor(stats.totalViews / 1000)}K+</div>
                     <div className="stat-label">Readers</div>
                   </div>
                 </div>
@@ -186,68 +194,26 @@ const Footer = () => {
               </div>
             </div>
 
-            {/* Newsletter & Social */}
+            {/* Social Links */}
             <div className="col-lg-3 col-md-6">
               <div className="footer-section">
-                <h5 className="footer-title">Stay Connected</h5>
-                <p className="newsletter-description">
-                  Get the latest stories and updates delivered to your inbox.
-                </p>
-                
-                {/* Newsletter Form */}
-                <div className="newsletter-form">
-                  {subscribeMessage && (
-                    <div className={`alert ${subscribeMessage.includes('Thank you') ? 'alert-success' : 'alert-warning'} alert-sm mb-2`}>
-                      <small>{subscribeMessage}</small>
-                    </div>
-                  )}
-                  <form onSubmit={handleNewsletterSubscribe}>
-                    <div className="input-group">
-                      <input 
-                        type="email" 
-                        className="form-control newsletter-input" 
-                        placeholder="Enter your email"
-                        aria-label="Email address"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        disabled={subscribing}
-                        required
-                      />
-                      <button 
-                        className="btn newsletter-btn" 
-                        type="submit"
-                        disabled={subscribing}
-                      >
-                        {subscribing ? (
-                          <i className="fas fa-spinner fa-spin"></i>
-                        ) : (
-                          <i className="fas fa-paper-plane"></i>
-                        )}
-                      </button>
-                    </div>
-                  </form>
-                </div>
-
-                {/* Social Links */}
-                <div className="social-section">
-                  <h6 className="social-title">Follow Us</h6>
-                  <div className="social-links">
-                    <button type="button" className="social-link facebook btn btn-link p-0" aria-label="Facebook">
-                      <i className="fab fa-facebook-f"></i>
-                    </button>
-                    <button type="button" className="social-link twitter btn btn-link p-0" aria-label="Twitter">
-                      <i className="fab fa-twitter"></i>
-                    </button>
-                    <button type="button" className="social-link instagram btn btn-link p-0" aria-label="Instagram">
-                      <i className="fab fa-instagram"></i>
-                    </button>
-                    <button type="button" className="social-link youtube btn btn-link p-0" aria-label="YouTube">
-                      <i className="fab fa-youtube"></i>
-                    </button>
-                    <button type="button" className="social-link linkedin btn btn-link p-0" aria-label="LinkedIn">
-                      <i className="fab fa-linkedin-in"></i>
-                    </button>
-                  </div>
+                <h5 className="footer-title">Follow Us</h5>
+                <div className="social-links mt-3">
+                  <button type="button" className="social-link facebook btn btn-link p-0" aria-label="Facebook">
+                    <i className="fab fa-facebook-f"></i>
+                  </button>
+                  <button type="button" className="social-link twitter btn btn-link p-0" aria-label="Twitter">
+                    <i className="fab fa-twitter"></i>
+                  </button>
+                  <button type="button" className="social-link instagram btn btn-link p-0" aria-label="Instagram">
+                    <i className="fab fa-instagram"></i>
+                  </button>
+                  <button type="button" className="social-link youtube btn btn-link p-0" aria-label="YouTube">
+                    <i className="fab fa-youtube"></i>
+                  </button>
+                  <button type="button" className="social-link linkedin btn btn-link p-0" aria-label="LinkedIn">
+                    <i className="fab fa-linkedin-in"></i>
+                  </button>
                 </div>
               </div>
             </div>

@@ -27,17 +27,18 @@
 }
 
 /* Dark mode colors */
-[data-bs-theme="dark"] {
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #2d2d2d;
-  --bg-tertiary: #404040;
-  --text-primary: #ffffff;
-  --text-secondary: #cccccc;
-  --text-muted: #888888;
-  --border-color: #555555;
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --card-bg: #2d2d2d;
-  --navbar-bg: linear-gradient(90deg, #0d2818, #0a4a6b);
+[data-bs-theme="dark"],
+.dark-theme {
+  --bg-primary: #0F172A;
+  --bg-secondary: #1E293B;
+  --bg-tertiary: #334155;
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  --border-color: #334155;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --card-bg: #1E293B;
+  --navbar-bg: #1E293B;
 }
 
 /* Dark mode specific overrides */
@@ -46,20 +47,89 @@
   color: var(--text-primary);
 }
 
+.dark-theme body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
 .dark-theme .card {
   background-color: var(--card-bg);
   border-color: var(--border-color);
   color: var(--text-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.dark-theme .modern-post-card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+.dark-theme .modern-post-card:hover {
+  border-color: var(--tanzania-green);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+}
+
+.dark-theme .post-title {
+  color: var(--text-primary);
+}
+
+.dark-theme .post-excerpt {
+  color: var(--text-secondary);
+}
+
+.dark-theme .post-meta,
+.dark-theme .post-date,
+.dark-theme .author-name {
+  color: var(--text-muted);
+}
+
+.dark-theme .category-card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .category-card:hover {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+}
+
+.dark-theme .category-name {
+  color: var(--text-primary);
+}
+
+.dark-theme .stat-card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .stat-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.dark-theme .stat-label {
+  color: var(--text-secondary);
+}
+
+.dark-theme .post-image-placeholder {
+  background: var(--bg-tertiary);
+  border-bottom-color: var(--tanzania-green);
 }
 
 .dark-theme .btn-outline-primary {
   border-color: var(--tanzania-green);
   color: var(--tanzania-green);
+  background-color: transparent;
 }
 
 .dark-theme .btn-outline-primary:hover {
   background-color: var(--tanzania-green);
   border-color: var(--tanzania-green);
+  color: white;
 }
 
 .dark-theme .text-muted {
@@ -74,15 +144,98 @@
   border-color: var(--border-color) !important;
 }
 
-/* Admin Dashboard specific dark mode styles */
-.dark-theme .admin-dashboard .card {
+.dark-theme h1, .dark-theme h2, .dark-theme h3, 
+.dark-theme h4, .dark-theme h5, .dark-theme h6 {
+  color: var(--text-primary);
+}
+
+.dark-theme .navbar-tanzania {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dark-theme .hero-section {
+  background: var(--bg-secondary);
+}
+
+.dark-theme .empty-state {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+}
+
+.dark-theme .form-control,
+.dark-theme .form-select {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .form-control:focus,
+.dark-theme .form-select:focus {
+  background-color: var(--bg-tertiary);
+  border-color: var(--tanzania-green);
+  color: var(--text-primary);
+}
+
+.dark-theme .form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.dark-theme .alert {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .list-group-item {
   background-color: var(--card-bg);
   border-color: var(--border-color);
   color: var(--text-primary);
 }
 
+.dark-theme .list-group-item:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.dark-theme .table {
+  color: var(--text-primary);
+}
+
+.dark-theme .table thead th {
+  background-color: var(--bg-tertiary);
+  border-bottom-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .table tbody td {
+  border-color: var(--border-color);
+}
+
+.dark-theme .modal-content {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+}
+
+.dark-theme .modal-header,
+.dark-theme .modal-footer {
+  border-color: var(--border-color);
+}
+
+.dark-theme .featured-post {
+  background: rgba(30, 181, 58, 0.08);
+  border-color: var(--tanzania-green);
+}
+
+/* Admin Dashboard specific dark mode styles */
+.dark-theme .admin-dashboard .card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
 .dark-theme .admin-dashboard .card-header {
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-tertiary);
   border-bottom-color: var(--border-color);
   color: var(--text-primary);
 }
@@ -93,9 +246,14 @@
   color: var(--text-primary);
 }
 
+.dark-theme .admin-dashboard .list-group-item:hover {
+  background-color: var(--bg-tertiary);
+}
+
 .dark-theme .admin-dashboard .btn-outline-primary {
   border-color: var(--tanzania-green);
   color: var(--tanzania-green);
+  background-color: transparent;
 }
 
 .dark-theme .admin-dashboard .btn-outline-primary:hover {
@@ -107,6 +265,7 @@
 .dark-theme .admin-dashboard .btn-outline-secondary {
   border-color: var(--border-color);
   color: var(--text-secondary);
+  background-color: transparent;
 }
 
 .dark-theme .admin-dashboard .btn-outline-secondary:hover {
@@ -115,45 +274,53 @@
   color: var(--text-primary);
 }
 
+.dark-theme .admin-header {
+  background: var(--bg-secondary);
+  border-bottom-color: var(--tanzania-green);
+}
+
 /* Enhanced card shadows for dark mode */
 .dark-theme .card {
-  box-shadow: 0 0.125rem 0.25rem var(--shadow-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .dark-theme .card:hover {
-  box-shadow: 0 0.5rem 1rem var(--shadow-color);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 /* Theme toggle button styling */
 .theme-toggle-btn {
-  background: transparent;
-  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
   color: var(--text-secondary);
-  padding: 0.375rem 0.75rem;
-  border-radius: 0.375rem;
+  padding: 0.5rem;
+  border-radius: 10px;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
 }
 
 .theme-toggle-btn:hover {
-  background-color: var(--bg-secondary);
+  background-color: var(--tanzania-green);
   border-color: var(--tanzania-green);
-  color: var(--tanzania-green);
-  transform: scale(1.05);
+  color: white;
+  transform: rotate(180deg) scale(1.05);
 }
 
 .dark-theme .theme-toggle-btn {
+  background: var(--bg-tertiary);
   border-color: var(--border-color);
-  color: var(--text-secondary);
+  color: var(--tanzania-yellow);
 }
 
 .dark-theme .theme-toggle-btn:hover {
-  background-color: var(--bg-tertiary);
-  color: var(--tanzania-yellow);
+  background-color: var(--tanzania-green);
+  border-color: var(--tanzania-green);
+  color: white;
 }
 
 /* Admin Dashboard Header Styling */
@@ -209,7 +376,7 @@
 .btn-tanzania {
   background: var(--tanzania-green);
   border: none;
-  color: white;
+  color: white !important;
   font-weight: 600;
   padding: 0.5rem 1.5rem;
   transition: all 0.3s ease;
@@ -217,7 +384,7 @@
 
 .btn-tanzania:hover {
   background: #189A30;
-  color: white;
+  color: white !important;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(30, 181, 58, 0.3);
 }
@@ -236,7 +403,7 @@
 /* Category badges */
 .category-badge {
   background-color: var(--tanzania-green);
-  color: white;
+  color: white !important;
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.875rem;
@@ -272,6 +439,16 @@
 .footer-tanzania {
   background: var(--tanzania-black);
   color: white;
+}
+
+.footer-tanzania h5,
+.footer-tanzania p,
+.footer-tanzania a {
+  color: white;
+}
+
+.footer-tanzania a:hover {
+  color: var(--tanzania-yellow);
 }
 
 /* Loading spinner with Tanzania colors */
@@ -432,6 +609,14 @@
   align-items: center;
 }
 
+.hero-section h1,
+.hero-section h2,
+.hero-section h3,
+.hero-section p,
+.hero-section .lead {
+  color: white !important;
+}
+
 .hero-bg-pattern {
   position: absolute;
   top: 0;
@@ -449,6 +634,7 @@
 }
 
 .hero-content h1 {
+  color: white !important;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
@@ -502,7 +688,7 @@
 }
 
 .category-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: 16px;
   padding: 2rem 1rem;
   text-align: center;
@@ -572,7 +758,7 @@
 
 /* Modern Post Card */
 .modern-post-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -896,8 +1082,8 @@
 }
 
 .filters-section {
-  background: white;
-  border-bottom: 1px solid #dee2e6;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .search-form .input-group {
@@ -959,7 +1145,7 @@
 
 /* Skeleton Loading */
 .skeleton-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: 20px;
   padding: 1.5rem;
   box-shadow: 0 8px 25px rgba(0,0,0,0.1);
@@ -1005,39 +1191,39 @@
 }
 
 .pagination-wrapper .btn-tanzania {
-  background: linear-gradient(135deg, var(--tanzania-green), var(--tanzania-blue));
+  background: var(--tanzania-green);
   border: none;
-  color: white;
+  color: white !important;
 }
 
 .pagination-wrapper .btn-outline-tanzania {
   border: 2px solid var(--tanzania-green);
-  color: var(--tanzania-green);
-  background: white;
+  color: var(--tanzania-green) !important;
+  background: var(--card-bg);
 }
 
 .pagination-wrapper .btn-outline-tanzania:hover {
   background: var(--tanzania-green);
-  color: white;
+  color: white !important;
 }
 
 .pagination-wrapper .btn-outline-secondary {
   border: 2px solid #6c757d;
-  color: #6c757d;
-  background: white;
+  color: #6c757d !important;
+  background: var(--card-bg);
 }
 
 .pagination-wrapper .btn-outline-secondary:hover {
   background: #6c757d;
-  color: white;
+  color: white !important;
 }
 
 /* Empty State */
 .posts-grid .empty-state {
-  background: white;
+  background: var(--card-bg);
   border-radius: 20px;
   margin: 2rem 0;
-  border: 2px dashed #dee2e6;
+  border: 2px dashed var(--border-color);
 }
 
 /* Responsive Design for All Posts */
@@ -1165,15 +1351,12 @@
 }
 
 .hero-title {
-  background: linear-gradient(45deg, #ffffff, #f0f0f0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: white;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
 .hero-description {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   line-height: 1.7;
   font-size: 1.1rem;
 }
@@ -1186,7 +1369,7 @@
 }
 
 .feature-item {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   font-weight: 500;
 }
 
@@ -1230,14 +1413,14 @@
 }
 
 .stat-label-modern {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 0.9rem;
   margin-top: 0.5rem;
 }
 
 /* Modern Categories Grid */
 .categories-modern-grid {
-  background: #f8fafc;
+  background: var(--bg-secondary);
   position: relative;
 }
 
@@ -1256,7 +1439,7 @@
 }
 
 .section-title {
-  color: #1a202c;
+  color: var(--text-primary);
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
@@ -1285,7 +1468,7 @@
 .category-card-inner {
   position: relative;
   height: 100%;
-  background: white;
+  background: var(--card-bg);
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -1405,7 +1588,7 @@
 }
 
 .category-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: 15px;
   padding: 2rem;
   text-align: center;
@@ -1503,7 +1686,7 @@
 /* Modern CTA Section */
 .cta-modern-section {
   padding: 4rem 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--tanzania-green);
   position: relative;
   overflow: hidden;
 }
@@ -1598,7 +1781,7 @@
 
 .btn-cta-primary:hover {
   background: #189A30;
-  color: white;
+  color: white !important;
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(30, 181, 58, 0.35);
 }
@@ -1620,14 +1803,14 @@
 
 .btn-cta-secondary:hover {
   background: rgba(255, 255, 255, 0.15);
-  color: white;
+  color: white !important;
   border-color: white;
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
 }
 
 .empty-state {
-  background: white;
+  background: var(--card-bg);
   border-radius: 20px;
   padding: 4rem 2rem;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
@@ -2436,11 +2619,11 @@
 /* Main Navbar Container */
 .navbar-modern {
   background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(30, 181, 58, 0.1);
-  padding: 0.75rem 0;
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 0;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   position: sticky;
   top: 0;
   z-index: 1030;
@@ -2449,11 +2632,18 @@
 .navbar-modern::before {
   content: '';
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--tanzania-green), var(--tanzania-blue), var(--tanzania-yellow));
+  height: 2px;
+  background: var(--tanzania-green);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.navbar-modern:hover::before {
+  transform: scaleX(1);
 }
 
 .navbar-modern .container {
@@ -2471,9 +2661,9 @@
 }
 
 .navbar-modern.scrolled {
-  background: rgba(255, 255, 255, 0.98);
-  padding: 0.5rem 0;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 1);
+  padding: 0.75rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Modern Brand Section */
@@ -2482,13 +2672,13 @@
   align-items: center;
   text-decoration: none;
   transition: all 0.3s ease;
-  padding: 0.25rem 0;
+  padding: 0;
   flex-shrink: 0;
 }
 
 .brand-modern:hover {
   text-decoration: none;
-  transform: scale(1.02);
+  opacity: 0.9;
 }
 
 .brand-icon-container {
@@ -2662,12 +2852,12 @@
 .nav-link-modern {
   display: flex;
   align-items: center;
-  padding: 0.75rem 1rem;
-  color: #333;
+  padding: 0.625rem 1.25rem;
+  color: var(--text-primary);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.95rem;
-  border-radius: 8px;
+  border-radius: 10px;
   transition: all 0.3s ease;
   position: relative;
   white-space: nowrap;
@@ -2676,14 +2866,14 @@
 
 .nav-link-modern:hover {
   color: var(--tanzania-green);
-  background-color: rgba(30, 181, 58, 0.1);
+  background-color: rgba(30, 181, 58, 0.08);
   text-decoration: none;
-  transform: translateY(-1px);
 }
 
 .nav-link-modern.active {
-  color: var(--tanzania-green);
-  background-color: rgba(30, 181, 58, 0.15);
+  color: white !important;
+  background-color: var(--tanzania-green);
+  box-shadow: 0 2px 8px rgba(30, 181, 58, 0.3);
 }
 
 .nav-icon {
@@ -2791,7 +2981,7 @@
 
 .search-input-modern:focus {
   border-color: var(--tanzania-green);
-  background: white;
+  background: var(--card-bg);
   box-shadow: 0 0 0 3px rgba(30, 181, 58, 0.1);
 }
 
@@ -2934,7 +3124,7 @@
 .dropdown-menu.dropdown-menu-modern {
   min-width: 160px;
   max-width: 160px;
-  background: white;
+  background: var(--card-bg);
   border: none;
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
@@ -3390,8 +3580,8 @@
   display: flex;
   align-items: center;
   padding: 1rem;
-  background: white;
-  border: 1px solid #e9ecef;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   text-decoration: none;
   color: inherit;
@@ -3679,7 +3869,7 @@
   border: none;
   border-radius: 16px;
   box-shadow: 0 4px 25px rgba(30, 181, 58, 0.08);
-  background: white;
+  background: var(--card-bg);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   position: relative;
@@ -3706,25 +3896,29 @@
 
 /* Stats Card Icons */
 .admin-dashboard .bg-primary {
-  background: linear-gradient(135deg, var(--tanzania-green), var(--tanzania-blue)) !important;
+  background: var(--tanzania-green) !important;
+  color: white !important;
   border-radius: 12px !important;
   box-shadow: 0 4px 15px rgba(30, 181, 58, 0.2);
 }
 
 .admin-dashboard .bg-success {
-  background: linear-gradient(135deg, #28a745, #20c997) !important;
+  background: #28a745 !important;
+  color: white !important;
   border-radius: 12px !important;
   box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
 }
 
 .admin-dashboard .bg-info {
-  background: linear-gradient(135deg, var(--tanzania-blue), #17a2b8) !important;
+  background: var(--tanzania-blue) !important;
+  color: white !important;
   border-radius: 12px !important;
   box-shadow: 0 4px 15px rgba(0, 163, 221, 0.2);
 }
 
 .admin-dashboard .bg-warning {
-  background: linear-gradient(135deg, #ffc107, #fd7e14) !important;
+  background: #ffc107 !important;
+  color: #333 !important;
   border-radius: 12px !important;
   box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
 }
@@ -3749,12 +3943,14 @@
 }
 
 .admin-dashboard .btn-primary {
-  background: linear-gradient(135deg, var(--tanzania-green), var(--tanzania-blue));
+  background: var(--tanzania-green);
+  color: white !important;
   box-shadow: 0 4px 15px rgba(30, 181, 58, 0.2);
 }
 
 .admin-dashboard .btn-primary:hover {
-  background: linear-gradient(135deg, var(--tanzania-blue), var(--tanzania-green));
+  background: #189A30;
+  color: white !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(30, 181, 58, 0.3);
 }
@@ -3862,9 +4058,9 @@
 
 /* Theme Toggle Button - Light Mode Enhancements */
 .theme-toggle-btn {
-  background: white;
-  border: 2px solid #e9ecef;
-  color: #6c757d;
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  color: var(--text-secondary);
   padding: 0.5rem 0.75rem;
   border-radius: 10px;
   transition: all 0.3s ease;
@@ -3890,9 +4086,9 @@
 
 /* Admin Dashboard Specific Button Styling */
 .admin-dashboard .btn-outline-secondary:not(.theme-toggle-btn) {
-  border: 2px solid #e9ecef;
-  color: #6c757d;
-  background: white;
+  border: 2px solid var(--border-color);
+  color: var(--text-secondary);
+  background: var(--card-bg);
   font-weight: 600;
   border-radius: 8px;
 }
@@ -4095,11 +4291,13 @@ section.py-5 {
 .btn-primary {
   background-color: var(--tanzania-green);
   border-color: var(--tanzania-green);
+  color: white !important;
 }
 
 .btn-primary:hover {
   background-color: #189A30;
   border-color: #189A30;
+  color: white !important;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(30, 181, 58, 0.3);
 }
@@ -4200,4 +4398,334 @@ a:hover {
 .modal-footer {
   border-top: 2px solid var(--border-color);
   padding: 1.5rem;
+}
+
+/* ========================================
+   ADDITIONAL DARK MODE IMPROVEMENTS
+   ======================================== */
+
+/* Footer Dark Mode */
+.dark-theme .footer-modern {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+.dark-theme .footer-brand .brand-description {
+  color: var(--text-secondary);
+}
+
+.dark-theme .footer-stats .stat-number {
+  color: var(--tanzania-green);
+}
+
+.dark-theme .footer-stats .stat-label {
+  color: var(--text-muted);
+}
+
+.dark-theme .footer-title {
+  color: var(--text-primary);
+}
+
+.dark-theme .footer-title::after {
+  background: var(--tanzania-green);
+}
+
+.dark-theme .footer-link {
+  color: var(--text-secondary);
+}
+
+.dark-theme .footer-link:hover {
+  color: var(--tanzania-green);
+}
+
+.dark-theme .footer-link i {
+  color: var(--tanzania-green);
+}
+
+.dark-theme .footer-bottom {
+  background-color: var(--bg-primary);
+  border-top-color: var(--border-color);
+  color: var(--text-muted);
+}
+
+.dark-theme .footer-social .social-icon {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+}
+
+.dark-theme .footer-social .social-icon:hover {
+  background-color: var(--tanzania-green);
+  border-color: var(--tanzania-green);
+  color: white;
+}
+
+/* Newsletter Dark Mode */
+.dark-theme .newsletter-section {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+}
+
+.dark-theme .newsletter-section h3 {
+  color: var(--text-primary);
+}
+
+.dark-theme .newsletter-section p {
+  color: var(--text-secondary);
+}
+
+/* Dropdown Dark Mode */
+.dark-theme .dropdown-menu {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.dark-theme .dropdown-item {
+  color: var(--text-primary);
+}
+
+.dark-theme .dropdown-item:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--tanzania-green);
+}
+
+.dark-theme .dropdown-divider {
+  border-color: var(--border-color);
+}
+
+/* Breadcrumb Dark Mode */
+.dark-theme .breadcrumb {
+  background-color: var(--bg-secondary);
+}
+
+.dark-theme .breadcrumb-item a {
+  color: var(--tanzania-green);
+}
+
+.dark-theme .breadcrumb-item.active {
+  color: var(--text-muted);
+}
+
+/* Badge Dark Mode */
+.dark-theme .badge {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.dark-theme .badge.bg-success,
+.dark-theme .badge.bg-primary {
+  background-color: var(--tanzania-green) !important;
+}
+
+/* Pagination Dark Mode */
+.dark-theme .pagination .page-link {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .pagination .page-link:hover {
+  background-color: var(--tanzania-green);
+  border-color: var(--tanzania-green);
+  color: white;
+}
+
+.dark-theme .pagination .page-item.active .page-link {
+  background-color: var(--tanzania-green);
+  border-color: var(--tanzania-green);
+}
+
+/* Scrollbar Dark Mode */
+.dark-theme::-webkit-scrollbar {
+  width: 12px;
+  background-color: var(--bg-primary);
+}
+
+.dark-theme::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+.dark-theme::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+}
+
+.dark-theme::-webkit-scrollbar-thumb:hover {
+  background: var(--tanzania-green);
+}
+
+/* Category Dropdown Dark Mode */
+.dark-theme .categories-dropdown {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+.dark-theme .category-dropdown-item {
+  color: var(--text-primary);
+  background-color: transparent;
+}
+
+.dark-theme .category-dropdown-item:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.dark-theme .dropdown-item-featured {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+}
+
+/* Search Bar Dark Mode */
+.dark-theme .search-form .form-control {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .search-form .form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.dark-theme .search-form .btn {
+  background-color: var(--tanzania-green);
+  border-color: var(--tanzania-green);
+}
+
+/* Skeleton Loader Dark Mode */
+.dark-theme .skeleton-loader,
+.dark-theme .skeleton-text {
+  background: var(--bg-tertiary);
+}
+
+.dark-theme .skeleton-card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+/* Posts Header Dark Mode */
+.dark-theme .posts-header {
+  background: var(--bg-secondary);
+}
+
+.dark-theme .filters-section {
+  background-color: var(--card-bg);
+  border-bottom-color: var(--border-color);
+}
+
+.dark-theme .active-filters {
+  background: rgba(30, 181, 58, 0.1);
+  border-left-color: var(--tanzania-green);
+}
+
+/* Ensure smooth transitions */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* ========================================
+   HEADER/NAVBAR DARK MODE
+   ======================================== */
+
+.dark-theme .navbar-modern {
+  background: rgba(30, 41, 59, 0.98);
+  backdrop-filter: blur(20px);
+  border-bottom-color: var(--border-color);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .navbar-modern::before {
+  background: var(--tanzania-green);
+}
+
+.dark-theme .navbar-modern.scrolled {
+  background: var(--bg-secondary);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.dark-theme .nav-link-modern {
+  color: var(--text-primary);
+}
+
+.dark-theme .nav-link-modern:hover {
+  color: var(--tanzania-green);
+  background-color: rgba(30, 181, 58, 0.12);
+}
+
+.dark-theme .nav-link-modern.active {
+  color: white;
+  background-color: var(--tanzania-green);
+}
+
+.dark-theme .search-input-modern {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .search-input-modern::placeholder {
+  color: var(--text-muted);
+}
+
+.dark-theme .search-input-modern:focus {
+  background-color: var(--bg-tertiary);
+  border-color: var(--tanzania-green);
+}
+
+.dark-theme .search-icon {
+  color: var(--text-muted);
+}
+
+.dark-theme .search-btn-modern {
+  background-color: var(--tanzania-green);
+  color: white;
+}
+
+.dark-theme .auth-btn-outline {
+  border-color: var(--tanzania-green);
+  color: var(--tanzania-green);
+  background-color: transparent;
+}
+
+.dark-theme .auth-btn-outline:hover {
+  background-color: var(--tanzania-green);
+  color: white;
+}
+
+.dark-theme .user-btn-modern {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .user-btn-modern:hover {
+  background-color: var(--tanzania-green);
+  border-color: var(--tanzania-green);
+  color: white;
+}
+
+.dark-theme .user-avatar {
+  background-color: var(--tanzania-green);
+}
+
+.dark-theme .dropdown-menu-modern {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.dark-theme .dropdown-item-simple {
+  color: var(--text-primary);
+}
+
+.dark-theme .dropdown-item-simple:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--tanzania-green);
+}
+
+.dark-theme .navbar-toggler-modern span {
+  background-color: var(--text-primary);
+}
+
+.dark-theme .navbar-toggler-modern:hover span {
+  background-color: var(--tanzania-green);
 }
