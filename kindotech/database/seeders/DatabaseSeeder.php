@@ -18,11 +18,7 @@ class DatabaseSeeder extends Seeder
             CategoriesTableSeeder::class,
             UsersTableSeeder::class,
             PostsTableSeeder::class,
-            CommentsTableSeeder::class,
-            // Add other seeders here as we create them
-            // UsersTableSeeder::class,
-            // PostsTableSeeder::class,
-            // TagsTableSeeder::class,
+            // CommentsTableSeeder::class, // Disabled for now - requires Faker
         ]);
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Faker\Factory as FakerFactory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
@@ -17,7 +18,8 @@ class PostFactory extends Factory
 
     public function definition(): array
     {
-        $title = fake()->sentence(6);
+        $faker = FakerFactory::create();
+        $title = $faker->sentence(6);
         $category = Category::inRandomOrder()->first() ?? Category::factory()->create();
         $user = User::inRandomOrder()->first() ?? User::factory()->create();
 
@@ -25,15 +27,15 @@ class PostFactory extends Factory
             'title' => $title,
             'title_sw' => null,
             'slug' => Str::slug($title) . '-' . Str::random(5),
-            'content' => fake()->paragraphs(5, true),
-            'excerpt' => fake()->sentence(12),
+            'content' => $faker->paragraphs(5, true),
+            'excerpt' => $faker->sentence(12),
             'featured_image' => null,
             'image_caption' => null,
             'is_published' => true,
-            'is_featured' => fake()->boolean(15),
-            'published_at' => now()->subDays(fake()->numberBetween(0, 30)),
-            'views' => fake()->numberBetween(0, 5000),
-            'reading_time' => fake()->numberBetween(3, 10),
+            'is_featured' => $faker->boolean(15),
+            'published_at' => now()->subDays($faker->numberBetween(0, 30)),
+            'views' => $faker->numberBetween(0, 5000),
+            'reading_time' => $faker->numberBetween(3, 10),
             'meta_title' => null,
             'meta_description' => null,
             'user_id' => $user->id,

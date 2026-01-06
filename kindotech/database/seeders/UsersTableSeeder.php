@@ -56,21 +56,8 @@ class UsersTableSeeder extends Seeder
             ]
         );
 
-        // Ensure we have additional author users for testing (login required)
-        $desiredTotal = 13;
-        $current = User::count();
-        if ($current < $desiredTotal) {
-            User::factory()->count($desiredTotal - $current)->create([
-                'role' => 'author', // Create additional authors for content creation
-                'status' => 'active',
-                'email_verified_at' => now(),
-            ]);
-        }
-
         $this->command->info('Sample users seeded:');
         $this->command->info('- Admin user: admin@example.com (password: admin123)');
         $this->command->info('- Author users: jane.author@example.com, john.writer@example.com (password: author123)');
-        $this->command->info('- Additional author users created for content testing');
-        $this->command->info('- Regular users comment anonymously without login');
     }
 }
