@@ -6,7 +6,7 @@ import axios from 'axios';
 
 // Read API URL from environment variable
 // This keeps the URL configurable and separate from code
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://kindotech01-production.up.railway.app/api/v1';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://keysblog-464d939b8203.herokuapp.com/api/v1';
 
 class ApiService {
   constructor() {

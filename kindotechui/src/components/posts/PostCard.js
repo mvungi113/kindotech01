@@ -5,7 +5,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+// Get base URL for images (remove /api/v1 from API URL)
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://keysblog-464d939b8203.herokuapp.com/api/v1';
+const IMAGE_BASE_URL = API_BASE_URL.replace('/api/v1', '');
+
 const PostCard = ({ post, featured = false, animationDelay = 0 }) => {
+  const [imageError, setImageError] = React.useState(false);
+  
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -84,12 +90,16 @@ const PostCard = ({ post, featured = false, animationDelay = 0 }) => {
       <article className={`modern-post-card h-100 animate-fade-in-up ${featured ? 'featured-post' : ''}`}>
         {/* Image Container */}
         <div className="post-image-container">
-          {post.featured_image ? (
+          {post.featured_image && !imageError ? (
             <img 
-              src={`http://localhost:8000/storage/${post.featured_image}`}
+              src={`${IMAGE_BASE_URL}/${post.featured_image}`}
               className="post-image"
               alt={post.title}
               loading="lazy"
+              onError={(e) => {
+                console.error('Image failed to load:', `${IMAGE_BASE_URL}/${post.featured_image}`);
+                setImageError(true);
+              }}
             />
           ) : (
             <div className="post-image-placeholder">

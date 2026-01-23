@@ -123,7 +123,12 @@ const PostEditor = () => {
           });
           
           if (postData.featured_image) {
-            setImagePreview(`http://localhost:8000/storage/${postData.featured_image}`);
+            const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://keysblog-464d939b8203.herokuapp.com/api/v1';
+            const imageBaseUrl = apiBaseUrl.replace('/api/v1', '');
+            const imageUrl = `${imageBaseUrl}/${postData.featured_image}`;
+            console.log('Loading image from:', imageUrl);
+            console.log('Featured image path:', postData.featured_image);
+            setImagePreview(imageUrl);
           }
         }
       }
@@ -260,17 +265,22 @@ const PostEditor = () => {
       if (post.featured_image && typeof post.featured_image !== 'string') {
         // Upload the image file
         try {
+          console.log('Uploading image:', post.featured_image.name);
           const imageResponse = await apiService.uploadImage(post.featured_image);
+          console.log('Image upload response:', imageResponse);
           if (imageResponse.success) {
             featuredImagePath = imageResponse.data.path; // Use the path, not the full URL
+            console.log('Image uploaded successfully. Path:', featuredImagePath);
           } else {
-            notify.error('Failed to upload image');
+            console.error('Image upload failed:', imageResponse);
+            notify.error(imageResponse.message || 'Failed to upload image');
             setSaving(false);
             return;
           }
         } catch (imageError) {
           console.error('Image upload error:', imageError);
-          notify.error('Failed to upload image');
+          console.error('Error response:', imageError.response?.data);
+          notify.error(imageError.response?.data?.message || 'Failed to upload image');
           setSaving(false);
           return;
         }
@@ -463,7 +473,7 @@ const PostEditor = () => {
                     <div className="mb-3">
                       <label htmlFor="content" className="form-label">
                         Content <span className="text-danger">*</span>
-                        <span className="badge bg-light text-dark ms-2">
+                        <span className="badge bg-secondary ms-2">
                           {wordCount} words • {readingTime} min read
                         </span>
                       </label>
@@ -573,7 +583,7 @@ Tips:
                       <label htmlFor="content_sw" className="form-label">
                         <i className="fas fa-globe me-2"></i>
                         Content (Swahili)
-                        <span className="badge bg-light text-dark ms-2">
+                        <span className="badge bg-secondary ms-2">
                           {swahiliWordCount} words • {swahiliReadingTime} min read
                         </span>
                         <span className="badge bg-info text-white ms-2">

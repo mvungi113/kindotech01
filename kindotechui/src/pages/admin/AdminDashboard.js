@@ -139,9 +139,9 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="admin-dashboard bg-light min-vh-100">
+    <div className="admin-dashboard min-vh-100">
       {/* Admin Page Header */}
-      <div className="admin-page-header bg-gradient" style={{ background: 'linear-gradient(135deg, #1EB53A, #00A3DD)', marginTop: '0' }}>
+      <div className="admin-page-header" style={{ background: 'var(--tanzania-green)', marginTop: '0' }}>
         <div className="container">
           <div className="row align-items-center py-4">
             <div className="col">
@@ -152,8 +152,8 @@ const AdminDashboard = () => {
                   </div>
                 </div>
                 <div className="admin-header-content">
-                  <h1 className="h2 mb-1 text-dark fw-bold">Admin Dashboard</h1>
-                  <p className="mb-0 text-dark fw-medium" style={{ color: '#2c3e50' }}>System management and analytics overview</p>
+                  <h1 className="h2 mb-1 text-white fw-bold">Admin Dashboard</h1>
+                  <p className="mb-0 text-white">System management and analytics overview</p>
                 </div>
               </div>
             </div>
@@ -172,7 +172,7 @@ const AdminDashboard = () => {
         <div className="admin-stats-section mb-4">
           <div className="row">
             <div className="col">
-              <h5 className="mb-3 text-dark fw-bold">
+              <h5 className="mb-3 fw-bold">
                 <i className="fas fa-chart-bar me-2 text-success"></i>
                 System Overview
               </h5>
@@ -269,7 +269,7 @@ const AdminDashboard = () => {
         <div className="admin-actions-section mb-4">
           <div className="row">
             <div className="col">
-              <h5 className="mb-3 text-dark fw-bold">
+              <h5 className="mb-3 fw-bold">
                 <i className="fas fa-bolt me-2 text-primary"></i>
                 Quick Actions
               </h5>
@@ -341,7 +341,7 @@ const AdminDashboard = () => {
         <div className="admin-content-section">
           <div className="row mb-3">
             <div className="col">
-              <h5 className="mb-0 text-dark fw-bold">
+              <h5 className="mb-0 fw-bold">
                 <i className="fas fa-cogs me-2 text-info"></i>
                 Content Management
               </h5>

@@ -138,7 +138,9 @@ const AuthorPostEditor = () => {
         });
         
         if (post.featured_image) {
-          setImagePreview(`http://localhost:8000/storage/${post.featured_image}`);
+          const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://keysblog-464d939b8203.herokuapp.com/api/v1';
+          const imageBaseUrl = apiBaseUrl.replace('/api/v1', '');
+          setImagePreview(`${imageBaseUrl}/${post.featured_image}`);
         }
       } else {
         notify.error('Post not found');

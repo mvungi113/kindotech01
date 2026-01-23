@@ -372,7 +372,7 @@ const PostManager = () => {
           </div>
 
           {/* Filter Tabs */}
-          <div className="card-header bg-light border-top">
+          <div className="card-header border-top">
             <ul className="nav nav-tabs card-header-tabs" role="tablist">
               <li className="nav-item" role="presentation">
                 <button

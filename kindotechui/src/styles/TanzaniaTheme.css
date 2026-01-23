@@ -3860,8 +3860,22 @@
 
 /* Admin Dashboard Content */
 .admin-dashboard {
-  background: transparent;
+  background-color: var(--bg-primary);
   padding: 2rem 0;
+  min-height: 100vh;
+}
+
+.admin-dashboard h1,
+.admin-dashboard h2,
+.admin-dashboard h3,
+.admin-dashboard h4,
+.admin-dashboard h5,
+.admin-dashboard h6 {
+  color: var(--text-primary);
+}
+
+.admin-dashboard p {
+  color: var(--text-secondary);
 }
 
 /* Enhanced Stats Cards - Light Mode */
@@ -3925,11 +3939,11 @@
 
 /* Card Headers */
 .admin-dashboard .card-header {
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  border-bottom: 1px solid #dee2e6;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
   padding: 1.5rem 2rem;
   font-weight: 600;
-  color: #495057;
+  color: var(--text-primary);
   border-radius: 16px 16px 0 0 !important;
 }
 
@@ -4516,6 +4530,20 @@ a:hover {
 .dark-theme .badge.bg-success,
 .dark-theme .badge.bg-primary {
   background-color: var(--tanzania-green) !important;
+}
+
+.dark-theme .badge.bg-secondary {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Admin Page Header Dark Mode */
+.dark-theme .admin-page-header {
+  background-color: var(--bg-secondary) !important;
+}
+
+.dark-theme .admin-icon-container {
+  background-color: rgba(30, 181, 58, 0.2);
 }
 
 /* Pagination Dark Mode */

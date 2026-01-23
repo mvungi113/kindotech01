@@ -401,7 +401,7 @@ const UserManager = () => {
                         </select>
                       </td>
                       <td>
-                        <span className="badge bg-light text-dark">
+                        <span className="badge bg-secondary">
                           {user.posts_count || 0} posts
                         </span>
                       </td>

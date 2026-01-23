@@ -9,6 +9,10 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import CommentList from '../components/comments/CommentList';
 import CommentForm from '../components/comments/CommentForm';
 
+// Get base URL for images (remove /api/v1 from API URL)
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://keysblog-464d939b8203.herokuapp.com/api/v1';
+const IMAGE_BASE_URL = API_BASE_URL.replace('/api/v1', '');
+
 const PostDetail = () => {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
@@ -242,7 +246,7 @@ const PostDetail = () => {
               {post.featured_image && (
                 <div className="text-center mb-4">
                   <img 
-                    src={`http://localhost:8000/storage/${post.featured_image}`}
+                    src={`${IMAGE_BASE_URL}/${post.featured_image}`}
                     alt={post.title}
                     className="img-fluid rounded shadow"
                     style={{ maxHeight: '400px', objectFit: 'cover' }}
@@ -392,7 +396,7 @@ const PostDetail = () => {
                       {relatedPost.featured_image && (
                         <div className="me-3 flex-shrink-0">
                           <img 
-                            src={`http://localhost:8000/storage/${relatedPost.featured_image}`}
+                            src={`${IMAGE_BASE_URL}/${relatedPost.featured_image}`}
                             alt={relatedPost.title}
                             className="rounded"
                             style={{ width: '60px', height: '60px', objectFit: 'cover' }}

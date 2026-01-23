@@ -553,8 +553,13 @@ class PostController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
 
-        $imagePath = $request->file('image')->store('posts/images', 'public');
-        $imageUrl = Storage::disk('public')->url($imagePath);
+        // Save directly to public/posts/images directory
+        $file = $request->file('image');
+        $filename = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('posts/images'), $filename);
+        
+        $imagePath = 'posts/images/' . $filename;
+        $imageUrl = url($imagePath);
 
         return response()->json([
             'success' => true,
