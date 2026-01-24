@@ -1,82 +1,45 @@
-/**
- * Modern Homepage component for KeyBlog
- * Features hero section, category navigation, featured posts, and recent posts
- * Fully responsive with modern card-based design
- */
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { apiService } from '../services/api';
-import PostCardSkeleton from '../components/posts/PostCardSkeleton';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const Home = () => {
-  // eslint-disable-next-line no-unused-vars
-  const [featuredPosts, setFeaturedPosts] = useState([]);
   const [recentPosts, setRecentPosts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [postsByCategory, setPostsByCategory] = useState({});
   const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  // eslint-disable-next-line no-unused-vars
-  const [stats, setStats] = useState({ totalPosts: 0, totalViews: 0, totalCategories: 0 });
-  const [currentPage, setCurrentPage] = useState(1);
-  const [hasMorePosts, setHasMorePosts] = useState(true);
 
   useEffect(() => {
     loadHomepageData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Infinite scroll effect
-  useEffect(() => {
-    const handleScroll = () => {
-      // Check if user has scrolled near the bottom (within 300px)
-      const scrollPosition = window.innerHeight + window.scrollY;
-      const pageHeight = document.documentElement.scrollHeight;
-      
-      if (scrollPosition >= pageHeight - 300 && !loadingMore && hasMorePosts) {
-        loadMorePosts();
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadingMore, hasMorePosts, currentPage]); // Re-attach listener when these change
 
   const loadHomepageData = async () => {
     try {
       setLoading(true);
       
-      // Load data in parallel
-      const [featuredResponse, recentResponse, categoriesResponse] = await Promise.all([
-        apiService.getFeaturedPosts(),
-        apiService.getPosts({ page: 1, per_page: 50 }), // Load 50 posts initially
-        apiService.getCategories()
+      const [categoriesResponse, postsResponse] = await Promise.all([
+        apiService.getCategories(),
+        apiService.getPosts({ page: 1, per_page: 100 })
       ]);
 
-      if (featuredResponse.success) setFeaturedPosts(featuredResponse.data);
-      if (recentResponse.success) {
-        const postsData = recentResponse.data.data || recentResponse.data;
-        setRecentPosts(postsData);
-        // Check if there are more posts available
-        if (recentResponse.data.last_page) {
-          setHasMorePosts(recentResponse.data.current_page < recentResponse.data.last_page);
-        }
-        // Use stats from API response (retrieved from database)
-        if (recentResponse.stats) {
-          setStats({
-            totalPosts: recentResponse.stats.total_posts || 0,
-            totalViews: recentResponse.stats.total_views || 0,
-            totalCategories: recentResponse.stats.total_categories || 0
-          });
-        } else {
-          // Fallback to calculating from response data if stats not available
-          const totalPosts = recentResponse.data.total || postsData.length;
-          const totalViews = postsData.reduce((sum, post) => sum + (post.views || 0), 0);
-          setStats({ totalPosts, totalViews, totalCategories: categories.length });
-        }
+      if (categoriesResponse.success) {
+        setCategories(categoriesResponse.data);
       }
-      if (categoriesResponse.success) setCategories(categoriesResponse.data);
+
+      if (postsResponse.success) {
+        const postsData = postsResponse.data.data || postsResponse.data;
+        setRecentPosts(postsData);
+        
+        const grouped = {};
+        if (categoriesResponse.success) {
+          categoriesResponse.data.forEach(category => {
+            grouped[category.id] = postsData.filter(post => 
+              post.category_id === category.id
+            ).slice(0, 6);
+          });
+        }
+        setPostsByCategory(grouped);
+      }
 
     } catch (error) {
       console.error('Error loading homepage data:', error);
@@ -85,35 +48,202 @@ const Home = () => {
     }
   };
 
-  const loadMorePosts = async () => {
-    if (loadingMore || !hasMorePosts) return;
-    
-    try {
-      setLoadingMore(true);
-      const nextPage = currentPage + 1;
-      
-      const response = await apiService.getPosts({ 
-        page: nextPage, 
-        per_page: 50 
-      });
-      
-      if (response.success) {
-        const newPosts = response.data.data || response.data;
-        setRecentPosts(prev => [...prev, ...newPosts]);
-        setCurrentPage(nextPage);
-        
-        // Check if there are more posts
-        if (response.data.last_page) {
-          setHasMorePosts(nextPage < response.data.last_page);
-        } else {
-          setHasMorePosts(newPosts.length === 50); // If we got less than requested, no more posts
-        }
-      }
-    } catch (error) {
-      console.error('Error loading more posts:', error);
-    } finally {
-      setLoadingMore(false);
+  // Render different layouts for variety
+  const renderCategoryLayout = (category, categoryPosts, index) => {
+    const layoutType = index % 3; // Cycle through 3 different layouts
+
+    // Layout 1: Grid Layout (3 columns)
+    if (layoutType === 0) {
+      return (
+        <div className="row g-3">
+          {categoryPosts.map((post) => (
+            <div key={post.id} className="col-lg-4 col-md-6">
+              <Link to={`/posts/${post.slug}`} className="text-decoration-none">
+                <div className="card border-0 shadow-sm h-100 overflow-hidden">
+                  <div style={{ height: '160px', overflow: 'hidden' }}>
+                    {post.featured_image ? (
+                      <img 
+                        src={`https://keysblog-464d939b8203.herokuapp.com/${post.featured_image}`}
+                        className="w-100 h-100"
+                        alt={post.title}
+                        style={{ objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <div className="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center">
+                        <i className="fas fa-image fa-2x text-muted"></i>
+                      </div>
+                    )}
+                  </div>
+                  <div className="card-body p-3">
+                    <h6 className="mb-2" style={{ 
+                      fontSize: '0.95rem',
+                      fontWeight: '500',
+                      lineHeight: '1.4',
+                      display: '-webkit-box',
+                      WebkitLineClamp: '2',
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden'
+                    }}>
+                      {post.title}
+                    </h6>
+                    <div className="d-flex align-items-center gap-2 small text-muted">
+                      <span><i className="fas fa-clock me-1"></i>{post.reading_time || 5} min</span>
+                      <span><i className="fas fa-eye me-1"></i>{post.views || 0}</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          ))}
+        </div>
+      );
     }
+
+    // Layout 2: Featured + Grid (1 large, rest smaller)
+    if (layoutType === 1) {
+      return (
+        <div className="row g-3">
+          {categoryPosts[0] && (
+            <div className="col-lg-6">
+              <Link to={`/posts/${categoryPosts[0].slug}`} className="text-decoration-none">
+                <div className="card border-0 shadow-sm h-100 overflow-hidden">
+                  <div style={{ height: '280px', overflow: 'hidden' }}>
+                    {categoryPosts[0].featured_image ? (
+                      <img 
+                        src={`https://keysblog-464d939b8203.herokuapp.com/${categoryPosts[0].featured_image}`}
+                        className="w-100 h-100"
+                        alt={categoryPosts[0].title}
+                        style={{ objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <div className="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center">
+                        <i className="fas fa-image fa-3x text-muted"></i>
+                      </div>
+                    )}
+                  </div>
+                  <div className="card-body p-3">
+                    <h5 className="mb-2" style={{ fontSize: '1.1rem', fontWeight: '600', lineHeight: '1.4' }}>
+                      {categoryPosts[0].title}
+                    </h5>
+                    <p className="text-muted small mb-2" style={{ 
+                      display: '-webkit-box',
+                      WebkitLineClamp: '2',
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden'
+                    }}>
+                      {categoryPosts[0].excerpt}
+                    </p>
+                    <div className="d-flex align-items-center gap-2 small text-muted">
+                      <span><i className="fas fa-user me-1"></i>{categoryPosts[0].user?.name}</span>
+                      <span><i className="fas fa-eye me-1"></i>{categoryPosts[0].views || 0}</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          )}
+          <div className="col-lg-6">
+            <div className="row g-3">
+              {categoryPosts.slice(1).map((post) => (
+                <div key={post.id} className="col-12">
+                  <Link to={`/posts/${post.slug}`} className="text-decoration-none">
+                    <div className="card border-0 shadow-sm overflow-hidden">
+                      <div className="row g-0">
+                        <div className="col-4">
+                          <div style={{ height: '100px', overflow: 'hidden' }}>
+                            {post.featured_image ? (
+                              <img 
+                                src={`https://keysblog-464d939b8203.herokuapp.com/${post.featured_image}`}
+                                className="w-100 h-100"
+                                alt={post.title}
+                                style={{ objectFit: 'cover' }}
+                              />
+                            ) : (
+                              <div className="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center">
+                                <i className="fas fa-image text-muted"></i>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-8">
+                          <div className="card-body p-2">
+                            <h6 className="mb-1" style={{ 
+                              fontSize: '0.9rem',
+                              fontWeight: '500',
+                              lineHeight: '1.3',
+                              display: '-webkit-box',
+                              WebkitLineClamp: '2',
+                              WebkitBoxOrient: 'vertical',
+                              overflow: 'hidden'
+                            }}>
+                              {post.title}
+                            </h6>
+                            <div className="d-flex gap-2 small text-muted">
+                              <span><i className="fas fa-clock me-1"></i>{post.reading_time || 5}m</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Layout 3: Horizontal List
+    return (
+      <div className="row g-3">
+        {categoryPosts.map((post) => (
+          <div key={post.id} className="col-lg-6">
+            <Link to={`/posts/${post.slug}`} className="text-decoration-none">
+              <div className="card border-0 shadow-sm overflow-hidden">
+                <div className="row g-0">
+                  <div className="col-5">
+                    <div style={{ height: '140px', overflow: 'hidden' }}>
+                      {post.featured_image ? (
+                        <img 
+                          src={`https://keysblog-464d939b8203.herokuapp.com/${post.featured_image}`}
+                          className="w-100 h-100"
+                          alt={post.title}
+                          style={{ objectFit: 'cover' }}
+                        />
+                      ) : (
+                        <div className="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center">
+                          <i className="fas fa-image fa-2x text-muted"></i>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="col-7">
+                    <div className="card-body p-3">
+                      <h6 className="mb-2" style={{ 
+                        fontSize: '0.95rem',
+                        fontWeight: '500',
+                        lineHeight: '1.4',
+                        display: '-webkit-box',
+                        WebkitLineClamp: '3',
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden'
+                      }}>
+                        {post.title}
+                      </h6>
+                      <div className="d-flex align-items-center gap-2 small text-muted">
+                        <span><i className="fas fa-clock me-1"></i>{post.reading_time || 5} min</span>
+                        <span><i className="fas fa-eye me-1"></i>{post.views || 0}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   if (loading) {
@@ -122,17 +252,15 @@ const Home = () => {
 
   return (
     <div className="modern-homepage">
-      {/* Hero Section with Latest Posts */}
-      <section className="hero-posts-section py-5" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+      {/* Hero - Latest Posts */}
+      <section className="py-3" style={{ backgroundColor: 'var(--bg-secondary)' }}>
         <div className="container">
-          {/* Hero Posts Grid - MSN Style */}
           {recentPosts.length > 0 && (
-            <div className="row g-3">
-              {/* Large Featured Post */}
-              <div className="col-lg-6">
+            <div className="row g-2">
+              <div className="col-lg-8">
                 <Link to={`/posts/${recentPosts[0].slug}`} className="text-decoration-none">
-                  <div className="card border-0 shadow-sm h-100 overflow-hidden hero-card-large">
-                    <div className="position-relative" style={{ height: '400px' }}>
+                  <div className="card border-0 shadow-sm overflow-hidden h-100">
+                    <div style={{ height: '350px', overflow: 'hidden' }}>
                       {recentPosts[0].featured_image ? (
                         <img 
                           src={`https://keysblog-464d939b8203.herokuapp.com/${recentPosts[0].featured_image}`}
@@ -145,100 +273,30 @@ const Home = () => {
                           <i className="fas fa-image fa-4x text-muted"></i>
                         </div>
                       )}
-                      <div className="position-absolute bottom-0 start-0 end-0 p-4" 
-                           style={{ 
-                             background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
-                             color: 'white'
-                           }}>
-                        <span className="badge bg-primary mb-2">
-                          {recentPosts[0].category?.display_name || recentPosts[0].category?.name}
-                        </span>
-                        <h2 className="h3 fw-bold mb-2 text-white">{recentPosts[0].title}</h2>
-                        <div className="d-flex align-items-center gap-3 small">
-                          <span>
-                            <i className="fas fa-user me-1"></i>
-                            {recentPosts[0].user?.name}
-                          </span>
-                          <span>
-                            <i className="fas fa-clock me-1"></i>
-                            {recentPosts[0].reading_time || 5} min read
-                          </span>
-                          <span>
-                            <i className="fas fa-eye me-1"></i>
-                            {recentPosts[0].views || 0} views
-                          </span>
-                        </div>
+                    </div>
+                    <div className="card-body p-3">
+                      <span className="badge bg-primary mb-2" style={{ fontSize: '0.75rem' }}>
+                        {recentPosts[0].category?.display_name || recentPosts[0].category?.name}
+                      </span>
+                      <h4 className="mb-2" style={{ fontSize: '1.3rem', fontWeight: '600', lineHeight: '1.3' }}>
+                        {recentPosts[0].title}
+                      </h4>
+                      <div className="d-flex align-items-center gap-3 small text-muted">
+                        <span><i className="fas fa-user me-1"></i>{recentPosts[0].user?.name}</span>
+                        <span><i className="fas fa-clock me-1"></i>{recentPosts[0].reading_time || 5} min</span>
+                        <span><i className="fas fa-eye me-1"></i>{recentPosts[0].views || 0}</span>
                       </div>
                     </div>
                   </div>
                 </Link>
               </div>
-
-              {/* Right Column - Two Smaller Posts */}
-              <div className="col-lg-6">
-                <div className="row g-3 h-100">
-                  {recentPosts.slice(1, 3).map((post, index) => (
-                    <div key={post.id} className="col-12">
-                      <Link to={`/posts/${post.slug}`} className="text-decoration-none">
-                        <div className="card border-0 shadow-sm overflow-hidden hero-card-small">
-                          <div className="row g-0">
-                            <div className="col-5">
-                              <div className="position-relative" style={{ height: '190px' }}>
-                                {post.featured_image ? (
-                                  <img 
-                                    src={`https://keysblog-464d939b8203.herokuapp.com/${post.featured_image}`}
-                                    className="w-100 h-100"
-                                    alt={post.title}
-                                    style={{ objectFit: 'cover' }}
-                                  />
-                                ) : (
-                                  <div className="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center">
-                                    <i className="fas fa-image fa-2x text-muted"></i>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                            <div className="col-7">
-                              <div className="card-body h-100 d-flex flex-column">
-                                <span className="badge bg-primary mb-2 align-self-start">
-                                  {post.category?.display_name || post.category?.name}
-                                </span>
-                                <h5 className="card-title mb-2 flex-grow-1" style={{ 
-                                  display: '-webkit-box',
-                                  WebkitLineClamp: '3',
-                                  WebkitBoxOrient: 'vertical',
-                                  overflow: 'hidden'
-                                }}>
-                                  {post.title}
-                                </h5>
-                                <div className="d-flex align-items-center gap-3 small text-muted">
-                                  <span>
-                                    <i className="fas fa-user me-1"></i>
-                                    {post.user?.name}
-                                  </span>
-                                  <span>
-                                    <i className="fas fa-eye me-1"></i>
-                                    {post.views || 0}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Bottom Row - All Remaining Posts */}
-              {recentPosts.length > 3 && (
-                <>
-                  {recentPosts.slice(3).map((post) => (
-                    <div key={post.id} className="col-lg-4 col-md-6">
-                      <Link to={`/posts/${post.slug}`} className="text-decoration-none">
-                        <div className="card border-0 shadow-sm h-100 overflow-hidden hero-card-medium">
-                          <div className="position-relative" style={{ height: '180px' }}>
+              <div className="col-lg-4">
+                <div className="row g-2 h-100">
+                  {recentPosts.slice(1, 3).map((post, idx) => (
+                    <div key={post.id} className="col-12" style={{ height: 'calc(50% - 0.25rem)' }}>
+                      <Link to={`/posts/${post.slug}`} className="text-decoration-none h-100 d-block">
+                        <div className="card border-0 shadow-sm overflow-hidden h-100">
+                          <div style={{ height: '55%', overflow: 'hidden' }}>
                             {post.featured_image ? (
                               <img 
                                 src={`https://keysblog-464d939b8203.herokuapp.com/${post.featured_image}`}
@@ -248,15 +306,18 @@ const Home = () => {
                               />
                             ) : (
                               <div className="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center">
-                                <i className="fas fa-image fa-3x text-muted"></i>
+                                <i className="fas fa-image fa-2x text-muted"></i>
                               </div>
                             )}
                           </div>
-                          <div className="card-body">
-                            <span className="badge bg-primary mb-2">
+                          <div className="card-body p-3" style={{ height: '45%' }}>
+                            <span className="badge bg-primary mb-2" style={{ fontSize: '0.7rem' }}>
                               {post.category?.display_name || post.category?.name}
                             </span>
-                            <h6 className="card-title mb-2" style={{ 
+                            <h6 className="mb-2" style={{ 
+                              fontSize: '0.95rem',
+                              fontWeight: '600',
+                              lineHeight: '1.4',
                               display: '-webkit-box',
                               WebkitLineClamp: '2',
                               WebkitBoxOrient: 'vertical',
@@ -264,54 +325,51 @@ const Home = () => {
                             }}>
                               {post.title}
                             </h6>
-                            <div className="d-flex align-items-center gap-3 small text-muted">
-                              <span>
-                                <i className="fas fa-clock me-1"></i>
-                                {post.reading_time || 5} min
-                              </span>
-                              <span>
-                                <i className="fas fa-eye me-1"></i>
-                                {post.views || 0}
-                              </span>
+                            <div className="d-flex align-items-center gap-2 small text-muted">
+                              <span><i className="fas fa-clock me-1"></i>{post.reading_time || 5}m</span>
+                              <span><i className="fas fa-eye me-1"></i>{post.views || 0}</span>
                             </div>
                           </div>
                         </div>
                       </Link>
                     </div>
                   ))}
-                </>
-              )}
-
-              {/* Loading Indicator */}
-              {loadingMore && (
-                <>
-                  {Array.from({ length: 6 }, (_, index) => (
-                    <div key={`loading-${index}`} className="col-lg-4 col-md-6">
-                      <PostCardSkeleton />
-                    </div>
-                  ))}
-                </>
-              )}
-
-              {/* End Message */}
-              {!hasMorePosts && recentPosts.length > 6 && (
-                <div className="col-12">
-                  <div className="text-center mt-4 pt-4 border-top">
-                    <p className="text-muted mb-3">
-                      <i className="fas fa-check-circle me-2"></i>
-                      You've reached the end. Showing all {recentPosts.length} posts.
-                    </p>
-                    <Link to="/posts" className="btn btn-outline-tanzania">
-                      <i className="fas fa-th-large me-2"></i>
-                      Browse All Posts
-                    </Link>
-                  </div>
                 </div>
-              )}
+              </div>
             </div>
           )}
         </div>
       </section>
+
+      {/* Category Sections with Different Layouts */}
+      {categories.map((category, index) => {
+        const categoryPosts = postsByCategory[category.id] || [];
+        
+        if (categoryPosts.length === 0) return null;
+        
+        return (
+          <section key={category.id} className="py-3" style={{ 
+            backgroundColor: index % 2 === 0 ? 'var(--bg-primary)' : 'var(--bg-secondary)' 
+          }}>
+            <div className="container">
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <h5 className="mb-0" style={{ fontWeight: '600', fontSize: '1.1rem' }}>
+                  {category.display_name || category.name}
+                </h5>
+                <Link 
+                  to={`/posts?category=${category.slug}`} 
+                  className="btn btn-sm btn-outline-primary"
+                  style={{ fontSize: '0.85rem', padding: '0.25rem 0.75rem' }}
+                >
+                  All <i className="fas fa-arrow-right ms-1"></i>
+                </Link>
+              </div>
+              
+              {renderCategoryLayout(category, categoryPosts, index)}
+            </div>
+          </section>
+        );
+      })}
     </div>
   );
 };
