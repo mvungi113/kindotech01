@@ -53,6 +53,22 @@ const AllPosts = () => {
     loadCategories();
   }, []);
 
+  // Infinite scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      // Check if user has scrolled near the bottom (within 300px)
+      const scrollPosition = window.innerHeight + window.scrollY;
+      const pageHeight = document.documentElement.scrollHeight;
+      
+      if (scrollPosition >= pageHeight - 300 && !loadingMore && hasMorePosts) {
+        loadMorePosts();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loadingMore, hasMorePosts, currentPage]);
+
   const loadCategories = async () => {
     try {
       const response = await apiService.getCategories();
@@ -169,86 +185,8 @@ const AllPosts = () => {
 
   return (
     <div className="all-posts-page">
-      {/* Modern Animated Header */}
-      <section className="posts-hero-modern position-relative overflow-hidden">
-        <div className="hero-background-pattern"></div>
-        <div className="hero-floating-elements">
-          <div className="floating-icon floating-icon-1">
-            <i className="fas fa-newspaper"></i>
-          </div>
-          <div className="floating-icon floating-icon-2">
-            <i className="fas fa-star"></i>
-          </div>
-          <div className="floating-icon floating-icon-3">
-            <i className="fas fa-search"></i>
-          </div>
-          <div className="floating-icon floating-icon-4">
-            <i className="fas fa-filter"></i>
-          </div>
-        </div>
-        <div className="container position-relative py-5">
-          <div className="row align-items-center min-vh-50">
-            <div className="col-lg-7">
-              <div className="hero-content text-white">
-                <h1 className="display-3 fw-bold mb-4 hero-title">
-                  {showFeaturedOnly ? (
-                    <>Featured <span className="text-tanzania-yellow">Stories</span></>
-                  ) : (
-                    <>All <span className="text-tanzania-yellow">Stories</span></>
-                  )}
-                </h1>
-                <p className="lead mb-4 hero-description">
-                  {showFeaturedOnly 
-                    ? 'Discover our hand-picked articles showcasing the best stories and insights.'
-                    : 'Explore our complete collection of stories, insights, and perspectives from writers around the world.'
-                  }
-                </p>
-                <div className="hero-features">
-                  <div className="feature-item">
-                    <i className="fas fa-check-circle me-2"></i>
-                    <span>Expert Content</span>
-                  </div>
-                  <div className="feature-item">
-                    <i className="fas fa-check-circle me-2"></i>
-                    <span>Regular Updates</span>
-                  </div>
-                  <div className="feature-item">
-                    <i className="fas fa-check-circle me-2"></i>
-                    <span>{showFeaturedOnly ? 'Quality Insights' : 'Multiple Categories'}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-5">
-              <div className="hero-stats-modern">
-                <div className="stats-container">
-                  <div className="stat-card-modern">
-                    <div className="stat-icon">
-                      <i className={`fas ${showFeaturedOnly ? 'fa-star' : 'fa-newspaper'}`}></i>
-                    </div>
-                    <div className="stat-content">
-                      <div className="stat-number-modern">{totalPosts}</div>
-                      <div className="stat-label-modern">{showFeaturedOnly ? 'Featured' : 'Stories'}</div>
-                    </div>
-                  </div>
-                  <div className="stat-card-modern">
-                    <div className="stat-icon">
-                      <i className="fas fa-th-large"></i>
-                    </div>
-                    <div className="stat-content">
-                      <div className="stat-number-modern">{categories.length}</div>
-                      <div className="stat-label-modern">Categories</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Filters Section */}
-      <section className="filters-section py-4 border-bottom">
+      <section className="filters-section py-4 border-bottom" style={{ backgroundColor: 'var(--bg-secondary)' }}>
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-6">
@@ -332,10 +270,7 @@ const AllPosts = () => {
           <div className="results-info mb-4">
             <p className="text-muted mb-0">
               {posts.length > 0 ? (
-                <>
-                  Showing {posts.length} of {totalPosts} stories
-                  {totalPages > 1 && ` (Page ${currentPage} of ${totalPages})`}
-                </>
+                <>Showing {posts.length} of {totalPosts} stories</>
               ) : (
                 'Loading stories...'
               )}
@@ -397,42 +332,28 @@ const AllPosts = () => {
             )}
           </div>
 
-          {/* Load More Button */}
-          {!loading && posts.length > 0 && (
+          {/* Infinite scroll loading indicator */}
+          {loadingMore && hasMorePosts && (
             <div className="text-center mt-5">
-              {hasMorePosts && (
-                <button 
-                  onClick={loadMorePosts} 
-                  className="btn btn-outline-tanzania btn-lg px-5"
-                  disabled={loadingMore}
-                >
-                  {loadingMore ? (
-                    <>
-                      <span className="spinner-border spinner-border-sm me-2" role="status"></span>
-                      Loading more...
-                    </>
-                  ) : (
-                    <>
-                      <i className="fas fa-plus me-2"></i>
-                      Load More {showFeaturedOnly ? 'Featured ' : ''}Stories
-                    </>
-                  )}
-                </button>
-              )}
-              
-              {!hasMorePosts && posts.length > 12 && (
-                <div className="mt-3">
-                  <p className="text-muted">
-                    <i className="fas fa-check-circle me-2 text-success"></i>
-                    You've seen all {showFeaturedOnly ? 'featured ' : ''}posts!
-                  </p>
-                  {showFeaturedOnly && (
-                    <Link to="/posts" className="btn btn-outline-tanzania">
-                      <i className="fas fa-th-large me-2"></i>
-                      View All Posts
-                    </Link>
-                  )}
-                </div>
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading more...</span>
+              </div>
+              <p className="text-muted mt-2">Loading more stories...</p>
+            </div>
+          )}
+
+          {/* End of results message */}
+          {!hasMorePosts && posts.length > 0 && (
+            <div className="text-center mt-5">
+              <p className="text-muted">
+                <i className="fas fa-check-circle me-2 text-success"></i>
+                You've seen all {totalPosts} {showFeaturedOnly ? 'featured ' : ''}stories!
+              </p>
+              {showFeaturedOnly && (
+                <Link to="/posts" className="btn btn-outline-primary mt-2">
+                  <i className="fas fa-th-large me-2"></i>
+                  View All Posts
+                </Link>
               )}
             </div>
           )}

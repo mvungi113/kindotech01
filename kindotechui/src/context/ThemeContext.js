@@ -23,9 +23,9 @@ export const ThemeProvider = ({ children }) => {
     if (savedTheme) {
       setIsDarkMode(savedTheme === 'dark');
     } else {
-      // Check system preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setIsDarkMode(prefersDark);
+      // Default to light mode instead of system preference
+      setIsDarkMode(false);
+      localStorage.setItem('theme', 'light');
     }
   }, []);
 

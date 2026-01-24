@@ -243,50 +243,6 @@ const Categories = () => {
                   </div>
                 ))}
               </div>
-
-              {/* Modern CTA Section */}
-              <div className="cta-modern-section mt-5">
-                <div className="cta-modern-container">
-                  <div className="row align-items-center">
-                    <div className="col-lg-7">
-                      <div className="cta-content">
-                        <h3 className="cta-title">Ready to Start Reading?</h3>
-                        <p className="cta-description">
-                          Join thousands of readers exploring amazing stories from Tanzania and around the world. 
-                          Start your journey today with our curated content.
-                        </p>
-                        <div className="cta-features">
-                          <div className="cta-feature">
-                            <i className="fas fa-check me-2"></i>
-                            <span>Fresh content daily</span>
-                          </div>
-                          <div className="cta-feature">
-                            <i className="fas fa-check me-2"></i>
-                            <span>Expert-curated stories</span>
-                          </div>
-                          <div className="cta-feature">
-                            <i className="fas fa-check me-2"></i>
-                            <span>Multiple perspectives</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-5">
-                      <div className="cta-actions">
-                        <Link to="/posts" className="btn btn-cta-primary">
-                          <i className="fas fa-book-open me-2"></i>
-                          Browse All Stories
-                          <i className="fas fa-arrow-right ms-2"></i>
-                        </Link>
-                        <Link to="/posts?featured=true" className="btn btn-cta-secondary">
-                          <i className="fas fa-star me-2"></i>
-                          Featured Posts
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </>
           ) : (
             <div className="empty-state text-center py-5">
@@ -308,6 +264,7 @@ const Categories = () => {
 };
 
 // Helper function to get appropriate icon for category
+// eslint-disable-next-line no-unused-vars
 const getCategoryIcon = (categoryName) => {
   const name = categoryName.toLowerCase();
   

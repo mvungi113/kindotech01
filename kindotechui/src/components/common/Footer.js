@@ -15,7 +15,9 @@ const Footer = () => {
     totalViews: 0
   });
   const [email, setEmail] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [subscribing, setSubscribing] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [subscribeMessage, setSubscribeMessage] = useState('');
 
   useEffect(() => {
@@ -59,6 +61,7 @@ const Footer = () => {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleNewsletterSubscribe = async (e) => {
     e.preventDefault();
     

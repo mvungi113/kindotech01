@@ -41,6 +41,115 @@
   --navbar-bg: #1E293B;
 }
 
+/* Light mode explicit styles */
+[data-bs-theme="light"],
+.light-theme {
+  --bg-primary: #ffffff;
+  --bg-secondary: #F7F9FC;
+  --bg-tertiary: #EDF2F7;
+  --text-primary: #2D3748;
+  --text-secondary: #4A5568;
+  --text-muted: #A0AEC0;
+  --border-color: #E2E8F0;
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  --card-bg: #ffffff;
+  --navbar-bg: var(--tanzania-green);
+}
+
+/* ===================================
+   BASE STYLES USING CSS VARIABLES
+   =================================== */
+
+/* These automatically switch with theme */
+body {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.card {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.card-header {
+  background-color: var(--bg-tertiary) !important;
+  border-bottom-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.card-body {
+  color: var(--text-primary) !important;
+  background-color: transparent !important;
+}
+
+.form-control,
+.form-select {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--tanzania-green) !important;
+}
+
+textarea.form-control {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.form-label {
+  color: var(--text-secondary) !important;
+}
+
+.container-fluid {
+  background-color: var(--bg-primary) !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary) !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* Force table backgrounds */
+.table {
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
+}
+
+.table thead {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.table thead th {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.table tbody td {
+  color: var(--text-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Modal backgrounds */
+.modal-content {
+  background-color: var(--card-bg) !important;
+}
+
+.modal-header,
+.modal-footer {
+  background-color: var(--bg-tertiary) !important;
+  border-color: var(--border-color) !important;
+}
+
 /* Dark mode specific overrides */
 .dark-theme {
   background-color: var(--bg-primary);
@@ -864,17 +973,17 @@
 
 .author-name {
   font-weight: 600;
-  color: #555;
+  color: var(--text-secondary);
 }
 
 .post-date {
-  color: #888;
+  color: var(--text-muted);
 }
 
 .post-title {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 1rem;
   line-height: 1.4;
   transition: color 0.3s ease;
@@ -889,7 +998,7 @@
 }
 
 .post-excerpt {
-  color: #666;
+  color: var(--text-secondary);
   line-height: 1.6;
   margin-bottom: 1.5rem;
   flex-grow: 1;
@@ -900,7 +1009,7 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 1rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border-color);
   margin-top: auto;
 }
 
@@ -909,7 +1018,7 @@
   align-items: center;
   gap: 0.4rem;
   font-size: 0.85rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .stat-item i {
@@ -1054,7 +1163,8 @@
 /* ===== ALL POSTS PAGE STYLES ===== */
 
 .all-posts-page {
-  background: #f8f9fa;
+  background: var(--bg-primary);
+  min-height: 100vh;
 }
 
 .posts-header {
@@ -1281,7 +1391,7 @@
 
 .categories-page {
   min-height: 100vh;
-  background: #f8fafc;
+  background: var(--bg-primary);
 }
 
 /* Modern Hero Section */
@@ -1508,8 +1618,8 @@
 }
 
 .category-badge {
-  background: rgba(26, 32, 44, 0.1);
-  color: #4a5568;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
   padding: 0.4rem 0.8rem;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -1523,7 +1633,7 @@
 }
 
 .category-title-modern {
-  color: #1a202c;
+  color: var(--text-primary);
   font-size: 1.4rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
@@ -1531,14 +1641,14 @@
 }
 
 .category-subtitle-sw {
-  color: #718096;
+  color: var(--text-muted);
   font-style: italic;
   font-size: 0.9rem;
   margin-bottom: 1rem;
 }
 
 .category-description-modern {
-  color: #4a5568;
+  color: var(--text-secondary);
   line-height: 1.6;
   font-size: 0.95rem;
   margin-bottom: 0;
@@ -1550,7 +1660,7 @@
   left: 0;
   right: 0;
   padding: 1.5rem 2rem;
-  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.95));
+  background: linear-gradient(180deg, transparent, var(--card-bg));
   z-index: 2;
 }
 
@@ -4756,4 +4866,600 @@ a:hover {
 
 .dark-theme .navbar-toggler-modern:hover span {
   background-color: var(--tanzania-green);
+}
+
+/* ===================================
+   ADMIN EDITOR DARK MODE IMPROVEMENTS
+   =================================== */
+
+/* Card Headers */
+.dark-theme .card-header {
+  background-color: var(--bg-tertiary);
+  border-bottom-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .card-header h5,
+.dark-theme .card-header h6 {
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Form Labels */
+.dark-theme .form-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Textareas */
+.dark-theme textarea.form-control {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  min-height: 120px;
+}
+
+.dark-theme textarea.form-control:focus {
+  background-color: #263547;
+  border-color: var(--tanzania-green);
+  box-shadow: 0 0 0 0.25rem rgba(30, 181, 58, 0.15);
+}
+
+/* Form Check (Checkboxes) */
+.dark-theme .form-check-label {
+  color: var(--text-primary);
+}
+
+.dark-theme .form-check-input {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+}
+
+.dark-theme .form-check-input:checked {
+  background-color: var(--tanzania-green);
+  border-color: var(--tanzania-green);
+}
+
+.dark-theme .form-check-input:focus {
+  border-color: var(--tanzania-green);
+  box-shadow: 0 0 0 0.25rem rgba(30, 181, 58, 0.15);
+}
+
+/* Primary Button */
+.dark-theme .btn-primary {
+  background-color: var(--tanzania-green);
+  border-color: var(--tanzania-green);
+  color: white;
+}
+
+.dark-theme .btn-primary:hover {
+  background-color: #1a9d33;
+  border-color: #1a9d33;
+}
+
+.dark-theme .btn-primary:disabled {
+  background-color: #475569;
+  border-color: #475569;
+  opacity: 0.6;
+}
+
+/* Outline Buttons */
+.dark-theme .btn-outline-secondary {
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+}
+
+.dark-theme .btn-outline-secondary:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
+
+/* Invalid Feedback */
+.dark-theme .invalid-feedback {
+  color: #f87171;
+}
+
+.dark-theme .is-invalid {
+  border-color: #f87171 !important;
+}
+
+.dark-theme .is-invalid:focus {
+  border-color: #f87171 !important;
+  box-shadow: 0 0 0 0.25rem rgba(248, 113, 113, 0.15) !important;
+}
+
+/* File Input */
+.dark-theme input[type="file"].form-control {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.dark-theme input[type="file"].form-control::file-selector-button {
+  background-color: var(--tanzania-green);
+  border: none;
+  color: white;
+  padding: 0.375rem 0.75rem;
+  margin-right: 1rem;
+  border-radius: 0.25rem;
+}
+
+.dark-theme input[type="file"].form-control::file-selector-button:hover {
+  background-color: #1a9d33;
+}
+
+/* Stats Card */
+.dark-theme .stat-card {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+}
+
+/* Content Editor Toolbar */
+.dark-theme .content-editor-toolbar {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+}
+
+.dark-theme .editor-btn {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.dark-theme .editor-btn:hover {
+  background-color: var(--tanzania-green);
+  color: white;
+  border-color: var(--tanzania-green);
+}
+
+.dark-theme .editor-btn.active {
+  background-color: var(--tanzania-green);
+  color: white;
+  border-color: var(--tanzania-green);
+}
+
+/* Word Count Badge */
+.dark-theme .badge {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.dark-theme .badge.bg-success {
+  background-color: var(--tanzania-green) !important;
+}
+
+.dark-theme .badge.bg-warning {
+  background-color: var(--tanzania-yellow) !important;
+  color: var(--tanzania-black) !important;
+}
+
+/* Admin Page Background */
+.dark-theme .admin-page,
+.dark-theme .editor-page {
+  background-color: var(--bg-primary);
+  min-height: 100vh;
+}
+
+/* Grid Improvements */
+.dark-theme .row {
+  --bs-gutter-x: 1.5rem;
+}
+
+/* Spacing for cards */
+.dark-theme .card {
+  margin-bottom: 1rem;
+}
+
+.dark-theme .card-body {
+  padding: 1.5rem;
+}
+
+/* Better focus states */
+.dark-theme *:focus {
+  outline: none;
+}
+
+.dark-theme *:focus-visible {
+  outline: 2px solid var(--tanzania-green);
+  outline-offset: 2px;
+}
+
+/* ===================================
+   ADMIN PAGES COMPREHENSIVE DARK MODE
+   =================================== */
+
+/* Container and Layout */
+.dark-theme .container-fluid {
+  background-color: var(--bg-primary);
+}
+
+/* Headings */
+.dark-theme h1, 
+.dark-theme h2, 
+.dark-theme h3, 
+.dark-theme h4, 
+.dark-theme h5, 
+.dark-theme h6 {
+  color: var(--text-primary);
+}
+
+/* Breadcrumbs */
+.dark-theme .breadcrumb {
+  background-color: transparent;
+}
+
+.dark-theme .breadcrumb-item,
+.dark-theme .breadcrumb-item a {
+  color: var(--text-secondary);
+}
+
+.dark-theme .breadcrumb-item.active {
+  color: var(--text-primary);
+}
+
+.dark-theme .breadcrumb-item + .breadcrumb-item::before {
+  color: var(--text-muted);
+}
+
+/* Buttons */
+.dark-theme .btn-tanzania,
+.dark-theme .btn-success {
+  background-color: var(--tanzania-green);
+  border-color: var(--tanzania-green);
+  color: white;
+}
+
+.dark-theme .btn-tanzania:hover,
+.dark-theme .btn-success:hover {
+  background-color: #1a9d33;
+  border-color: #1a9d33;
+}
+
+.dark-theme .btn-warning {
+  background-color: var(--tanzania-yellow);
+  border-color: var(--tanzania-yellow);
+  color: var(--tanzania-black);
+}
+
+.dark-theme .btn-info {
+  background-color: var(--tanzania-blue);
+  border-color: var(--tanzania-blue);
+  color: white;
+}
+
+.dark-theme .btn-danger {
+  background-color: #ef4444;
+  border-color: #ef4444;
+  color: white;
+}
+
+.dark-theme .btn-secondary {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .btn-secondary:hover {
+  background-color: #475569;
+  border-color: #475569;
+}
+
+.dark-theme .btn-outline-danger {
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+.dark-theme .btn-outline-danger:hover {
+  background-color: #ef4444;
+  color: white;
+}
+
+/* Stats Cards */
+.dark-theme .card.border-0 {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color) !important;
+}
+
+.dark-theme .card.shadow-sm {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark-theme .text-primary {
+  color: var(--tanzania-blue) !important;
+}
+
+.dark-theme .text-success {
+  color: var(--tanzania-green) !important;
+}
+
+.dark-theme .text-warning {
+  color: var(--tanzania-yellow) !important;
+}
+
+.dark-theme .text-info {
+  color: var(--tanzania-blue) !important;
+}
+
+.dark-theme .text-danger {
+  color: #ef4444 !important;
+}
+
+.dark-theme .text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* Alert Messages */
+.dark-theme .alert {
+  border-color: var(--border-color);
+}
+
+.dark-theme .alert-success {
+  background-color: rgba(30, 181, 58, 0.1);
+  border-color: var(--tanzania-green);
+  color: #4ade80;
+}
+
+.dark-theme .alert-danger {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+  color: #f87171;
+}
+
+.dark-theme .alert-warning {
+  background-color: rgba(252, 209, 22, 0.1);
+  border-color: var(--tanzania-yellow);
+  color: var(--tanzania-yellow);
+}
+
+.dark-theme .alert-info {
+  background-color: rgba(0, 163, 221, 0.1);
+  border-color: var(--tanzania-blue);
+  color: #60a5fa;
+}
+
+/* Filter Buttons */
+.dark-theme .btn-group .btn {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.dark-theme .btn-group .btn.active,
+.dark-theme .btn-group .btn:hover {
+  background-color: var(--tanzania-green);
+  border-color: var(--tanzania-green);
+  color: white;
+}
+
+/* Table Styling */
+.dark-theme .table {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.dark-theme .table thead th {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .table tbody tr {
+  border-color: var(--border-color);
+}
+
+.dark-theme .table tbody tr:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.dark-theme .table tbody td {
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.dark-theme .table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Badge Styling */
+.dark-theme .badge.bg-success {
+  background-color: var(--tanzania-green) !important;
+}
+
+.dark-theme .badge.bg-secondary {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .badge.bg-warning {
+  background-color: var(--tanzania-yellow) !important;
+  color: var(--tanzania-black) !important;
+}
+
+/* Pagination */
+.dark-theme .pagination .page-link {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .pagination .page-link:hover {
+  background-color: var(--tanzania-green);
+  border-color: var(--tanzania-green);
+  color: white;
+}
+
+.dark-theme .pagination .page-item.active .page-link {
+  background-color: var(--tanzania-green);
+  border-color: var(--tanzania-green);
+  color: white;
+}
+
+.dark-theme .pagination .page-item.disabled .page-link {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-muted);
+}
+
+/* Dropdown Menu */
+.dark-theme .dropdown-menu {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.dark-theme .dropdown-item {
+  color: var(--text-primary);
+}
+
+.dark-theme .dropdown-item:hover,
+.dark-theme .dropdown-item:focus {
+  background-color: var(--bg-tertiary);
+  color: var(--tanzania-green);
+}
+
+.dark-theme .dropdown-divider {
+  border-color: var(--border-color);
+}
+
+/* Modal */
+.dark-theme .modal-content {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+.dark-theme .modal-header {
+  background-color: var(--bg-tertiary);
+  border-bottom-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .modal-title {
+  color: var(--text-primary);
+}
+
+.dark-theme .modal-body {
+  color: var(--text-secondary);
+}
+
+.dark-theme .modal-footer {
+  background-color: var(--bg-secondary);
+  border-top-color: var(--border-color);
+}
+
+.dark-theme .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* List Groups */
+.dark-theme .list-group-item {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .list-group-item:hover {
+  background-color: var(--bg-tertiary);
+}
+
+/* Input Groups */
+.dark-theme .input-group-text {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Spinner */
+.dark-theme .spinner-border {
+  color: var(--tanzania-green);
+}
+
+/* Empty States */
+.dark-theme .text-center p {
+  color: var(--text-secondary);
+}
+
+/* Links */
+.dark-theme a {
+  color: var(--tanzania-blue);
+}
+
+.dark-theme a:hover {
+  color: var(--tanzania-green);
+}
+
+/* Image Thumbnails */
+.dark-theme .img-thumbnail {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+}
+
+/* Progress Bars */
+.dark-theme .progress {
+  background-color: var(--bg-tertiary);
+}
+
+.dark-theme .progress-bar {
+  background-color: var(--tanzania-green);
+}
+
+/* Nav Tabs */
+.dark-theme .nav-tabs {
+  border-bottom-color: var(--border-color);
+}
+
+.dark-theme .nav-tabs .nav-link {
+  color: var(--text-secondary);
+  border-color: transparent;
+}
+
+.dark-theme .nav-tabs .nav-link:hover {
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .nav-tabs .nav-link.active {
+  background-color: var(--card-bg);
+  border-color: var(--border-color) var(--border-color) var(--card-bg);
+  color: var(--tanzania-green);
+}
+
+/* ===================================
+   HERO POSTS CARDS - MSN STYLE
+   =================================== */
+
+.hero-card-large,
+.hero-card-small,
+.hero-card-medium {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.hero-card-large:hover,
+.hero-card-small:hover,
+.hero-card-medium:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+.hero-card-large .card-title,
+.hero-card-small .card-title,
+.hero-card-medium .card-title {
+  transition: color 0.2s ease;
+}
+
+.hero-card-large:hover .card-title,
+.hero-card-small:hover .card-title,
+.hero-card-medium:hover .card-title {
+  color: var(--tanzania-green) !important;
+}
+
+.hero-posts-section img {
+  transition: transform 0.3s ease;
+}
+
+.hero-card-large:hover img,
+.hero-card-small:hover img,
+.hero-card-medium:hover img {
+  transform: scale(1.05);
 }

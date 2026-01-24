@@ -6,23 +6,42 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { apiService } from '../services/api';
-import PostCard from '../components/posts/PostCard';
 import PostCardSkeleton from '../components/posts/PostCardSkeleton';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const Home = () => {
+  // eslint-disable-next-line no-unused-vars
   const [featuredPosts, setFeaturedPosts] = useState([]);
   const [recentPosts, setRecentPosts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [stats, setStats] = useState({ totalPosts: 0, totalViews: 0, totalCategories: 0 });
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(true);
 
   useEffect(() => {
     loadHomepageData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Infinite scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      // Check if user has scrolled near the bottom (within 300px)
+      const scrollPosition = window.innerHeight + window.scrollY;
+      const pageHeight = document.documentElement.scrollHeight;
+      
+      if (scrollPosition >= pageHeight - 300 && !loadingMore && hasMorePosts) {
+        loadMorePosts();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadingMore, hasMorePosts, currentPage]); // Re-attach listener when these change
 
   const loadHomepageData = async () => {
     try {
@@ -31,7 +50,7 @@ const Home = () => {
       // Load data in parallel
       const [featuredResponse, recentResponse, categoriesResponse] = await Promise.all([
         apiService.getFeaturedPosts(),
-        apiService.getPosts({ page: 1, per_page: 6 }), // Use getPosts with pagination instead of getRecentPosts
+        apiService.getPosts({ page: 1, per_page: 50 }), // Load 50 posts initially
         apiService.getCategories()
       ]);
 
@@ -75,7 +94,7 @@ const Home = () => {
       
       const response = await apiService.getPosts({ 
         page: nextPage, 
-        per_page: 6 
+        per_page: 50 
       });
       
       if (response.success) {
@@ -87,7 +106,7 @@ const Home = () => {
         if (response.data.last_page) {
           setHasMorePosts(nextPage < response.data.last_page);
         } else {
-          setHasMorePosts(newPosts.length === 6); // If we got less than requested, no more posts
+          setHasMorePosts(newPosts.length === 50); // If we got less than requested, no more posts
         }
       }
     } catch (error) {
@@ -103,229 +122,192 @@ const Home = () => {
 
   return (
     <div className="modern-homepage">
-      {/* Modern Animated Hero Section */}
-      <section className="home-hero-modern position-relative overflow-hidden">
-        <div className="hero-background-pattern"></div>
-        <div className="hero-floating-elements">
-          <div className="floating-icon floating-icon-1">
-            <i className="fas fa-laptop-code"></i>
-          </div>
-          <div className="floating-icon floating-icon-2">
-            <i className="fas fa-rocket"></i>
-          </div>
-          <div className="floating-icon floating-icon-3">
-            <i className="fas fa-lightbulb"></i>
-          </div>
-          <div className="floating-icon floating-icon-4">
-            <i className="fas fa-cogs"></i>
-          </div>
-        </div>
-        <div className="container position-relative py-5">
-          <div className="row align-items-center min-vh-60">
-            <div className="col-lg-7">
-              <div className="hero-content text-white">
-                <div className="hero-badge mb-3">
-                  <i className="fas fa-blog me-2"></i>
-                  Blog Hub
-                </div>
-                <h1 className="display-3 fw-bold mb-4 hero-title">
-                  Welcome to <span className="text-tanzania-yellow">KeyBlog</span>
-                </h1>
-                <p className="lead mb-4 hero-description">
-                  Discover amazing stories, insights, and perspectives from writers around the world.
-                  Your gateway to engaging content and meaningful discussions.
-                </p>
-                <div className="hero-features mb-4">
-                  <div className="feature-item">
-                    <i className="fas fa-check-circle me-2"></i>
-                    <span>Engaging Stories</span>
-                  </div>
-                  <div className="feature-item">
-                    <i className="fas fa-check-circle me-2"></i>
-                    <span>Diverse Perspectives</span>
-                  </div>
-                  <div className="feature-item">
-                    <i className="fas fa-check-circle me-2"></i>
-                    <span>Community Insights</span>
-                  </div>
-                </div>
-                <div className="d-flex gap-3 flex-wrap">
-                  <Link to="/posts" className="btn btn-cta-primary">
-                    <i className="fas fa-book-open me-2"></i>
-                    Explore Stories
-                    <i className="fas fa-arrow-right ms-2"></i>
-                  </Link>
-                  <Link to="/categories" className="btn btn-cta-primary">
-                    <i className="fas fa-compass me-2"></i>
-                    Browse Topics
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-5">
-              <div className="hero-stats-grid">
-                <div className="stat-card">
-                  <div className="stat-number">{stats.totalPosts}+</div>
-                  <div className="stat-label">Stories Shared</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-number">{Math.floor(stats.totalViews / 1000)}K+</div>
-                  <div className="stat-label">Readers Reached</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-number">{stats.totalCategories || categories.length}+</div>
-                  <div className="stat-label">Categories</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Enhanced Categories Navigation */}
-      <section className="categories-section py-5">
+      {/* Hero Section with Latest Posts */}
+      <section className="hero-posts-section py-5" style={{ backgroundColor: 'var(--bg-secondary)' }}>
         <div className="container">
-          <div className="text-center mb-5">
-            <h2 className="fw-bold mb-3">Explore by Category</h2>
-            <p className="text-muted">Discover content that interests you most</p>
-          </div>
-          <div className="row g-4">
-            {categories.slice(0, 6).map((category, index) => (
-              <div key={category.id} className="col-lg-2 col-md-4 col-6">
-                <Link 
-                  to={`/categories/${category.slug}`}
-                  className="text-decoration-none category-card-wrapper"
-                >
-                  <div className={`category-card animate-scale-hover delay-${index}`}>
-                    <div className="category-icon">
-                      <i className={`${category.icon || 'fas fa-folder'} fa-2x`}></i>
-                    </div>
-                    <h6 className="category-name">{category.display_name || category.name}</h6>
-                    <div className="category-arrow">
-                      <i className="fas fa-arrow-right"></i>
+          {/* Hero Posts Grid - MSN Style */}
+          {recentPosts.length > 0 && (
+            <div className="row g-3">
+              {/* Large Featured Post */}
+              <div className="col-lg-6">
+                <Link to={`/posts/${recentPosts[0].slug}`} className="text-decoration-none">
+                  <div className="card border-0 shadow-sm h-100 overflow-hidden hero-card-large">
+                    <div className="position-relative" style={{ height: '400px' }}>
+                      {recentPosts[0].featured_image ? (
+                        <img 
+                          src={`https://keysblog-464d939b8203.herokuapp.com/${recentPosts[0].featured_image}`}
+                          className="w-100 h-100"
+                          alt={recentPosts[0].title}
+                          style={{ objectFit: 'cover' }}
+                        />
+                      ) : (
+                        <div className="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center">
+                          <i className="fas fa-image fa-4x text-muted"></i>
+                        </div>
+                      )}
+                      <div className="position-absolute bottom-0 start-0 end-0 p-4" 
+                           style={{ 
+                             background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+                             color: 'white'
+                           }}>
+                        <span className="badge bg-primary mb-2">
+                          {recentPosts[0].category?.display_name || recentPosts[0].category?.name}
+                        </span>
+                        <h2 className="h3 fw-bold mb-2 text-white">{recentPosts[0].title}</h2>
+                        <div className="d-flex align-items-center gap-3 small">
+                          <span>
+                            <i className="fas fa-user me-1"></i>
+                            {recentPosts[0].user?.name}
+                          </span>
+                          <span>
+                            <i className="fas fa-clock me-1"></i>
+                            {recentPosts[0].reading_time || 5} min read
+                          </span>
+                          <span>
+                            <i className="fas fa-eye me-1"></i>
+                            {recentPosts[0].views || 0} views
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </Link>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Featured Posts Section */}
-      <section className="featured-section py-5">
-        <div className="container">
-          <div className="row align-items-center mb-5">
-            <div className="col">
-              <h2 className="fw-bold mb-2">
-                <i className="fas fa-star me-3 text-warning"></i>
-                Featured Stories
-              </h2>
-              <p className="text-muted">Hand-picked articles just for you</p>
-            </div>
-          </div>
-
-          <div className="row g-4">
-            {featuredPosts.length > 0 ? (
-              featuredPosts.slice(0, 2).map((post, index) => (
-                <div key={post.id} className="col-lg-6">
-                  <PostCard post={post} featured={true} animationDelay={index * 100} />
-                </div>
-              ))
-            ) : (
-              <div className="col-12">
-                <div className="empty-state text-center py-5">
-                  <i className="fas fa-star fa-3x text-muted mb-3"></i>
-                  <h4 className="text-muted">No featured posts yet</h4>
-                  <p className="text-muted">Check back soon for amazing stories!</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Recent Posts Section */}
-      <section className="recent-posts-section py-5">
-        <div className="container">
-          <div className="row align-items-center mb-5">
-            <div className="col">
-              <h2 className="fw-bold mb-2">
-                <i className="fas fa-clock me-3 text-tanzania-blue"></i>
-                Latest Stories
-              </h2>
-              <p className="text-muted">Stay up to date with our newest content</p>
-            </div>
-            <div className="col-auto">
-              <Link to="/posts" className="btn btn-outline-tanzania">
-                View All Stories <i className="fas fa-arrow-right ms-2"></i>
-              </Link>
-            </div>
-          </div>
-
-          <div className="row g-4">
-            {loading ? (
-              // Show loading skeletons while loading
-              Array.from({ length: 6 }, (_, index) => (
-                <PostCardSkeleton key={index} />
-              ))
-            ) : recentPosts.length > 0 ? (
-              // Show ALL loaded posts, not just first 6
-              recentPosts.map((post, index) => (
-                <div key={post.id} className="col-lg-4 col-md-6">
-                  <PostCard post={post} animationDelay={index * 50} />
-                </div>
-              ))
-            ) : (
-              <div className="col-12">
-                <div className="empty-state text-center py-5">
-                  <i className="fas fa-newspaper fa-3x text-muted mb-3"></i>
-                  <h4 className="text-muted">No posts yet</h4>
-                  <p className="text-muted">Be the first to share your story!</p>
+              {/* Right Column - Two Smaller Posts */}
+              <div className="col-lg-6">
+                <div className="row g-3 h-100">
+                  {recentPosts.slice(1, 3).map((post, index) => (
+                    <div key={post.id} className="col-12">
+                      <Link to={`/posts/${post.slug}`} className="text-decoration-none">
+                        <div className="card border-0 shadow-sm overflow-hidden hero-card-small">
+                          <div className="row g-0">
+                            <div className="col-5">
+                              <div className="position-relative" style={{ height: '190px' }}>
+                                {post.featured_image ? (
+                                  <img 
+                                    src={`https://keysblog-464d939b8203.herokuapp.com/${post.featured_image}`}
+                                    className="w-100 h-100"
+                                    alt={post.title}
+                                    style={{ objectFit: 'cover' }}
+                                  />
+                                ) : (
+                                  <div className="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center">
+                                    <i className="fas fa-image fa-2x text-muted"></i>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                            <div className="col-7">
+                              <div className="card-body h-100 d-flex flex-column">
+                                <span className="badge bg-primary mb-2 align-self-start">
+                                  {post.category?.display_name || post.category?.name}
+                                </span>
+                                <h5 className="card-title mb-2 flex-grow-1" style={{ 
+                                  display: '-webkit-box',
+                                  WebkitLineClamp: '3',
+                                  WebkitBoxOrient: 'vertical',
+                                  overflow: 'hidden'
+                                }}>
+                                  {post.title}
+                                </h5>
+                                <div className="d-flex align-items-center gap-3 small text-muted">
+                                  <span>
+                                    <i className="fas fa-user me-1"></i>
+                                    {post.user?.name}
+                                  </span>
+                                  <span>
+                                    <i className="fas fa-eye me-1"></i>
+                                    {post.views || 0}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
                 </div>
               </div>
-            )}
-            
-            {/* Show additional loading skeletons when loading more */}
-            {loadingMore && (
-              Array.from({ length: 6 }, (_, index) => (
-                <div key={`loading-${index}`} className="col-lg-4 col-md-6">
-                  <PostCardSkeleton />
-                </div>
-              ))
-            )}
-          </div>
 
-          {!loading && (
-            <div className="text-center mt-5">
-              {hasMorePosts && (
-                <button 
-                  onClick={loadMorePosts} 
-                  className="btn btn-outline-tanzania btn-lg px-4 me-3"
-                  disabled={loadingMore}
-                >
-                  {loadingMore ? (
-                    <>
-                      <span className="spinner-border spinner-border-sm me-2" role="status"></span>
-                      Loading more...
-                    </>
-                  ) : (
-                    <>
-                      <i className="fas fa-plus me-2"></i>
-                      Load More Stories
-                    </>
-                  )}
-                </button>
+              {/* Bottom Row - All Remaining Posts */}
+              {recentPosts.length > 3 && (
+                <>
+                  {recentPosts.slice(3).map((post) => (
+                    <div key={post.id} className="col-lg-4 col-md-6">
+                      <Link to={`/posts/${post.slug}`} className="text-decoration-none">
+                        <div className="card border-0 shadow-sm h-100 overflow-hidden hero-card-medium">
+                          <div className="position-relative" style={{ height: '180px' }}>
+                            {post.featured_image ? (
+                              <img 
+                                src={`https://keysblog-464d939b8203.herokuapp.com/${post.featured_image}`}
+                                className="w-100 h-100"
+                                alt={post.title}
+                                style={{ objectFit: 'cover' }}
+                              />
+                            ) : (
+                              <div className="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center">
+                                <i className="fas fa-image fa-3x text-muted"></i>
+                              </div>
+                            )}
+                          </div>
+                          <div className="card-body">
+                            <span className="badge bg-primary mb-2">
+                              {post.category?.display_name || post.category?.name}
+                            </span>
+                            <h6 className="card-title mb-2" style={{ 
+                              display: '-webkit-box',
+                              WebkitLineClamp: '2',
+                              WebkitBoxOrient: 'vertical',
+                              overflow: 'hidden'
+                            }}>
+                              {post.title}
+                            </h6>
+                            <div className="d-flex align-items-center gap-3 small text-muted">
+                              <span>
+                                <i className="fas fa-clock me-1"></i>
+                                {post.reading_time || 5} min
+                              </span>
+                              <span>
+                                <i className="fas fa-eye me-1"></i>
+                                {post.views || 0}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
+                </>
               )}
-              
-              <Link to="/posts" className="btn btn-outline-tanzania btn-lg px-4">
-                <i className="fas fa-th-large me-2"></i>
-                View All Stories
-              </Link>
-              
-              <div className="mt-3 text-muted small">
-                <span>Showing {recentPosts.length} of {stats.totalPosts || recentPosts.length} stories</span>
-              </div>
+
+              {/* Loading Indicator */}
+              {loadingMore && (
+                <>
+                  {Array.from({ length: 6 }, (_, index) => (
+                    <div key={`loading-${index}`} className="col-lg-4 col-md-6">
+                      <PostCardSkeleton />
+                    </div>
+                  ))}
+                </>
+              )}
+
+              {/* End Message */}
+              {!hasMorePosts && recentPosts.length > 6 && (
+                <div className="col-12">
+                  <div className="text-center mt-4 pt-4 border-top">
+                    <p className="text-muted mb-3">
+                      <i className="fas fa-check-circle me-2"></i>
+                      You've reached the end. Showing all {recentPosts.length} posts.
+                    </p>
+                    <Link to="/posts" className="btn btn-outline-tanzania">
+                      <i className="fas fa-th-large me-2"></i>
+                      Browse All Posts
+                    </Link>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

@@ -11,12 +11,15 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 const PostManager = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
   const { user } = useAuth();
   
   const [mode, setMode] = useState('list');
   const [posts, setPosts] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line no-unused-vars
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -25,6 +28,7 @@ const PostManager = () => {
   const [filter, setFilter] = useState('all'); // all, published, draft
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [totalPosts, setTotalPosts] = useState(0);
   const [postsPerPage] = useState(10);
   
@@ -168,6 +172,7 @@ const PostManager = () => {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -176,6 +181,7 @@ const PostManager = () => {
     }));
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -249,6 +255,7 @@ const PostManager = () => {
     setCurrentPage(1); // Reset to first page when filter changes
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -359,70 +366,49 @@ const PostManager = () => {
 
       {/* Post List View */}
       {mode === 'list' && (
-        <div className="card border-0 shadow-sm">
-          <div className="card-header bg-white">
-            <div className="row align-items-center">
-              <div className="col">
-                <h5 className="mb-0">Posts Management</h5>
-                <small className="text-muted">
-                  Showing {posts.length} of {totalPosts} posts
-                </small>
-              </div>
+        <>
+          {/* Filter Tabs */}
+          <div className="mb-4">
+            <div className="btn-group" role="group">
+              <button
+                className={`btn ${filter === 'all' ? 'btn-tanzania' : 'btn-outline-secondary'}`}
+                onClick={() => handleFilterChange('all')}
+                type="button"
+              >
+                <i className="fas fa-list me-2"></i>
+                All Posts
+                <span className="badge bg-light text-dark ms-2">{stats.total_posts}</span>
+              </button>
+              <button
+                className={`btn ${filter === 'published' ? 'btn-success' : 'btn-outline-secondary'}`}
+                onClick={() => handleFilterChange('published')}
+                type="button"
+              >
+                <i className="fas fa-eye me-2"></i>
+                Published
+                <span className="badge bg-light text-dark ms-2">{stats.published_posts}</span>
+              </button>
+              <button
+                className={`btn ${filter === 'draft' ? 'btn-warning' : 'btn-outline-secondary'}`}
+                onClick={() => handleFilterChange('draft')}
+                type="button"
+              >
+                <i className="fas fa-edit me-2"></i>
+                Drafts
+                <span className="badge bg-light text-dark ms-2">{stats.draft_posts}</span>
+              </button>
             </div>
           </div>
 
-          {/* Filter Tabs */}
-          <div className="card-header border-top">
-            <ul className="nav nav-tabs card-header-tabs" role="tablist">
-              <li className="nav-item" role="presentation">
-                <button
-                  className={`nav-link ${filter === 'all' ? 'active' : ''}`}
-                  onClick={() => handleFilterChange('all')}
-                  type="button"
-                >
-                  <i className="fas fa-list me-2"></i>
-                  All Posts
-                  <span className="badge bg-secondary ms-2">{totalPosts}</span>
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                  className={`nav-link ${filter === 'published' ? 'active' : ''}`}
-                  onClick={() => handleFilterChange('published')}
-                  type="button"
-                >
-                  <i className="fas fa-eye me-2"></i>
-                  Published
-                  <span className="badge bg-success ms-2">
-                    {posts.filter(p => p.is_published).length}
-                  </span>
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                  className={`nav-link ${filter === 'draft' ? 'active' : ''}`}
-                  onClick={() => handleFilterChange('draft')}
-                  type="button"
-                >
-                  <i className="fas fa-edit me-2"></i>
-                  Drafts
-                  <span className="badge bg-warning ms-2">
-                    {posts.filter(p => !p.is_published).length}
-                  </span>
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          <div className="card-body">
-            {loading ? (
-              <div className="text-center py-4">
-                <div className="spinner-border text-primary" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
+          {loading ? (
+            <div className="text-center py-5">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
               </div>
-            ) : posts.length === 0 ? (
-              <div className="text-center py-5 text-muted">
+            </div>
+          ) : posts.length === 0 ? (
+            <div className="card border-0 shadow-sm">
+              <div className="card-body text-center py-5 text-muted">
                 <i className="fas fa-file-alt fa-3x mb-3"></i>
                 <h5>No posts found</h5>
                 <p>
@@ -433,421 +419,179 @@ const PostManager = () => {
                     : 'No posts created yet'
                   }
                 </p>
+                <Link to="/admin/posts/new" className="btn btn-tanzania mt-3">
+                  <i className="fas fa-plus me-2"></i>
+                  Create Your First Post
+                </Link>
               </div>
-            ) : (
-              <div className="table-responsive">
-                <table className="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>Title</th>
-                      <th>Category</th>
-                      <th>Status</th>
-                      <th>Author</th>
-                      <th>Date</th>
-                      <th>Views</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {posts.map(post => (
-                      <tr key={post.id}>
-                        <td>
-                          <strong>{post.title}</strong>
-                          {post.is_featured && (
-                            <span className="badge bg-warning ms-2">Featured</span>
-                          )}
-                        </td>
-                        <td>
-                          <span className="badge bg-secondary">
-                            {post.category?.name}
-                          </span>
-                        </td>
-                        <td>
-                          <span className={`badge ${post.is_published ? 'bg-success' : 'bg-warning'}`}>
+            </div>
+          ) : (
+            <>
+              {/* Card Grid Layout - Similar to Homepage */}
+              <div className="row g-4">
+                {posts.map((post) => (
+                  <div key={post.id} className="col-lg-4 col-md-6">
+                    <article className="card border-0 shadow-sm h-100 modern-post-card">
+                      {/* Post Image */}
+                      <div className="position-relative" style={{ height: '200px', overflow: 'hidden' }}>
+                        {post.featured_image ? (
+                          <img 
+                            src={`https://keysblog-464d939b8203.herokuapp.com/${post.featured_image}`}
+                            className="card-img-top"
+                            alt={post.title}
+                            style={{ height: '100%', objectFit: 'cover' }}
+                          />
+                        ) : (
+                          <div className="bg-secondary d-flex align-items-center justify-content-center" style={{ height: '100%' }}>
+                            <i className="fas fa-image fa-3x text-muted"></i>
+                          </div>
+                        )}
+                        
+                        {/* Status Badge */}
+                        <div className="position-absolute top-0 end-0 p-2">
+                          <span className={`badge ${post.is_published ? 'bg-success' : 'bg-warning text-dark'}`}>
                             {post.is_published ? 'Published' : 'Draft'}
                           </span>
-                        </td>
-                        <td>{post.user?.name}</td>
-                        <td>
-                          {new Date(post.published_at).toLocaleDateString()}
-                        </td>
-                        <td>{post.views}</td>
-                        <td>
-                          <div className="btn-group btn-group-sm">
-                            <Link 
-                              to={`/posts/${post.slug}`}
-                              className="btn btn-outline-primary"
-                              target="_blank"
-                            >
-                              <i className="fas fa-eye"></i>
-                            </Link>
-                            <Link 
-                              to={`/admin/posts/edit/${post.id}`}
-                              className="btn btn-outline-secondary"
-                            >
-                              <i className="fas fa-edit"></i>
-                            </Link>
-                            <button 
-                              className="btn btn-outline-warning"
-                              onClick={() => togglePublish(post)}
-                            >
-                              <i className={`fas fa-${post.is_published ? 'eye-slash' : 'eye'}`}></i>
-                            </button>
-                            <button 
-                              className="btn btn-outline-danger"
-                              onClick={() => handleDelete(post.id)}
-                            >
-                              <i className="fas fa-trash"></i>
-                            </button>
+                        </div>
+
+                        {/* Featured Badge */}
+                        {post.is_featured && (
+                          <div className="position-absolute top-0 start-0 p-2">
+                            <span className="badge bg-warning text-dark">
+                              <i className="fas fa-star me-1"></i>
+                              Featured
+                            </span>
                           </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                        )}
+                      </div>
+
+                      {/* Post Content */}
+                      <div className="card-body d-flex flex-column">
+                        {/* Category */}
+                        <div className="mb-2">
+                          <span className="badge bg-primary">
+                            {post.category?.display_name || post.category?.name || 'Uncategorized'}
+                          </span>
+                        </div>
+
+                        {/* Title */}
+                        <h5 className="card-title">
+                          <Link to={`/admin/posts/edit/${post.id}`} className="text-decoration-none">
+                            {post.title}
+                          </Link>
+                        </h5>
+
+                        {/* Excerpt */}
+                        <p className="card-text text-muted small flex-grow-1">
+                          {post.excerpt ? 
+                            (post.excerpt.length > 100 ? post.excerpt.substring(0, 100) + '...' : post.excerpt)
+                            : 'No excerpt available'
+                          }
+                        </p>
+
+                        {/* Meta Info */}
+                        <div className="d-flex justify-content-between align-items-center mb-3 text-muted small">
+                          <div>
+                            <i className="fas fa-user me-1"></i>
+                            {post.user?.name || 'Unknown'}
+                          </div>
+                          <div>
+                            <i className="fas fa-calendar me-1"></i>
+                            {new Date(post.created_at).toLocaleDateString()}
+                          </div>
+                        </div>
+
+                        {/* Stats */}
+                        <div className="d-flex justify-content-between align-items-center mb-3 text-muted small">
+                          <div>
+                            <i className="fas fa-eye me-1"></i>
+                            {post.views || 0} views
+                          </div>
+                          <div>
+                            <i className="fas fa-clock me-1"></i>
+                            {post.reading_time || 5} min read
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="btn-group w-100" role="group">
+                          <Link 
+                            to={`/admin/posts/edit/${post.id}`}
+                            className="btn btn-sm btn-outline-primary"
+                          >
+                            <i className="fas fa-edit me-1"></i>
+                            Edit
+                          </Link>
+                          <Link 
+                            to={`/posts/${post.slug}`}
+                            className="btn btn-sm btn-outline-info"
+                            target="_blank"
+                          >
+                            <i className="fas fa-eye me-1"></i>
+                            View
+                          </Link>
+                          <button
+                            onClick={() => togglePublish(post)}
+                            className={`btn btn-sm ${post.is_published ? 'btn-outline-warning' : 'btn-outline-success'}`}
+                          >
+                            <i className={`fas fa-${post.is_published ? 'eye-slash' : 'check'} me-1`}></i>
+                            {post.is_published ? 'Unpublish' : 'Publish'}
+                          </button>
+                          <button
+                            onClick={() => handleDelete(post.id)}
+                            className="btn btn-sm btn-outline-danger"
+                          >
+                            <i className="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                ))}
               </div>
-            )}
-            
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="d-flex justify-content-between align-items-center mt-4">
-                <div>
-                  <small className="text-muted">
-                    Page {currentPage} of {totalPages} ({totalPosts} total posts)
-                  </small>
-                </div>
-                <nav aria-label="Posts pagination">
-                  <ul className="pagination pagination-sm mb-0">
-                    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                      <button
-                        className="page-link"
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                      >
-                        <i className="fas fa-chevron-left"></i>
-                      </button>
-                    </li>
-                    
-                    {[...Array(totalPages)].map((_, index) => {
-                      const page = index + 1;
-                      // Show first page, last page, current page, and pages around current
-                      if (
-                        page === 1 || 
-                        page === totalPages || 
-                        (page >= currentPage - 2 && page <= currentPage + 2)
-                      ) {
-                        return (
-                          <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
-                            <button
-                              className="page-link"
-                              onClick={() => handlePageChange(page)}
-                            >
-                              {page}
-                            </button>
-                          </li>
-                        );
-                      } else if (
-                        page === currentPage - 3 || 
-                        page === currentPage + 3
-                      ) {
-                        return (
-                          <li key={page} className="page-item disabled">
-                            <span className="page-link">...</span>
-                          </li>
-                        );
-                      }
-                      return null;
-                    })}
-                    
-                    <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                      <button
-                        className="page-link"
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                      >
-                        <i className="fas fa-chevron-right"></i>
-                      </button>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
 
-      {/* Post Form View */}
-      {(mode === 'create' || mode === 'edit') && (
-        <div className="row">
-          <div className="col-lg-8">
-            <div className="card border-0 shadow-sm">
-              <div className="card-header bg-white">
-                <h5 className="mb-0">
-                  {mode === 'create' ? 'Create New Post' : 'Edit Post'}
-                </h5>
-              </div>
-              <div className="card-body">
-                <form onSubmit={handleSubmit}>
-                  {/* Title */}
-                  <div className="mb-3">
-                    <label htmlFor="title" className="form-label">
-                      Post Title *
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="title"
-                      name="title"
-                      value={formData.title}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-
-                  {/* Swahili Title */}
-                  <div className="mb-3">
-                    <label htmlFor="title_sw" className="form-label">
-                      Swahili Title (Optional)
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="title_sw"
-                      name="title_sw"
-                      value={formData.title_sw}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-
-                  {/* Content */}
-                  <div className="mb-3">
-                    <label htmlFor="content" className="form-label">
-                      Content *
-                    </label>
-                    <textarea
-                      className="form-control"
-                      id="content"
-                      name="content"
-                      rows="12"
-                      value={formData.content}
-                      onChange={handleInputChange}
-                      required
-                    ></textarea>
-                  </div>
-
-                  {/* Swahili Content */}
-                  <div className="mb-3">
-                    <label htmlFor="content_sw" className="form-label">
-                      Swahili Content (Optional)
-                    </label>
-                    <textarea
-                      className="form-control"
-                      id="content_sw"
-                      name="content_sw"
-                      rows="6"
-                      value={formData.content_sw}
-                      onChange={handleInputChange}
-                    ></textarea>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-md-6">
-                      {/* Category */}
-                      <div className="mb-3">
-                        <label htmlFor="category_id" className="form-label">
-                          Category *
-                        </label>
-                        <select
-                          className="form-select"
-                          id="category_id"
-                          name="category_id"
-                          value={formData.category_id}
-                          onChange={handleInputChange}
-                          required
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="d-flex justify-content-center mt-5">
+                  <nav>
+                    <ul className="pagination">
+                      <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                        <button 
+                          className="page-link"
+                          onClick={() => setCurrentPage(currentPage - 1)}
+                          disabled={currentPage === 1}
                         >
-                          <option value="">Select Category</option>
-                          {categories.map(category => (
-                            <option key={category.id} value={category.id}>
-                              {category.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                    
-                    <div className="col-md-6">
-                      {/* Tags */}
-                      <div className="mb-3">
-                        <label htmlFor="tags" className="form-label">
-                          Tags (comma separated)
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="tags"
-                          name="tags"
-                          value={formData.tags}
-                          onChange={handleInputChange}
-                          placeholder="lifestyle, news, culture"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Excerpt */}
-                  <div className="mb-3">
-                    <label htmlFor="excerpt" className="form-label">
-                      Excerpt
-                    </label>
-                    <textarea
-                      className="form-control"
-                      id="excerpt"
-                      name="excerpt"
-                      rows="3"
-                      value={formData.excerpt}
-                      onChange={handleInputChange}
-                      placeholder="Brief description of the post"
-                    ></textarea>
-                  </div>
-
-                  {/* Meta Fields */}
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label htmlFor="meta_title" className="form-label">
-                          Meta Title
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="meta_title"
-                          name="meta_title"
-                          value={formData.meta_title}
-                          onChange={handleInputChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label htmlFor="meta_description" className="form-label">
-                          Meta Description
-                        </label>
-                        <textarea
-                          className="form-control"
-                          id="meta_description"
-                          name="meta_description"
-                          rows="2"
-                          value={formData.meta_description}
-                          onChange={handleInputChange}
-                        ></textarea>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Checkboxes */}
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-check mb-3">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          id="is_published"
-                          name="is_published"
-                          checked={formData.is_published}
-                          onChange={handleInputChange}
-                        />
-                        <label className="form-check-label" htmlFor="is_published">
-                          Publish immediately
-                        </label>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-check mb-3">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          id="is_featured"
-                          name="is_featured"
-                          checked={formData.is_featured}
-                          onChange={handleInputChange}
-                        />
-                        <label className="form-check-label" htmlFor="is_featured">
-                          Feature this post
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Submit Buttons */}
-                  <div className="d-flex gap-2">
-                    <button
-                      type="submit"
-                      className="btn btn-tanzania"
-                      disabled={saving}
-                    >
-                      {saving ? (
-                        <>
-                          <span className="spinner-border spinner-border-sm me-2"></span>
-                          Saving...
-                        </>
-                      ) : (
-                        <>
-                          <i className="fas fa-save me-2"></i>
-                          {mode === 'create' ? 'Create Post' : 'Update Post'}
-                        </>
-                      )}
-                    </button>
-                    
-                    <Link
-                      to="/admin/posts"
-                      className="btn btn-outline-secondary"
-                    >
-                      Cancel
-                    </Link>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-
-          {/* Sidebar */}
-          <div className="col-lg-4">
-            <div className="card border-0 shadow-sm mb-4">
-              <div className="card-header bg-white">
-                <h6 className="mb-0">Publishing</h6>
-              </div>
-              <div className="card-body">
-                <div className="mb-3">
-                  <label className="form-label">Status</label>
-                  <div>
-                    <span className={`badge ${formData.is_published ? 'bg-success' : 'bg-warning'}`}>
-                      {formData.is_published ? 'Will publish' : 'Draft'}
-                    </span>
-                  </div>
+                          <i className="fas fa-chevron-left"></i>
+                        </button>
+                      </li>
+                      
+                      {[...Array(totalPages)].map((_, index) => (
+                        <li key={index + 1} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                          <button
+                            className="page-link"
+                            onClick={() => setCurrentPage(index + 1)}
+                          >
+                            {index + 1}
+                          </button>
+                        </li>
+                      ))}
+                      
+                      <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                        <button 
+                          className="page-link"
+                          onClick={() => setCurrentPage(currentPage + 1)}
+                          disabled={currentPage === totalPages}
+                        >
+                          <i className="fas fa-chevron-right"></i>
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
                 </div>
-                
-                <div className="mb-3">
-                  <label className="form-label">Author</label>
-                  <p className="mb-0">{user?.name}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="card border-0 shadow-sm">
-              <div className="card-header bg-white">
-                <h6 className="mb-0">Tips</h6>
-              </div>
-              <div className="card-body">
-                <ul className="small text-muted mb-0">
-                  <li>Use clear, descriptive titles</li>
-                  <li>Add relevant tags for better discovery</li>
-                  <li>Include a compelling excerpt</li>
-                  <li>Add Swahili content for wider reach</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
+              )}
+            </>
+          )}
+        </>
       )}
     </div>
   );
