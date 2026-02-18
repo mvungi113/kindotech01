@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import { apiService } from '../services/api';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
+// Derive image base URL from REACT_APP_API_BASE_URL (remove /api/v1)
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://keysblog-464d939b8203.herokuapp.com/api/v1';
+const IMAGE_BASE_URL = API_BASE_URL.replace('/api/v1', '');
+
 const Home = () => {
   const [recentPosts, setRecentPosts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -61,9 +65,9 @@ const Home = () => {
               <Link to={`/posts/${post.slug}`} className="text-decoration-none">
                 <div className="card border-0 shadow-sm h-100 overflow-hidden">
                   <div style={{ height: '160px', overflow: 'hidden' }}>
-                    {post.featured_image ? (
+                      {post.featured_image ? (
                       <img 
-                        src={`https://keysblog-464d939b8203.herokuapp.com/${post.featured_image}`}
+                        src={`${IMAGE_BASE_URL}/${post.featured_image}`}
                         className="w-100 h-100"
                         alt={post.title}
                         style={{ objectFit: 'cover' }}
@@ -108,9 +112,9 @@ const Home = () => {
               <Link to={`/posts/${categoryPosts[0].slug}`} className="text-decoration-none">
                 <div className="card border-0 shadow-sm h-100 overflow-hidden">
                   <div style={{ height: '280px', overflow: 'hidden' }}>
-                    {categoryPosts[0].featured_image ? (
+                      {categoryPosts[0].featured_image ? (
                       <img 
-                        src={`https://keysblog-464d939b8203.herokuapp.com/${categoryPosts[0].featured_image}`}
+                        src={`${IMAGE_BASE_URL}/${categoryPosts[0].featured_image}`}
                         className="w-100 h-100"
                         alt={categoryPosts[0].title}
                         style={{ objectFit: 'cover' }}
@@ -151,9 +155,9 @@ const Home = () => {
                       <div className="row g-0">
                         <div className="col-4">
                           <div style={{ height: '100px', overflow: 'hidden' }}>
-                            {post.featured_image ? (
+                              {post.featured_image ? (
                               <img 
-                                src={`https://keysblog-464d939b8203.herokuapp.com/${post.featured_image}`}
+                                src={`${IMAGE_BASE_URL}/${post.featured_image}`}
                                 className="w-100 h-100"
                                 alt={post.title}
                                 style={{ objectFit: 'cover' }}
@@ -206,7 +210,7 @@ const Home = () => {
                     <div style={{ height: '140px', overflow: 'hidden' }}>
                       {post.featured_image ? (
                         <img 
-                          src={`https://keysblog-464d939b8203.herokuapp.com/${post.featured_image}`}
+                          src={`${IMAGE_BASE_URL}/${post.featured_image}`}
                           className="w-100 h-100"
                           alt={post.title}
                           style={{ objectFit: 'cover' }}
@@ -263,7 +267,7 @@ const Home = () => {
                     <div style={{ height: '350px', overflow: 'hidden' }}>
                       {recentPosts[0].featured_image ? (
                         <img 
-                          src={`https://keysblog-464d939b8203.herokuapp.com/${recentPosts[0].featured_image}`}
+                          src={`${IMAGE_BASE_URL}/${recentPosts[0].featured_image}`}
                           className="w-100 h-100"
                           alt={recentPosts[0].title}
                           style={{ objectFit: 'cover' }}
@@ -297,9 +301,9 @@ const Home = () => {
                       <Link to={`/posts/${post.slug}`} className="text-decoration-none h-100 d-block">
                         <div className="card border-0 shadow-sm overflow-hidden h-100">
                           <div style={{ height: '55%', overflow: 'hidden' }}>
-                            {post.featured_image ? (
-                              <img 
-                                src={`https://keysblog-464d939b8203.herokuapp.com/${post.featured_image}`}
+                              {post.featured_image ? (
+                                <img 
+                                  src={`${IMAGE_BASE_URL}/${post.featured_image}`}
                                 className="w-100 h-100"
                                 alt={post.title}
                                 style={{ objectFit: 'cover' }}

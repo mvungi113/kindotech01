@@ -50,7 +50,8 @@ const Logo = ({
 
   return (
     <img
-      src="/images/keyblog.png"
+      // Use existing public image; fall back to text if image missing
+      src="/images/kindotech.png"
       alt="KeyBlog Logo"
       className={`logo-image ${className}`}
       style={{

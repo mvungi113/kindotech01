@@ -8,6 +8,10 @@ import { useAuth } from '../../context/AuthContext';
 import { apiService } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
+// Derive image base URL from REACT_APP_API_BASE_URL
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://keysblog-464d939b8203.herokuapp.com/api/v1';
+const IMAGE_BASE_URL = API_BASE_URL.replace('/api/v1', '');
+
 const PostManager = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -436,7 +440,7 @@ const PostManager = () => {
                       <div className="position-relative" style={{ height: '200px', overflow: 'hidden' }}>
                         {post.featured_image ? (
                           <img 
-                            src={`https://keysblog-464d939b8203.herokuapp.com/${post.featured_image}`}
+                            src={`${IMAGE_BASE_URL}/${post.featured_image}`}
                             className="card-img-top"
                             alt={post.title}
                             style={{ height: '100%', objectFit: 'cover' }}
