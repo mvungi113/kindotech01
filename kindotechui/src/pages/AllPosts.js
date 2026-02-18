@@ -21,7 +21,7 @@ const AllPosts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(true);
   const [totalPosts, setTotalPosts] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
+  
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Get initial values from URL params
@@ -129,7 +129,6 @@ const AllPosts = () => {
         
         setHasMorePosts((resetPosts ? 1 : currentPage) < totalPagesCount);
         setTotalPosts(totalPostsCount);
-        setTotalPages(totalPagesCount);
       }
     } catch (error) {
       console.error('Error loading posts:', error);

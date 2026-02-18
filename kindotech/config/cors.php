@@ -35,6 +35,10 @@ return [
         [
             'http://localhost:3000',
             'https://brave-wisdom-production.up.railway.app',
+            // Frontend deployed on Vercel for keysblog
+            'https://keysblog.vercel.app',
+            // Preview/deployment hostname used by Vercel (project-specific)
+            'https://keysblog-qz6jmqk3z-rogasians-projects.vercel.app',
         ],
         // Additional origins from environment variable
         array_filter(array_map('trim', explode(',', env('CORS_ALLOWED_ORIGINS', ''))))
